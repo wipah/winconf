@@ -239,7 +239,7 @@ class template {
           </li>
           
           <li class="nav-item">
-            <a class="nav-link" href="' .$conf['URI'] . 'configuratore-admim/">Backend</a>
+            <a class="nav-link" href="' .$conf['URI'] . 'configuratore-admin/">Backend</a>
           </li>
           
           <li class="nav-item">

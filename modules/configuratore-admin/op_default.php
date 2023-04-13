@@ -13,25 +13,30 @@ if (!$result = $db->query($query)) {
 if (!$db->affected_rows) {
     echo 'Nessun dato trovato.';
 } else {
-    echo '<table class="table table-bordered table-striped">
+    echo '
+    <a href="' . $conf['URI'] . 'configuratore-admin/editor/" class="btn btn-info float-right">Crea nuova categoria</a>
+    <table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>ID</th>
             <th>Sigla</th>
             <th>Nome</th>
             <th>Step</th>
-            <th>Operazioni<th>
+            <th>Operazioni</th>
         </tr>
     </thead>
     <tbody>';
 
     while ($row = mysqli_fetch_assoc($result)) {
-        echo '<td>' . $row['ID'] . '</td>';
-        echo '<td>' . $row['categoria_sigla'] . '</td>';
-        echo '<td>' . $row['categoria_nome'] . '</td>';
-        echo '<td>???</td>';
-        echo '<td>' . $row['categoria_descrizione'] . '</td>';
-        echo '<td><a href="' . $conf['URI'] . 'configuratore-admin/editor/?ID=' . $row['ID'] . '">Modifica</a></td>';
+        echo '<tr>
+                <td>' . $row['ID'] . '</td>
+                <td>' . $row['categoria_sigla'] . '</td>
+                <td>' . $row['categoria_nome'] . '</td>
+                <td>???</td>
+                <td>
+                    <a href="' . $conf['URI'] . 'configuratore-admin/categorie/editor/?ID=' . $row['ID'] . '">Modifica</a>
+                </td>
+              </tr>';
     }
 
     echo '

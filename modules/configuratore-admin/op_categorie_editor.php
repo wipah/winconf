@@ -28,7 +28,7 @@ if ($ID = (int) ($_GET['ID'])) {
         }
     }
 
-    $action = $conf['URI'] . 'configuratore-admin/editor/?ID=' . $ID . '&save';
+    $action = $conf['URI'] . 'configuratore-admin/categorie/editor/?ID=' . $ID . '&save';
     $button = 'Salva le modifiche';
 
     $query = 'SELECT * 
@@ -67,11 +67,12 @@ if ($ID = (int) ($_GET['ID'])) {
         if (!$db->query($query)) {
             echo $this->getBox('danger', 'Query error. ' . $query);
         } else {
-            $this->getBox('Categoria creata con successo');
+            echo $this->getBox('info', 'Categoria creata con successo');
+            return;
         }
 
     }
-    $action = $conf['URI']. 'configuratore-admin/editor/?save';
+    $action = $conf['URI']. 'configuratore-admin/categorie/editor/?save';
     $button = 'Salva la categoria';
 }
 

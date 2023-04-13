@@ -24,9 +24,6 @@ require_once 'core/phpmailer/Exception.php';
 
 require_once 'core/user/class_user.php';
 
-CONST _SEMAPHORE_OK         = '<i style=\'color:green\' class=\'fas fa-traffic-light fa-lg\'></i>';
-CONST _SEMAPHORE_WARNING    = '<i style=\'color: #b35900\' class=\'fas fa-traffic-light fa-lg\'></i>';
-CONST _SEMAPHORE_KO         = '<i style=\'color:red\' class=\'fas fa-traffic-light fa-lg\'></i>';
 
 $user = new user();
 $user->loginFromCookie();

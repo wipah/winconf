@@ -78,6 +78,7 @@ class template {
 
         ob_start();
             require_once $conf['path'] . 'modules/' . $module . '/' . $module . '.php';
+
             $this->content = ob_get_contents();
         ob_end_clean();
     }

@@ -146,6 +146,9 @@ class template {
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="' . $conf['URI'] . 'core/js/input-spinner.js"></script>
   <script>
+  
+        jsPath = "' . $conf['URI'] . '";
+        
         Number.prototype.round = function(places) {
             return +(Math.round(this + "e+" + places)  + "e-" + places);
         }

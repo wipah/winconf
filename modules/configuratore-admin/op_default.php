@@ -15,7 +15,7 @@ if (!$db->affected_rows) {
 } else {
     echo '
     <a href="' . $conf['URI'] . 'configuratore-admin/editor/" class="btn btn-info float-right">Crea nuova categoria</a>
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-condensed">
     <thead>
         <tr>
             <th>ID</th>
@@ -41,7 +41,8 @@ if (!$db->affected_rows) {
             $step .= 'Errore nella query.';
         } else {
             while ($rowSteps = mysqli_fetch_assoc($resultStep)) {
-                $step .= '<a href="' . $conf['URI']  .'configuratore-admin/step/editor/?ID=' . $rowSteps['ID'] . '">'. $rowSteps ['step_sigla'] .'</a> - ';
+                $step .= '[<a href="' . $conf['URI']  .'configuratore-admin/step/editor/?ID=' . $rowSteps['ID'] . '">'. $rowSteps ['step_sigla'] .'</a>] - 
+                           <a href="' . $conf['URI'] . 'configuratore-admin/sottostep/editor/?step_ID=' . $row['ID']  . '">Sottostep</a>. <br/> ';
             }
         }
 

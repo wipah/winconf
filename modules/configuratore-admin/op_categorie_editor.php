@@ -8,6 +8,8 @@ if (isset($_GET['save'])) {
     $nome        = $core->in($_POST['nome']);
     $sigla       = $core->in($_POST['sigla']);
     $descrizione = $core->in($_POST['descrizione']);
+    $formulaValore    = (float) $_POST['formula_valore'];
+    $formula    = (int) $_POST['formula'];
     $visibile    = (int) $_POST['visibile'];
 }
 
@@ -15,10 +17,12 @@ if ($ID = (int) ($_GET['ID'])) {
 
     if (isset($_GET['save'])) {
         $query = 'UPDATE configuratore_categorie 
-                  SET  categoria_descrizione = \'' . $descrizione . '\'
-                     , categoria_sigla       = \''.  $sigla. '\'
-                     , categoria_nome        = \''.  $nome . '\'
-                     , visibile              = '.  $visibile . '
+                  SET  categoria_descrizione        = \'' . $descrizione . '\'
+                     , categoria_sigla              = \''.  $sigla. '\'
+                     , categoria_nome               = \''.  $nome . '\'
+                     , visibile                     = '.  $visibile . '
+                     , categoria_formula_ID         = '.  $formula . '
+                     , categoria_formula_valore     = '.  $formulaValore . '
                   WHERE ID = ' . $ID . '
                   LIMIT 1';
         if ($db->query($query)){
@@ -54,6 +58,8 @@ if ($ID = (int) ($_GET['ID'])) {
                       categoria_nome 
                     , categoria_sigla 
                     , categoria_descrizione 
+                    , categoria_formula_ID 
+                    , categoria_formula_valore 
                     , visibile 
                   ) 
                   VALUES 
@@ -61,6 +67,8 @@ if ($ID = (int) ($_GET['ID'])) {
                       \'' . $nome . '\'
                     , \'' . $sigla . '\'
                     , \'' . $descrizione . '\'
+                    , \'' . $formula . '\'
+                    , \'' . $formulaValore . '\'
                     , \'' . $visibile . '\'
                   )';
 
@@ -75,6 +83,25 @@ if ($ID = (int) ($_GET['ID'])) {
     $action = $conf['URI']. 'configuratore-admin/categorie/editor/?save';
     $button = 'Salva la categoria';
 }
+
+$query = 'SELECT * FROM configuratore_formule';
+
+if (!$resultFormule = $db->query($query)) {
+    echo 'Query error. ' . $query;
+    return;
+}
+
+$selectFormule = '<div class="form-group row">
+                        <label for="formula" class="col-4 col-form-label">Formula</label> 
+                        <div class="col-8">
+                            <select id="formula" name="formula" class="custom-select" aria-describedby="formulaHelpBlock" required="required">';
+while ($rowFormule = mysqli_fetch_assoc($resultFormule)) {
+    $selectFormule .= '<option ' . ( (int) $row['categoria_formula_ID'] === (int) $rowFormule['ID'] ? ' selected ' : '' ) . ' value="' .$rowFormule['ID'] . '">' . $rowFormule['formula_sigla'] .'</option>';
+}
+$selectFormule .= '</select> 
+      <span id="formulaHelpBlock" class="form-text text-muted">Formula utilizzata per il calcolo del preventivo</span>
+    </div>
+  </div>';
 
 echo '
 <form method="post" action="'.$action.'">
@@ -111,6 +138,19 @@ echo '
     <div class="col-8">
       <textarea id="descrizione" name="descrizione" cols="40" rows="5" class="form-control" aria-describedby="descrizioneHelpBlock" required="required">' . $row['categoria_descrizione'] .'</textarea> 
       <span id="descrizioneHelpBlock" class="form-text text-muted">Descrizione estesa della categoria</span>
+    </div>
+  </div>
+  
+  ' . $selectFormule .  '
+  
+  <div class="form-group row">
+    <label for="nome" class="col-4 col-form-label">Valore</label> 
+    <div class="col-8">
+      <div class="input-group">
+
+        <input value="' . $row['categoria_formula_valore'] . '" id="formula_valore" name="formula_valore" placeholder="Valore" type="text" class="form-control" aria-describedby="nomeHelpBlock" required="required">
+      </div> 
+      <span id="nomeHelpBlock" class="form-text text-muted">Valore della selezione. Per i decimali utilizzare il punto.</span>
     </div>
   </div>
   

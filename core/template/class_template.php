@@ -75,7 +75,7 @@ class template {
         global $URI;
         global $user;
         global $order;
-
+        global $dbHelper;
         ob_start();
             require_once $conf['path'] . 'modules/' . $module . '/' . $module . '.php';
 

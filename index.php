@@ -11,6 +11,10 @@ if (!$db = new mysqli($conf['db_host'], $conf['db_user'], $conf['db_password'], 
     die();
 }
 
+require_once __DIR__ . '/core/dbhelper/class_dbhelper.php';
+$dbHelper = new class_dbhelper();
+
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use framework\core;

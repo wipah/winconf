@@ -10,17 +10,20 @@ if (!$result = $db->query($query)) {
     return;
 }
 
+echo '<a href="' . $conf['URI'] . 'configuratore-admin/editor/" class="btn btn-info float-right">Crea nuova categoria</a>';
+
 if (!$db->affected_rows) {
     echo 'Nessun dato trovato.';
 } else {
     echo '
-    <a href="' . $conf['URI'] . 'configuratore-admin/editor/" class="btn btn-info float-right">Crea nuova categoria</a>
+    <h2>Categorie / Step</h2>
     <table class="table table-bordered table-condensed">
     <thead>
         <tr>
             <th>ID</th>
-            <th>Sigla</th>
             <th>Nome</th>
+            <th>Sigla</th>
+            
             <th>Step</th>
             <th>Operazioni</th>
         </tr>
@@ -41,15 +44,16 @@ if (!$db->affected_rows) {
             $step .= 'Errore nella query.';
         } else {
             while ($rowSteps = mysqli_fetch_assoc($resultStep)) {
-                $step .= '[<a href="' . $conf['URI']  .'configuratore-admin/step/editor/?ID=' . $rowSteps['ID'] . '">'. $rowSteps ['step_sigla'] .'</a>] - 
+                $step .= '[<a href="' . $conf['URI']  .'configuratore-admin/step/editor/?ID=' . $rowSteps['ID'] . '">'. $rowSteps ['step_nome'] .'</a>] - 
                            <a href="' . $conf['URI'] . 'configuratore-admin/sottostep/editor/?step_ID=' . $row['ID']  . '">Sottostep</a>. <br/> ';
             }
         }
 
         echo '<tr>
                 <td>' . $row['ID'] . '</td>
-                <td>' . $row['categoria_sigla'] . '</td>
                 <td>' . $row['categoria_nome'] . '</td>
+                <td>' . $row['categoria_sigla'] . '</td>
+                
                 <td>' . $step . ' <div class="configuratoreTabellaStep"><a href="' . $conf['URI'] . 'configuratore-admin/step/editor/?categoria_ID=' . $row['ID'] . '">Aggiungi step</a></div> </td>
                 <td>
                     <a href="' . $conf['URI'] . 'configuratore-admin/categorie/editor/?ID=' . $row['ID'] . '">Modifica</a>

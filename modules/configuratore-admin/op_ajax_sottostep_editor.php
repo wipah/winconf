@@ -5,13 +5,16 @@ if (!$core)
 
 $this->noTemplateParse = true;
 
-$ID = (int) $_POST['sottostep_ID'];
+$step_ID    = (int) $_POST['step_ID'];
+$ID         = (int) $_POST['sottostep_ID'];
 
 if ($ID === 0) {
     $button = 'Salva sottostep';
 } else {
     $button = 'Salva il sottostep';
-    $query = 'SELECT * FROM configuratore_sottostep WHERE ID = ' . $ID;
+    $query = 'SELECT * FROM 
+              configuratore_sottostep
+              WHERE ID = ' . $ID;
 
     if (!$result = $db->query($query)) {
         echo 'Query error. ' . $query;
@@ -42,7 +45,7 @@ echo '
   <div class="form-group row">
     <label for="sottostepDescrizione" class="col-4 col-form-label">Descrizione</label> 
     <div class="col-8">
-      <textarea id="sottostepDescrizione" name="sottostepDescrizione" placeholder="Descrizione del sottostep" class="form-control" required="required">"' . $row['sottostep_descrizione'] . '"</textarea>
+      <textarea id="sottostepDescrizione" name="sottostepDescrizione" placeholder="Descrizione del sottostep" class="form-control" required="required">' . $row['sottostep_descrizione'] . '</textarea>
     </div>
   </div>
   <div class="form-group row">
@@ -78,27 +81,32 @@ echo '
   </div> 
   <div class="form-group row">
     <div class="offset-4 col-8">
-      <span onclick="sottostepPostData(' . $ID . ');" name="submit" type="submit" class="btn btn-primary">' . $button . '</span>
+      <span onclick="sottostepPostData(' . $step_ID .', ' . $ID . ');" name="submit" type="submit" class="btn btn-primary">' . $button . '</span>
     </div>
   </div>
   
 <script>
-function sottostepPostData(ID) {
+function sottostepPostData(step_ID, sottostep_ID) {
     console.log("[Sottostep post data]");
+    console.log("-> step_ID: " + step_ID);
+    console.log("-> sottostep_ID: " + sottostep_ID);
     
-    sottostepNome        = $("#sottostepNome").val();
-    sottostepSigla       = $("#sottostepSigla").val();
-    sottostepTipoScelta  = $("#sottostepTipoScelta").find(":selected").val();;
-    sottostepDipendenza  = $("#check_dipendenze").find(":selected").val();;
-    sottostepTipoScelta  = $("#sottostepVisibile").find(":selected").val();;
+    sottostepNome           = $("#sottostepNome").val();
+    sottostepSigla          = $("#sottostepSigla").val();
+    sottostepDescrizione    = $("#sottostepDescrizione").val();
+    sottostepTipoScelta     = $("#sottostepTipoScelta").find(":selected").val();
+    sottostepDipendenza     = $("#check_dipendenze").find(":selected").val();
+    sottostepVisibile       = $("#sottostepVisibile").find(":selected").val();
     
     
-    $.post( jsPath + "configuratore-admin/ajax-sottostep-editor-post/", { sottostep_ID          : ID ,
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-editor-post/", { step_ID               : step_ID ,
+                                                                          sottostep_ID          : sottostep_ID ,
                                                                           sottostepNome         : sottostepNome,
                                                                           sottostepSigla        : sottostepSigla,
+                                                                          sottostepDescrizione  : sottostepDescrizione,
                                                                           sottostepTipoScelta   : sottostepTipoScelta,
                                                                           sottostepDipendenza   : sottostepDipendenza,
-                                                                          sottostepTipoScelta   : sottostepTipoScelta,
+                                                                          sottostepVisibile     : sottostepVisibile,
                                                                         })
     .done(function( data ) {
         console.log(data)

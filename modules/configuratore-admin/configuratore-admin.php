@@ -7,6 +7,12 @@ switch ($path[2]) {
     case 'ajax-step-mostra-opzioni':
         require_once 'op_ajax_sottostep_opzioni.php';
         break;
+    case 'ajax-sottostep-opzioni-editor':
+        require_once 'op_ajax_sottostep_opzioni_editor.php';
+        break;
+    case 'ajax-sottostep-opzioni-editor-post':
+        require_once 'op_ajax_sottostep_opzioni_editor_post.php';
+        break;
     case 'ajax-sottostep-editor':
         require_once 'op_ajax_sottostep_editor.php';
         break;

@@ -19,11 +19,23 @@ if (!$result = $db->query($query)) {
     return;
 }
 
+echo '
+<div class="row" style="border-bottom: 1px solid #444">
+    <div class="col-md-4">Nome</div>
+    <div class="col-md-4">Sigla</div>
+    <div class="col-md-4">Operazioni</div>
+</div>';
 if (!$db->affected_rows) {
     echo 'Nessuno step <br/>';
 } else {
     while ($row = mysqli_fetch_assoc($result)) {
-        echo '[' . $row['sottostep_nome'] . '] - <span onclick="mostraOpzioni(' . $row['ID'] . ');">Editor opzioni</a><br/>';
+        echo '
+                <div class="row">
+                    <div class="col-md-4"><strong><span>' . $row['sottostep_nome'] . '</span></strong></div>
+                    <div class="col-md-4">' . $row['sigla']  .'</div>
+                    <div class="col-md-4"><span onclick="sottoStepEditor(' . $row['ID'] .');">Modifica sottostep</span> | <span onclick="mostraOpzioni(' . $row['ID'] . ');">Editor opzioni</a></div>
+                </div>';
+
     }
 }
 

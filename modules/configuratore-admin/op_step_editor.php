@@ -122,7 +122,7 @@ echo '
   <div class="form-group row">
     <label for="descrizione" class="col-4 col-form-label">Descrizione estesa</label> 
     <div class="col-8">
-      <textarea id="descrizione" name="descrizione" cols="40" rows="5" class="form-control" aria-describedby="descrizioneHelpBlock" required="required">' . $row['categoria_descrizione'] . '</textarea> 
+      <textarea id="descrizione" name="descrizione" cols="40" rows="5" class="form-control" aria-describedby="descrizioneHelpBlock" required="required">' . $row['step_descrizione'] . '</textarea> 
       <span id="descrizioneHelpBlock" class="form-text text-muted">Descrizione estesa della categoria</span>
     </div>
   </div>

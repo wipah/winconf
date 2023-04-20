@@ -2,10 +2,12 @@
 
 if (!$step_ID = (int) $_GET['step_ID']) {
     echo 'Manca l\'ID dello step';
+    return;
 }
 
-
-$query = 'SELECT * FROM configuratore_sottostep WHERE step_ID = ' . $step_ID;
+$query = 'SELECT * 
+          FROM configuratore_step 
+          WHERE ID = ' . $step_ID;
 
 if (!$result = $db->query($query)) {
     echo 'Query error.' . $query;
@@ -13,17 +15,24 @@ if (!$result = $db->query($query)) {
 }
 
 if (!$db->affected_rows) {
-    echo 'Lo step non esiste!';
+    echo 'Lo step non esiste! ' . $query;
     return;
 }
 
 $rowStep = mysqli_fetch_assoc($result);
 
-echo '<h1>Sottostep per ' . $rowStep['sottostep_nome'] . '</h1>
+echo '
+
+<style>
+.sottoStepLista {
+    padding: 4px;
+    background-color: #b7bcc5;
+    border-bottom: 1px solid #777;
+}
+</style>
+<h1>Sottostep per ' . $rowStep['step_nome'] . '</h1>
 <div id="sottoStep"></div>
 <div id="opzioni"></div>
-
-
 
 <div id="modalDialog" class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog  modal-lg"" role="document">
@@ -62,11 +71,20 @@ function mostraOpzioni(sottostep_ID) {
 
 function sottoStepEditor(ID) {
     $("#modalDialog").modal();
-    $.post( jsPath + "configuratore-admin/ajax-sottostep-editor/", { sottostep_ID: ID })
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-editor/", { step_ID: ' . $step_ID . ' ,sottostep_ID: ID })
     .done(function( data ) {
         $("#modalBody").html(data);
     });
 }
+
+function opzioniEditor(sottostep_ID, ID) {
+    $("#modalDialog").modal();
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-opzioni-editor/", { step_ID: ' . $step_ID . ' , sottostep_ID: sottostep_ID, ID: ID })
+    .done(function( data ) {
+        $("#modalBody").html(data);
+    });
+}
+
 
 </script>
 ';

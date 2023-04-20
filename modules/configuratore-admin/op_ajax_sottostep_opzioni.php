@@ -19,8 +19,15 @@ if (!$result = $db->query($query)) {
     return;
 }
 
+echo '<h2 class="mt-3">Editor opzioni</h2>';
+
 if (!$db->affected_rows) {
     echo 'Nessuna opzione scelta';
-    return;
+} else {
+    while ($rowOpzioni = mysqli_fetch_assoc($result)) {
+        echo '<div>' . $rowOpzioni['nome'] . '</div>';
+    }
+
 }
 
+echo '<span class="btn btn-info" onclick="opzioniEditor(' . $sottostep_ID . ',0);">Aggiungi opzione</span>';

@@ -103,9 +103,12 @@ CREATE TABLE IF NOT EXISTS `configuratore_opzioni` (
                                                        PRIMARY KEY (`ID`),
                                                        KEY `sottostep_ID` (`sottostep_ID`),
                                                        KEY `opzioni_formula_ID` (`opzioni_formula_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dump dei dati della tabella winconf.configuratore_opzioni: ~0 rows (circa)
+-- Dump dei dati della tabella winconf.configuratore_opzioni: ~2 rows (circa)
+INSERT INTO `configuratore_opzioni` (`ID`, `sottostep_ID`, `opzioni_formula_ID`, `opzione_nome`, `opzione_sigla`, `opzione_descrizione`, `check_dipendenze`, `check_dimensioni`, `opzione_formula_valore`, `ordine`, `visibile`) VALUES
+                                                                                                                                                                                                                                     (1, 1, 1, 'A scomparsa', 'scomparsa', 'Telaio a scomparsa. Etc.', 0, 0, 4, NULL, 1),
+                                                                                                                                                                                                                                     (2, 1, 1, 'Visibile', 'vis', 'Visibile', 1, 1, 1, NULL, 1);
 
 -- Dump della struttura di tabella winconf.configuratore_opzioni_check_dimensioni
 CREATE TABLE IF NOT EXISTS `configuratore_opzioni_check_dimensioni` (
@@ -122,11 +125,12 @@ CREATE TABLE IF NOT EXISTS `configuratore_opzioni_check_dimensioni` (
 -- Dump della struttura di tabella winconf.configuratore_opzioni_check_dipendenze
 CREATE TABLE IF NOT EXISTS `configuratore_opzioni_check_dipendenze` (
                                                                         `ID` mediumint(9) NOT NULL AUTO_INCREMENT,
-                                                                        `opzione_ID` mediumint(9) NOT NULL DEFAULT 0,
+                                                                        `sottostep_ID` mediumint(9) NOT NULL DEFAULT 0,
                                                                         `opzione_valore_ID` mediumint(9) NOT NULL DEFAULT 0,
+                                                                        `confronto` tinyint(3) unsigned DEFAULT NULL COMMENT '0: < (minore); \r\n1: <= minore uguale; \r\n2: = (uguale);\r\n3: >= (maggiore o uguale)\r\n4: > (maggiore)\r\n5: != diverso',
                                                                         `esito` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0 = escludi; 1 = includi;',
                                                                         PRIMARY KEY (`ID`),
-                                                                        KEY `opzione_ID` (`opzione_ID`)
+                                                                        KEY `opzione_ID` (`sottostep_ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Dump dei dati della tabella winconf.configuratore_opzioni_check_dipendenze: ~0 rows (circa)

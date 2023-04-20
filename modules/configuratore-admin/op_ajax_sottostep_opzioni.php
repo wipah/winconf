@@ -21,12 +21,36 @@ if (!$result = $db->query($query)) {
 
 echo '<h2 class="mt-3">Editor opzioni</h2>';
 
+
 if (!$db->affected_rows) {
     echo 'Nessuna opzione scelta';
 } else {
+    echo '<table class="table table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Sigla</th>
+                    <th>Check dipendenze</th>
+                    <th>Check dimensioni</th>
+                    <th>Ordine</th>
+                    <th>Operazioni</th>
+                </tr>
+            </thead>
+            <tbody>';
     while ($rowOpzioni = mysqli_fetch_assoc($result)) {
-        echo '<div>' . $rowOpzioni['nome'] . '</div>';
+        echo '<tr>
+                <td>' . $rowOpzioni['ID'] . '</td>
+                <td>' . $rowOpzioni['opzione_nome'] . '</td>
+                <td>' . $rowOpzioni['opzione_sigla'] . '</td>
+                <td>' . $rowOpzioni['check_dipendenze'] . ' <br/><span onclick="mostraDipendenze(' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ');">Editor dipendenze</span></td>
+                <td>' . $rowOpzioni['check_dimensioni'] . '<br>Editor dimensioni</td>
+                <td> Sopra | Sotto </td>
+                <td> Modifica opzione | Elimina opzione</td>
+              </tr>  ';
     }
+    echo '</tbody>
+    </table>';
 
 }
 

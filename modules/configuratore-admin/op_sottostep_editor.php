@@ -33,6 +33,8 @@ echo '
 <h1>Sottostep per ' . $rowStep['step_nome'] . '</h1>
 <div id="sottoStep"></div>
 <div id="opzioni"></div>
+<div id="dipendenze"></div>
+<div id="dimensioni"></div>
 
 <div id="modalDialog" class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog  modal-lg"" role="document">
@@ -85,6 +87,20 @@ function opzioniEditor(sottostep_ID, ID) {
     });
 }
 
+function dipendenzeEditor(sottostep_ID, ID) {
+    $("#modalDialog").modal();
+    $.post( jsPath + "configuratore-admin//", { step_ID: ' . $step_ID . ' , sottostep_ID: sottostep_ID, ID: ID })
+    .done(function( data ) {
+        $("#modalBody").html(data);
+    });
+}
+
+function mostraDipendenze(sottostep_ID, ID) {
+        $.post( jsPath + "configuratore-admin/ajax-dipendenze/", { step_ID: step_ID })
+      .done(function( data ) {
+        $("#dipendenze").html(data);
+    });    
+}
 
 </script>
 ';

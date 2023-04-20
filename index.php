@@ -15,6 +15,14 @@ require_once __DIR__ . '/core/dbhelper/class_dbhelper.php';
 $dbHelper = new class_dbhelper();
 
 
+CONST MINORE = 0;
+CONST MINORE_UGUALE = 1;
+CONST UGUALE = 2;
+CONST MAGGIORE_UGUALE = 3;
+CONST MAGGIORE = 4;
+CONST DIVERSO = 5;
+
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use framework\core;

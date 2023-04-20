@@ -1,8 +1,8 @@
 <?php
 
 $conf['db_user'] = 'root';
-$conf['db_password'] = 'Difar_2015_SRV';
-$conf['db_host'] = 'localhost';
+$conf['db_password'] = 'poweredbyme';
+$conf['db_host'] = '192.168.1.201';
 $conf['db_dbname'] = 'winconf';
 
 $conf['path'] = 'd:\\laragonbis\\www\\winconf\\';

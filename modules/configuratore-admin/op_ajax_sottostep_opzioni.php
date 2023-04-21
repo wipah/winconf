@@ -2,6 +2,10 @@
 if (!$core)
     die("Accesso diretto non consentito");
 
+if (!$user->logged) {
+    echo 'Devi aver effettuato il login';
+    return;
+}
 
 $this->noTemplateParse = true;
 

@@ -1,5 +1,13 @@
 <?php
 
+if (!$core)
+    die("Accesso diretto");
+
+if (!$user->logged) {
+    echo 'Devi aver effettuato il login';
+    return;
+}
+
 $this->noTemplateParse = true;
 
 var_dump($_POST);

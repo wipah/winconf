@@ -3,6 +3,11 @@
 if (!$core)
     die ("Accesso diretto");
 
+if (!$user->logged) {
+    echo 'Devi aver effettuato il login';
+    return;
+}
+
 $this->noTemplateParse = true;
 
 $step_ID    = (int) $_POST['step_ID'];

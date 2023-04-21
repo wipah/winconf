@@ -1,5 +1,13 @@
 <?php
 
+if (!$core)
+    die ("Accesso diretto");
+
+if (!$user->logged) {
+    echo 'Devi aver effettuato il login';
+    return;
+}
+
 if (!$categoria_ID = (int) $_GET['categoria_ID'])
     echo 'Categoria ID non passata';
 

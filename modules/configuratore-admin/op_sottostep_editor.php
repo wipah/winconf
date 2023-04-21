@@ -1,5 +1,13 @@
 <?php
 
+if (!$core)
+    die("Accesso diretto");
+
+if (!$user->logged) {
+    echo 'Devi aver effettuato il login';
+    return;
+}
+
 if (!$step_ID = (int) $_GET['step_ID']) {
     echo 'Manca l\'ID dello step';
     return;
@@ -55,6 +63,7 @@ echo '
 
 <script>
 step_ID = ' . $step_ID . ';
+
 mostraSottostep();
 
 function mostraSottostep() {
@@ -88,19 +97,27 @@ function opzioniEditor(sottostep_ID, ID) {
 }
 
 function dipendenzeEditor(sottostep_ID, ID) {
+    console.log("[Editor dipendenze]");
+    console.log("->sottostep_ID: " + sottostep_ID);
+    console.log("->ID: " + ID);
+    
     $("#modalDialog").modal();
-    $.post( jsPath + "configuratore-admin//", { step_ID: ' . $step_ID . ' , sottostep_ID: sottostep_ID, ID: ID })
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-editor/", { categoria_ID: ' . $rowStep['categoria_ID'] . ', sottostep_ID: sottostep_ID ,step_ID: ' . $step_ID . ' , sottostep_ID: sottostep_ID, ID: ID })
     .done(function( data ) {
         $("#modalBody").html(data);
     });
 }
 
 function mostraDipendenze(sottostep_ID, ID) {
-        $.post( jsPath + "configuratore-admin/ajax-dipendenze/", { step_ID: step_ID })
+    console.log("[Mostra dipendenze]");
+    console.log("->sottostep_ID: " + sottostep_ID);
+    console.log("->ID: " + ID);
+    
+    
+    $.post( jsPath + "configuratore-admin/ajax-dipendenze/", { sottostep_ID: sottostep_ID, step_ID: step_ID })
       .done(function( data ) {
         $("#dipendenze").html(data);
     });    
 }
 
-</script>
-';
+</script>';

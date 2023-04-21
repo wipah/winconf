@@ -3,7 +3,18 @@
 if (!$core)
     die("Accesso diretto rilevato");
 
+if (!$user->logged) {
+    echo 'Devi aver effettuato il login';
+    return;
+}
+
 switch ($path[2]) {
+    case 'ajax-sottostep-dipendenze-editor':
+        require_once 'op_ajax_sottostep_dipendenze_editor.php';
+        break;
+    case 'ajax-sottostep-dipendenze-editor-post':
+        require_once 'op_ajax_sottostep_dipendenze_editor_post.php';
+        break;
     case 'ajax-step-mostra-opzioni':
         require_once 'op_ajax_sottostep_opzioni.php';
         break;
@@ -12,9 +23,6 @@ switch ($path[2]) {
         break;
     case 'ajax-sottostep-opzioni-editor':
         require_once 'op_ajax_sottostep_opzioni_editor.php';
-        break;
-    case 'ajax-sottostep-dipendenze-editor':
-        require_once 'op_ajax_sottostep_dipendenze_editor.php';
         break;
     case 'ajax-sottostep-opzioni-editor-post':
         require_once 'op_ajax_sottostep_opzioni_editor_post.php';

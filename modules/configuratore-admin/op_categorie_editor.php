@@ -2,6 +2,11 @@
 if (!$core)
     die("Accesso diretto rilevato");
 
+if (!$user->logged) {
+    echo 'Devi aver effettuato il login';
+    return;
+}
+
 echo '<h1>Editor categoria</h1>';
 
 if (isset($_GET['save'])) {

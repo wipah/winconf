@@ -3,11 +3,17 @@
 if (!$core)
     die ("Direct access");
 
+if (!$user->logged) {
+    echo 'Devi aver effettuato il login';
+    return;
+}
+
 $this->noTemplateParse = true;
+
 $ID = (int) $_POST['ID'];
 $sottostep_ID = (int) $_POST['sottostep_ID'];
 
-echo '<h2>Editor dipendenze</h2>';
+echo '<h2>Editor dipendenze (Sottostep ID: ' . $sottostep_ID .' )</h2>';
 
 $query = "SELECT * 
           FROM configuratore_opzioni_check_dipendenze

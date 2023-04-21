@@ -3,6 +3,11 @@
 if (!$core)
     die("Accesso diretto");
 
+if (!$user->logged) {
+    echo 'Devi aver effettuato il login';
+    return;
+}
+
 $this->noTemplateParse = true;
 
 $ID =  (int) $_POST['ID'];
@@ -134,5 +139,4 @@ function salvaOpzione(ID, sottostep_ID) {
     });
     
 } 
-</script>
-  ';
+</script>';

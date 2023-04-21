@@ -1,6 +1,12 @@
 <?php
 if (!$core)
     die("Accesso diretto rilevato");
+
+if (!$user->logged) {
+    echo 'Devi aver effettuato il login';
+    return;
+}
+
 echo '<h1>Configurazione</h1>';
 
 $query = 'SELECT * FROM configuratore_categorie';
@@ -45,7 +51,7 @@ if (!$db->affected_rows) {
         } else {
             while ($rowSteps = mysqli_fetch_assoc($resultStep)) {
                 $step .= '[<a href="' . $conf['URI']  .'configuratore-admin/step/editor/?ID=' . $rowSteps['ID'] . '">'. $rowSteps ['step_nome'] .'</a>] - 
-                           <a href="' . $conf['URI'] . 'configuratore-admin/sottostep/editor/?step_ID=' . $row['ID']  . '">Sottostep</a>. <br/> ';
+                           <a href="' . $conf['URI'] . 'configuratore-admin/sottostep/editor/?step_ID=' . $rowSteps['ID']  . '">Sottostep</a>. <br/> ';
             }
         }
 

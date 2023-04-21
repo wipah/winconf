@@ -1,7 +1,11 @@
 <?php
-
 if (!$core)
     die("Accesso diretto rilevato");
+
+if (!$user->logged) {
+    echo 'Devi aver effettuato il login';
+    return;
+}
 
 echo '<h1>Editor dello step</h1>';
 
@@ -80,7 +84,7 @@ if ($ID = (int)($_GET['ID'])) {
         if (!$db->query($query)) {
             echo $this->getBox('danger', 'Query error. ' . $query);
         } else {
-            echo $this->getBox('info', 'Step creato con successo');
+            echo $this->getBox('info', 'Step creato con successo.');
             return;
         }
 

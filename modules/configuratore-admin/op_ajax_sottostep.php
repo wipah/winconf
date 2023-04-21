@@ -2,6 +2,11 @@
 if (!$core)
     die ("Accesso diretto");
 
+if (!$user->logged) {
+    echo 'Devi aver effettuato il login';
+    return;
+}
+
 $this->noTemplateParse = true;
 
 if (!$step_ID = (int)  $_POST['step_ID']) {
@@ -11,7 +16,6 @@ if (!$step_ID = (int)  $_POST['step_ID']) {
 $query = 'SELECT * 
           FROM configuratore_sottostep 
           WHERE step_ID = ' . $step_ID . ' 
-          
           ;' ;
 
 if (!$result = $db->query($query)) {

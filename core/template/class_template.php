@@ -76,6 +76,7 @@ class template {
         global $user;
         global $order;
         global $dbHelper;
+        global $arrayConfronti;
         ob_start();
             require_once $conf['path'] . 'modules/' . $module . '/' . $module . '.php';
 
@@ -154,8 +155,14 @@ class template {
         }
   </script>
   
-  <style type="text/css">
-    .salesAppMenu {
+  <style>
+    .spanClickable {
+        text-decoration: underline;
+        color: blue !important;
+        cursor: pointer;
+    }
+    
+    .winConfMenu {
         border-bottom: 1px solid gainsboro;
     }
     
@@ -264,10 +271,10 @@ class template {
 <div class="container" style="max-width: 95% !important;">
 <div class="row" style=" margin-bottom: 24px; margin-top: 24px;">
     <div class="col-md-8">
-        <div class="salesAppMenu"><!--WINCONFmenu--></div>
+        <div class="winConfMenu"><!--WINCONFmenu--></div>
     </div>
     <div class="col-md-4">
-        <div class="salesAppMenu float-right">' . $loginBox . '</div> 
+        <div class="winConfMenu float-right">' . $loginBox . '</div> 
     </div>
 </div>
 ' . $this->content  . '

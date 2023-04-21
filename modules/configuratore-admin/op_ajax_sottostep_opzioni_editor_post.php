@@ -17,6 +17,10 @@ if (!$sottostep_ID = (int) $_POST['sottostep_ID']) {
     return;
 }
 
+$categoria_ID = (int) $_POST['categoria_ID'];
+$step_ID      = (int) $_POST['step_ID'];
+
+
 $ID = (int) $_POST['ID'];
 
 $nome               =   $core->in($_POST['nome']);
@@ -31,7 +35,9 @@ $visibile           =   (int) $_POST['visibile'];
 if ($ID === 0 ) {
     $query = 'INSERT INTO configuratore_opzioni 
                 (
-                   sottostep_ID
+                   categoria_ID
+                 , step_ID
+                 , sottostep_ID
                  , opzioni_formula_ID
                  , opzione_nome
                  , opzione_sigla
@@ -41,13 +47,15 @@ if ($ID === 0 ) {
                  , opzione_formula_valore
                  , visibile
                 ) VALUES 
-                (   \'' . $sottostep_ID . '\'
-                 ,   \'' . $formula  . '\' 
+                (  ' . $categoria_ID . '
+                 , ' . $step_ID . '
+                 , ' . $sottostep_ID . '
+                 , \'' . $formula  . '\' 
                  ,  \'' . $nome  . '\' 
                  ,  \'' . $sigla  . '\' 
                  ,  \'' . $descrizione  . '\' 
-                 ,  \'' . $checkDipendenze  . '\' 
-                 ,  \'' . $checkDimensioni  . '\' 
+                 ,  ' . $checkDipendenze  . ' 
+                 ,  ' . $checkDimensioni  . ' 
                  ,  \'' . $valoreFormula  . '\' 
                  ,  \'' . $visibile  . '\' 
                 );';
@@ -55,7 +63,7 @@ if ($ID === 0 ) {
     $query = 'UPDATE configuratore_opzioni SET
                   opzioni_formula_ID = ' . $formula . '
                  , opzione_nome = \'' . $nome . '\'
-                 , sigla = \'' . $sigla . '\'
+                 , opzione_sigla = \'' . $sigla . '\'
                  , opzione_descrizione = \'' . $descrizione . '\'
                  , check_dipendenze = ' . $checkDipendenze . '
                  , check_dimensioni = ' . $checkDimensioni . '
@@ -69,4 +77,4 @@ if (!$db->query($query)) {
     return;
 }
 
-echo '--KO--';
+echo '--OK--';

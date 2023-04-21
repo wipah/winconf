@@ -6,6 +6,8 @@ if (!$user->logged) {
     echo 'Devi aver effettuato il login';
     return;
 }
+$this->menuItems[] = '<a href="' . $conf['URI'] . 'configuratore-admin/">Backend</a>';
+$this->menuItems[] = '<em>Step editor</em>';
 
 echo '<h1>Editor dello step</h1>';
 

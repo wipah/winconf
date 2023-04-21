@@ -9,6 +9,9 @@ if (!$user->logged) {
 }
 
 switch ($path[2]) {
+    case 'elimina-categoria':
+        require_once 'op_categoria_elimina.php';
+        break;
     case 'ajax-sottostep-dipendenze-editor':
         require_once 'op_ajax_sottostep_dipendenze_editor.php';
         break;

@@ -11,10 +11,10 @@ if (!$user->logged) {
 }
 
 
-$categoria_ID = (int) $_POST['categoria_ID'];
-$sottostep_ID = (int) $_POST['sottostep_ID'];
-
-$ID = (int) $_POST['ID'];
+$categoria_ID       = (int) $_POST['categoria_ID'];
+$step_ID            = (int) $_POST['step_ID'];
+$sottostep_ID       = (int) $_POST['sottostep_ID'];
+$ID                 = (int) $_POST['ID'];
 
 if ($ID !== 0) {
     $query = 'SELECT * 
@@ -89,7 +89,7 @@ echo $selectConfronto;
 echo '  <div class="form-group row">
     <label for="valore" class="col-4 col-form-label">Valore</label> 
     <div class="col-8">
-      <input id="valore" name="valore" placeholder="valore" type="text" class="form-control">
+      <input value="' . $row['valore'] . '" id="valore" name="valore" placeholder="valore" type="text" class="form-control">
     </div>
   </div>
   <div class="form-group row">
@@ -105,29 +105,30 @@ echo '  <div class="form-group row">
   
     <div class="form-group row">
     <div class="offset-4 col-8">
-      <span onclick="salvaDipendenza(' . $sottostep_ID .' ,' . $ID .');" class="btn btn-primary">Aggiorna</span>
+      <span onclick="salvaDipendenza(' . $categoria_ID . ', ' . $step_ID . ',' . $sottostep_ID .' ,' . $ID .');" class="btn btn-primary">Aggiorna</span>
     </div>
   </div>
   
 <script>
-function salvaDipendenza(sottostep_ID, ID) {
+function salvaDipendenza(categoria_ID, step_ID, sottostep_ID, ID) {
     
     opzione     = $("#opzione").find(":selected").val();
     confronto   = $("#confronto").find(":selected").val();
     esito       = $("#esito").find(":selected").val();
     valore      = $("#valore").val();
     
-    
     $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-editor-post/", { 
-                                                                                  ID            : ID,
+                                                                                  categoria_ID  : categoria_ID,
+                                                                                  step_ID       : step_ID,
                                                                                   sottostep_ID  : sottostep_ID,
+                                                                                  ID            : ID,
                                                                                   opzione_ID    : opzione,
                                                                                   confronto     : confronto ,
                                                                                   esito         : esito ,
                                                                                   valore        : valore ,
     }).done(function( data ) {
         console.log(data)
-        mostraDipendenze(sottostep_ID);
+        mostraDipendenze(categoria_ID, step_ID, sottostep_ID);
         $("#modalDialog").modal();
     });
     

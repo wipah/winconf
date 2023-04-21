@@ -7,6 +7,10 @@ if (!$user->logged) {
     return;
 }
 
+$this->menuItems[] = '<a href="' . $conf['URI'] . 'configuratore-admin/">Backend</a>';
+$this->menuItems[] = '<a href="' . $conf['URI'] . 'configuratore-admin/editor/">Editor</a>';
+
+
 echo '<h1>Editor categoria</h1>';
 
 if (isset($_GET['save'])) {
@@ -30,6 +34,7 @@ if ($ID = (int) ($_GET['ID'])) {
                      , categoria_formula_valore     = '.  $formulaValore . '
                   WHERE ID = ' . $ID . '
                   LIMIT 1';
+
         if ($db->query($query)){
             $this->getBox('danger', 'Errore nella query. ' . $query);
         } else {

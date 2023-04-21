@@ -13,6 +13,9 @@ if (!$step_ID = (int) $_GET['step_ID']) {
     return;
 }
 
+$this->menuItems[] = '<a href="' . $conf['URI'] . 'configuratore-admin/">Backend</a>';
+$this->menuItems[] = 'Sottostep';
+
 $query = 'SELECT * 
           FROM configuratore_step 
           WHERE ID = ' . $step_ID;
@@ -30,7 +33,6 @@ if (!$db->affected_rows) {
 $rowStep = mysqli_fetch_assoc($result);
 
 echo '
-
 <style>
 .sottoStepLista {
     padding: 4px;
@@ -73,48 +75,54 @@ function mostraSottostep() {
     });    
 }
 
-function mostraOpzioni(sottostep_ID) {    
-    $.post( jsPath + "configuratore-admin/ajax-step-mostra-opzioni/", { sottostep_ID: sottostep_ID })
+function mostraOpzioni(categoria_ID, step_ID, sottostep_ID) {    
+    $.post( jsPath + "configuratore-admin/ajax-step-mostra-opzioni/", {categoria_ID, step_ID, sottostep_ID, sottostep_ID: sottostep_ID })
     .done(function( data ) {
         $("#opzioni").html(data);
     });
 }
 
-function sottoStepEditor(ID) {
+function sottoStepEditor(categoria_ID, step_ID, ID) {
+    console.log("[Editor sottostep]");
+    console.log("->categoria_ID: " + categoria_ID);
+    console.log("->step_ID: " + step_ID);
+    console.log("->sottostep_ID: " + ID);
+    
+
     $("#modalDialog").modal();
-    $.post( jsPath + "configuratore-admin/ajax-sottostep-editor/", { step_ID: ' . $step_ID . ' ,sottostep_ID: ID })
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-editor/", {categoria_ID: categoria_ID, step_ID: ' . $step_ID . ' , ID: ID })
     .done(function( data ) {
         $("#modalBody").html(data);
     });
 }
 
-function opzioniEditor(sottostep_ID, ID) {
+function opzioniEditor(categoria_ID, step_ID, sottostep_ID, ID) {
     $("#modalDialog").modal();
-    $.post( jsPath + "configuratore-admin/ajax-sottostep-opzioni-editor/", { step_ID: ' . $step_ID . ' , sottostep_ID: sottostep_ID, ID: ID })
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-opzioni-editor/", {categoria_ID : categoria_ID, step_ID :step_ID, sottostep_ID: sottostep_ID, ID: ID })
     .done(function( data ) {
         $("#modalBody").html(data);
     });
 }
 
-function dipendenzeEditor(sottostep_ID, ID) {
+function dipendenzeEditor(categoria_ID, step_ID, sottostep_ID, ID) {
     console.log("[Editor dipendenze]");
     console.log("->sottostep_ID: " + sottostep_ID);
     console.log("->ID: " + ID);
     
     $("#modalDialog").modal();
-    $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-editor/", { categoria_ID: ' . $rowStep['categoria_ID'] . ', sottostep_ID: sottostep_ID ,step_ID: ' . $step_ID . ' , sottostep_ID: sottostep_ID, ID: ID })
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-editor/", { categoria_ID: ' . $rowStep['categoria_ID'] . ', step_ID: step_ID, sottostep_ID: sottostep_ID, ID: ID })
     .done(function( data ) {
         $("#modalBody").html(data);
     });
 }
 
-function mostraDipendenze(sottostep_ID, ID) {
+function mostraDipendenze(categoria_ID, step_ID, sottostep_ID, ID) {
     console.log("[Mostra dipendenze]");
-    console.log("->sottostep_ID: " + sottostep_ID);
-    console.log("->ID: " + ID);
+    console.log("-> categoria_ID: " + categoria_ID);
+    console.log("-> step_ID: " + step_ID);
+    console.log("-> sottostep_ID: " + sottostep_ID);
     
-    
-    $.post( jsPath + "configuratore-admin/ajax-dipendenze/", { sottostep_ID: sottostep_ID, step_ID: step_ID })
+    $.post( jsPath + "configuratore-admin/ajax-dipendenze/", { categoria_ID: categoria_ID, step_ID: step_ID, sottostep_ID: sottostep_ID, ID: step_ID })
       .done(function( data ) {
         $("#dipendenze").html(data);
     });    

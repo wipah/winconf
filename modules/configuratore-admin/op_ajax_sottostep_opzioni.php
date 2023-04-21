@@ -10,8 +10,10 @@ if (!$user->logged) {
 $this->noTemplateParse = true;
 
 if (!$sottostep_ID = (int) $_POST['sottostep_ID'] ) {
-    echo 'Manca l\'ID dello step';
+    echo 'Manca l\'ID del sottostep';
 }
+$categoria_ID = (int) $_POST['categoria_ID'];
+$step_ID = (int) $_POST['categoria_ID'];
 
 $query = 'SELECT * 
           FROM configuratore_opzioni
@@ -47,10 +49,11 @@ if (!$db->affected_rows) {
                 <td>' . $rowOpzioni['ID'] . '</td>
                 <td>' . $rowOpzioni['opzione_nome'] . '</td>
                 <td>' . $rowOpzioni['opzione_sigla'] . '</td>
-                <td>' . $rowOpzioni['check_dipendenze'] . ' <br/><span onclick="mostraDipendenze(' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ');">Editor dipendenze</span></td>
+                <td>' . $rowOpzioni['check_dipendenze'] . ' <br/><span class="spanClickable" onclick="mostraDipendenze(' . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ');">Editor dipendenze</span></td>
                 <td>' . $rowOpzioni['check_dimensioni'] . '<br>Editor dimensioni</td>
                 <td> Sopra | Sotto </td>
-                <td> Modifica opzione | Elimina opzione</td>
+                <td>
+                    <span class="spanClickable" onclick="opzioniEditor(' . $categoria_ID . ',' . $step_ID .', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ');">Modifica opzione</span> | Elimina opzione</td>
               </tr>  ';
     }
     echo '</tbody>
@@ -58,4 +61,4 @@ if (!$db->affected_rows) {
 
 }
 
-echo '<span class="btn btn-info" onclick="opzioniEditor(' . $sottostep_ID . ',0);">Aggiungi opzione</span>';
+echo '<span class="btn btn-info" onclick="opzioniEditor(' . $categoria_ID . ',' . $step_ID .', ' . $sottostep_ID . ',0);">Aggiungi opzione</span>';

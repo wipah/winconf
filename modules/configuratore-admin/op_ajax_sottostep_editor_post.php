@@ -9,6 +9,7 @@ if (!$user->logged) {
 
 $this->noTemplateParse = true;
 
+$categoria_ID = (int) $_POST['categoria_ID'];
 $step_ID = (int) $_POST['step_ID'];
 $sottostep_ID = (int) $_POST['sottostep_ID'];
 
@@ -22,18 +23,22 @@ $sottostepVisibile      =   (int) $_POST['sottostepVisibile'];
 if ($sottostep_ID === 0 ) {
     $query = 'INSERT INTO configuratore_sottostep 
                 (
+                    categoria_ID,
                     step_ID,
                     sottostep_nome, 
                     sottostep_sigla, 
+                    sottostep_descrizione, 
                     tipo_scelta, 
                     check_dipendenze,
                     visibile
                 )
                  VALUES 
                 (
-                        \'' . $step_ID  . '\' 
+                        \'' . $categoria_ID  . '\' 
+                    ,   \'' . $step_ID  . '\' 
                     ,   \'' . $sottostepNome  . '\' 
                     ,   \'' . $sottostepSigla  . '\' 
+                    ,   \'' . $sottostepDescrizione  . '\' 
                     ,   \'' . $sottostepTipoScelta  . '\' 
                     ,   \'' . $sottostepDipendenza  . '\' 
                     ,   \'' . $sottostepVisibile  . '\' 
@@ -52,6 +57,7 @@ if ($sottostep_ID === 0 ) {
 }
 
 echo $query;
+
 if (!$db->query($query)) {
     echo 'Query error';
 }

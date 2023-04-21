@@ -7,6 +7,8 @@ if (!$user->logged) {
     return;
 }
 
+$this->menuItems[] = '<a href="' . $conf['URI'] . 'configuratore-admin/">Backend</a>';
+
 echo '<h1>Configurazione</h1>';
 
 $query = 'SELECT * FROM configuratore_categorie';
@@ -62,7 +64,8 @@ if (!$db->affected_rows) {
                 
                 <td>' . $step . ' <div class="configuratoreTabellaStep"><a href="' . $conf['URI'] . 'configuratore-admin/step/editor/?categoria_ID=' . $row['ID'] . '">Aggiungi step</a></div> </td>
                 <td>
-                    <a href="' . $conf['URI'] . 'configuratore-admin/categorie/editor/?ID=' . $row['ID'] . '">Modifica</a>
+                    <a href="' . $conf['URI'] . 'configuratore-admin/categorie/editor/?ID=' . $row['ID'] . '">Modifica</a> |
+                    <span onclick="if( confirm(\'Vuoi eliminare la categoria? Questa operazione non è annullabile\')){ location.href = jsPath + \'configuratore-admin/elimina-categoria/?ID=' . $row['ID'] . '\'  } " class="spanClickable">Elimina</span>
                 </td>
               </tr>';
     }

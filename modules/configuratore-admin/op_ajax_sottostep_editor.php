@@ -10,13 +10,14 @@ if (!$user->logged) {
 
 $this->noTemplateParse = true;
 
-$step_ID    = (int) $_POST['step_ID'];
-$ID         = (int) $_POST['sottostep_ID'];
+$categoria_ID   = (int) $_POST['categoria_ID'];
+$step_ID        = (int) $_POST['step_ID'];
+$ID             = (int) $_POST['ID'];
 
 if ($ID === 0) {
     $button = 'Salva sottostep';
 } else {
-    $button = 'Salva il sottostep';
+    $button = 'Modifica il sottostep';
     $query = 'SELECT * FROM 
               configuratore_sottostep
               WHERE ID = ' . $ID;
@@ -86,12 +87,12 @@ echo '
   </div> 
   <div class="form-group row">
     <div class="offset-4 col-8">
-      <span onclick="sottostepPostData(' . $step_ID .', ' . $ID . ');" name="submit" type="submit" class="btn btn-primary">' . $button . '</span>
+      <span onclick="sottostepPostData(' . $categoria_ID . ',' . $step_ID .', ' . $ID . ');" name="submit" type="submit" class="btn btn-primary">' . $button . '</span>
     </div>
   </div>
   
 <script>
-function sottostepPostData(step_ID, sottostep_ID) {
+function sottostepPostData(categoria_ID, step_ID, sottostep_ID) {
     console.log("[Sottostep post data]");
     console.log("-> step_ID: " + step_ID);
     console.log("-> sottostep_ID: " + sottostep_ID);
@@ -100,11 +101,12 @@ function sottostepPostData(step_ID, sottostep_ID) {
     sottostepSigla          = $("#sottostepSigla").val();
     sottostepDescrizione    = $("#sottostepDescrizione").val();
     sottostepTipoScelta     = $("#sottostepTipoScelta").find(":selected").val();
-    sottostepDipendenza     = $("#check_dipendenze").find(":selected").val();
+    sottostepDipendenza     = $("#sottostepCheckDipendenze").find(":selected").val();
     sottostepVisibile       = $("#sottostepVisibile").find(":selected").val();
     
     
-    $.post( jsPath + "configuratore-admin/ajax-sottostep-editor-post/", { step_ID               : step_ID ,
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-editor-post/", { categoria_ID          : categoria_ID ,
+                                                                          step_ID               : step_ID ,
                                                                           sottostep_ID          : sottostep_ID ,
                                                                           sottostepNome         : sottostepNome,
                                                                           sottostepSigla        : sottostepSigla,

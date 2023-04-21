@@ -10,6 +10,8 @@ if (!$user->logged) {
 
 $this->noTemplateParse = true;
 
+$categoria_ID = (int) $_POST['categoria_ID'];
+$step_ID      = (int) $_POST['step_ID'];
 $ID =  (int) $_POST['ID'];
 
 if (!$sottostep_ID = (int) $_POST['sottostep_ID']) {
@@ -104,13 +106,14 @@ echo '
   </div> 
   <div class="form-group row">
     <div class="offset-4 col-8">
-      <span onclick="salvaOpzione(' . $ID . ', ' . $sottostep_ID .');"  class="btn btn-primary">' . $button . '</span>
+      <span onclick="salvaOpzione(' . $categoria_ID . ', ' . $step_ID . ',' . $sottostep_ID . ',' . $ID .');"  class="btn btn-primary">' . $button . '</span>
     </div>
   </div>
   
 <script>
-function salvaOpzione(ID, sottostep_ID) {
+function salvaOpzione(categoria_ID, step_ID, sottostep_ID, ID) {
     console.log ("[SALVATAGGIO OPZIONE]");
+    console.log ("-> categoria_ID: " + categoria_ID + ", step_ID:" + step_ID);
     console.log ("-> ID: " + ID + ", sottostep_ID:" + sottostep_ID);
     
     nome            =   $("#nome").val();
@@ -122,8 +125,10 @@ function salvaOpzione(ID, sottostep_ID) {
     valoreFormula   =   $("#valoreFormula").val();
     visibile        =   $("#visibile").find(":selected").val();
     
-    $.post( jsPath + "configuratore-admin/ajax-sottostep-opzioni-editor-post/", { ID                    : ID,
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-opzioni-editor-post/", { categoria_ID          : categoria_ID,
+                                                                                  step_ID               : step_ID,
                                                                                   sottostep_ID          : sottostep_ID,
+                                                                                  ID                    : ID,
                                                                                   nome                  : nome,
                                                                                   sigla                 : sigla ,
                                                                                   descrizione           : descrizione ,
@@ -134,7 +139,7 @@ function salvaOpzione(ID, sottostep_ID) {
                                                                                   visibile              : visibile})
     .done(function( data ) {
         console.log(data)
-        mostraOpzioni(sottostep_ID);
+        mostraOpzioni(categoria_ID, step_ID, sottostep_ID);
         $("#modalDialog").modal();
     });
     

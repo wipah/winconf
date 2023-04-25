@@ -9,8 +9,20 @@ if (!$user->logged) {
 }
 
 switch ($path[2]) {
+    case 'ajax-riordina-categorie':
+        require_once 'op_ajax_categorie_riordina.php';
+        break;
+    case 'ajax-riordina-step':
+        require_once 'op_ajax_step_riordina.php';
+        break;
+    case 'ajax-riordina-sottostep':
+        require_once 'op_ajax_sottostep_riordina.php';
+        break;
     case 'elimina-categoria':
         require_once 'op_categoria_elimina.php';
+        break;
+    case 'ajax-opzioni-elimina':
+        require_once 'op_ajax_sottostep_opzioni_elimina.php';
         break;
     case 'ajax-sottostep-dipendenze-editor':
         require_once 'op_ajax_sottostep_dipendenze_editor.php';
@@ -24,6 +36,10 @@ switch ($path[2]) {
     case 'ajax-dipendenze':
         require_once 'op_ajax_dipendenze.php';
         break;
+    case 'ajax-dimensioni':
+        require_once 'op_ajax_dimensioni.php';
+        break;
+
     case 'ajax-sottostep-opzioni-editor':
         require_once 'op_ajax_sottostep_opzioni_editor.php';
         break;

@@ -29,7 +29,7 @@ echo '<h2 class="mt-3">Editor opzioni</h2>';
 
 
 if (!$db->affected_rows) {
-    echo 'Nessuna opzione scelta';
+    echo $this->getBox('info','<strong>Nessuna opzione inserita</strong>. Per il sottostep selezionato non sono ancora presenti opzioni');
 } else {
     echo '<table class="table table-bordered table-condensed">
             <thead>
@@ -45,15 +45,16 @@ if (!$db->affected_rows) {
             </thead>
             <tbody>';
     while ($rowOpzioni = mysqli_fetch_assoc($result)) {
-        echo '<tr>
+        echo '<tr id="opzione-' . $rowOpzioni['ID'] . '">
                 <td>' . $rowOpzioni['ID'] . '</td>
                 <td>' . $rowOpzioni['opzione_nome'] . '</td>
                 <td>' . $rowOpzioni['opzione_sigla'] . '</td>
                 <td>' . $rowOpzioni['check_dipendenze'] . ' <br/><span class="spanClickable" onclick="mostraDipendenze(' . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ');">Editor dipendenze</span></td>
-                <td>' . $rowOpzioni['check_dimensioni'] . '<br>Editor dimensioni</td>
+                <td>' . $rowOpzioni['check_dimensioni'] . '<br><span class="spanClickable" onclick="mostraDimensioni(' . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ');">Editor check dimensioni</span></td>
                 <td> Sopra | Sotto </td>
                 <td>
-                    <span class="spanClickable" onclick="opzioniEditor(' . $categoria_ID . ',' . $step_ID .', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ');">Modifica opzione</span> | Elimina opzione</td>
+                    <span class="spanClickable" onclick="opzioniEditor(' . $categoria_ID . ',' . $step_ID .', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ');">Modifica opzione</span> | 
+                    <span class="spanClickable" onclick=" if (confirm(\'Sei sicuro di voler eliminare l\\\'opzione selezionata?\')) { opzioniElimina('. $rowOpzioni['ID'] .') } ">Elimina opzione</span></td>
               </tr>  ';
     }
     echo '</tbody>

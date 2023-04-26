@@ -12,9 +12,24 @@ $this->noTemplateParse = true;
 $categoria_ID = (int) $_POST['categoria_ID'];
 $step_ID      = (int) $_POST['step_ID'];
 $sottostep_ID = (int) $_POST['sottostep_ID'];
+$opzione_ID   = (int) $_POST['opzione_ID'];
 $ID           = (int) $_POST['ID'];
 
-echo '<h2 class="mt-4">Editor check dimensioni</h2>';
+
+$query = 'SELECT categoria_nome, 
+                 configuratore_step.step_nome,
+                 configuratore_sottostep.sottostep_nome,
+                 configuratore_opzioni.opzione_nome
+          FROM configuratore_categorie 
+          LEFT JOIN configuratore_step 
+            ON configuratore_step.categoria_ID = configuratore_categorie.ID
+          LEFT JOIN configuratore_sottostep
+            ON configuratore_sottostep.step_ID = configuratore_step.ID
+          LEFT JOIN configuratore_opzioni
+            ON configuratore_opzioni.sottostep_ID = configuratore_sottostep.ID;';
+
+$rowTitolo = $dbHelper->getSingleRow($query);
+echo '<h2>' . $rowTitolo['categoria_nome'] . ' > ' . $rowTitolo['step_nome'] .' > ' . $rowTitolo['sottostep_nome'] . ' > ' . $rowTitolo['opzione_nome'] . '  > Check dimensioni</h2>';
 
 $query = "SELECT  configuratore_opzioni_check_dimensioni.ID dimensione_ID,
                   configuratore_opzioni_check_dimensioni.*
@@ -23,7 +38,7 @@ $query = "SELECT  configuratore_opzioni_check_dimensioni.ID dimensione_ID,
           LEFT JOIN configuratore_opzioni
             ON configuratore_opzioni_check_dimensioni.opzione_ID = configuratore_opzioni.ID
           WHERE configuratore_opzioni_check_dimensioni.sottostep_ID = $sottostep_ID
-          AND configuratore_opzioni_check_dimensioni.opzione_ID = $ID";
+          AND configuratore_opzioni_check_dimensioni.opzione_ID = $opzione_ID";
 
 if (!$result = $db->query($query)) {
     echo 'Query error.' . $query;

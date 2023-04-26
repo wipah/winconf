@@ -44,3 +44,10 @@ if (!$db->query($query)) {
 } else {
     echo 'Sottostep cancellato. <br/>';
 }
+
+$query = 'DELETE FROM configuratore_opzioni WHERE categoria_ID = ' . $categoria_ID;
+if (!$db->query($query)) {
+    echo 'Impossibile cancellare le opzioni. ' . $query;
+} else {
+    echo 'Opzioni cancellate. <br/>';
+}

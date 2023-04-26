@@ -63,13 +63,15 @@ if (!$db->affected_rows) {
 
     while ($row = mysqli_fetch_assoc($result)) {
         echo '
-                <tr data-sort-id="' . $row['ID'] . '">
+                <tr id="sottostep-' . $row['ID'] . '" data-sort-id="' . $row['ID'] . '">
                     <td>' . $row['ID'] . '</td>
                     <td>' . $row['sottostep_nome'] . '</td>
                     <td>' . $row['sottostep_sigla']  .'</td>
                     <td>' . ( (int) $row['check_dipendenze'] === 1 ? 'Si' : 'No') . '</td>
                     <td>
-                        <span class="spanClickable" onclick="sottoStepEditor(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .');">Modifica sottostep</span> | <span class="spanClickable" onclick="mostraOpzioni(' . $categoria_ID . ', ' . $step_ID . ', ' . $row['ID'] . ');">Editor opzioni</a>
+                        <span class="spanClickable" onclick="sottoStepEditor(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .');">Modifica sottostep</span> | 
+                        <span class="spanClickable" onclick="mostraOpzioni(' . $categoria_ID . ', ' . $step_ID . ', ' . $row['ID'] . ');">Editor opzioni</span>
+                        | <span class="spanClickable" onclick="sottostepElimina(' . $row['ID'] . ');">Elimina sottostep</a>
                     </td>
                     <td align="center"><i class="fa fa-fw fa-arrows-alt"></i></td>
                 </tr>';

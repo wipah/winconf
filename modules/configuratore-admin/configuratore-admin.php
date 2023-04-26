@@ -12,12 +12,19 @@ switch ($path[2]) {
     case 'ajax-riordina-categorie':
         require_once 'op_ajax_categorie_riordina.php';
         break;
+    case 'ajax-sottostep-elimina':
+        require_once 'op_ajax_sottostep_elimina.php';
+        break;
     case 'ajax-riordina-step':
         require_once 'op_ajax_step_riordina.php';
         break;
     case 'ajax-riordina-sottostep':
         require_once 'op_ajax_sottostep_riordina.php';
         break;
+    case 'ajax-riordina-sottostep-opzioni':
+        require_once 'op_ajax_sottostep_opzioni_riordina.php';
+        break;
+
     case 'elimina-categoria':
         require_once 'op_categoria_elimina.php';
         break;

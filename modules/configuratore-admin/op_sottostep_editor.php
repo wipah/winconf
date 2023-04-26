@@ -65,10 +65,14 @@ echo '
 
 <script>
 step_ID = ' . $step_ID . ';
+console.log("step_ID : " + step_ID);
 
 mostraSottostep();
 
 function mostraSottostep() {
+    console.log("[Visualizzazione sottostep]");
+    console.log("-->step_ID : " + step_ID);
+    
     $.post( jsPath + "configuratore-admin/ajax-sottostep/", { step_ID: step_ID })
       .done(function( data ) {
         $("#sottoStep").html(data);
@@ -90,13 +94,14 @@ function sottoStepEditor(categoria_ID, step_ID, ID) {
     
 
     $("#modalDialog").modal();
-    $.post( jsPath + "configuratore-admin/ajax-sottostep-editor/", {categoria_ID: categoria_ID, step_ID: ' . $step_ID . ' , ID: ID })
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-editor/", {categoria_ID: categoria_ID, step_ID: step_ID , ID: ID })
     .done(function( data ) {
         $("#modalBody").html(data);
     });
 }
 
 function opzioniEditor(categoria_ID, step_ID, sottostep_ID, ID) {
+    console.log("[OPZIONI EDITOR]");
     $("#modalDialog").modal();
     $.post( jsPath + "configuratore-admin/ajax-sottostep-opzioni-editor/", {categoria_ID : categoria_ID, step_ID :step_ID, sottostep_ID: sottostep_ID, ID: ID })
     .done(function( data ) {
@@ -111,25 +116,39 @@ function opzioniElimina(opzione_ID) {
     });
 }
 
+function dimensioniElimina(dimensione_ID) {
+    $.post( jsPath + "configuratore-admin/ajax-dimensione-elimina/", {dimensione_ID : dimensione_ID })
+    .done(function( data ) {
+        $("#dimensione-" + dimensione_ID).remove();
+    });
+}
+
 function dipendenzeEditor(categoria_ID, step_ID, sottostep_ID, ID) {
     console.log("[Editor dipendenze]");
     console.log("->sottostep_ID: " + sottostep_ID);
     console.log("->ID: " + ID);
     
     $("#modalDialog").modal();
-    $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-editor/", { categoria_ID: ' . $rowStep['categoria_ID'] . ', step_ID: step_ID, sottostep_ID: sottostep_ID, ID: ID })
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-editor/", { categoria_ID: categoria_ID, step_ID: step_ID, sottostep_ID: sottostep_ID, ID: ID })
     .done(function( data ) {
         $("#modalBody").html(data);
     });
 }
 
-function dimensioniEditor(categoria_ID, step_ID, sottostep_ID, ID) {
+function dimensioniEditor(categoria_ID, step_ID, sottostep_ID, opzione_ID, ID) {
     console.log("[Editor dimensioni]");
-    console.log("->sottostep_ID: " + sottostep_ID);
-    console.log("->ID: " + ID);
+    console.log("->categoria_ID: "  +   categoria_ID);
+    console.log("->step_ID: "       +   step_ID);
+    console.log("->sottostep_ID: "  +   sottostep_ID);
+    console.log("->opzione_ID: "    +   opzione_ID);
+    console.log("->ID: "            +   ID);
     
     $("#modalDialog").modal();
-    $.post( jsPath + "configuratore-admin/ajax-sottostep-dimensioni-editor/", { categoria_ID: ' . $rowStep['categoria_ID'] . ', step_ID: step_ID, sottostep_ID: sottostep_ID, ID: ID })
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-dimensioni-editor/", { categoria_ID: categoria_ID, 
+                                                                                step_ID: step_ID, 
+                                                                                sottostep_ID: sottostep_ID, 
+                                                                                opzione_ID: opzione_ID,
+                                                                                ID: ID })
     .done(function( data ) {
         $("#modalBody").html(data);
     });
@@ -141,19 +160,27 @@ function mostraDipendenze(categoria_ID, step_ID, sottostep_ID, ID) {
     console.log("-> step_ID: " + step_ID);
     console.log("-> sottostep_ID: " + sottostep_ID);
     
-    $.post( jsPath + "configuratore-admin/ajax-dipendenze/", { categoria_ID: categoria_ID, step_ID: step_ID, sottostep_ID: sottostep_ID, ID: step_ID })
+    $.post( jsPath + "configuratore-admin/ajax-dipendenze/", { categoria_ID: categoria_ID, 
+                                                               step_ID: step_ID, 
+                                                               sottostep_ID: sottostep_ID, 
+                                                               ID: step_ID })
       .done(function( data ) {
         $("#dipendenze").html(data);
     });    
 }
+
 
 function mostraDimensioni(categoria_ID, step_ID, sottostep_ID, ID) {
     console.log("[Mostra dimensioni]");
     console.log("-> categoria_ID: " + categoria_ID);
     console.log("-> step_ID: " + step_ID);
     console.log("-> sottostep_ID: " + sottostep_ID);
+    console.log("-> ID: " + ID);
     
-    $.post( jsPath + "configuratore-admin/ajax-dimensioni/", { categoria_ID: categoria_ID, step_ID: step_ID, sottostep_ID: sottostep_ID, ID: step_ID })
+    $.post( jsPath + "configuratore-admin/ajax-dimensioni/", { categoria_ID: categoria_ID, 
+                                                               step_ID: step_ID, 
+                                                               sottostep_ID: sottostep_ID, 
+                                                               ID: step_ID })
       .done(function( data ) {
         $("#dipendenze").html(data);
     });    

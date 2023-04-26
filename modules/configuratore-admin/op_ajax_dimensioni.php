@@ -14,7 +14,7 @@ $step_ID      = (int) $_POST['step_ID'];
 $sottostep_ID = (int) $_POST['sottostep_ID'];
 $ID           = (int) $_POST['ID'];
 
-echo '<h2>Editor check dimensioni</h2>';
+echo '<h2 class="mt-4">Editor check dimensioni</h2>';
 
 $query = "SELECT  configuratore_opzioni_check_dimensioni.ID dimensione_ID,
                   configuratore_opzioni_check_dimensioni.*
@@ -22,7 +22,8 @@ $query = "SELECT  configuratore_opzioni_check_dimensioni.ID dimensione_ID,
           FROM configuratore_opzioni_check_dimensioni
           LEFT JOIN configuratore_opzioni
             ON configuratore_opzioni_check_dimensioni.opzione_ID = configuratore_opzioni.ID
-          WHERE configuratore_opzioni_check_dimensioni.sottostep_ID = $sottostep_ID;";
+          WHERE configuratore_opzioni_check_dimensioni.sottostep_ID = $sottostep_ID
+          AND configuratore_opzioni_check_dimensioni.opzione_ID = $ID";
 
 if (!$result = $db->query($query)) {
     echo 'Query error.' . $query;
@@ -48,15 +49,15 @@ if (!$db->affected_rows) {
 
 
     while ($row = mysqli_fetch_assoc($result)) {
-        echo '<tr>
-            <td>' . $row['dipendenza_ID'] . '</td>
+        echo '<tr id="dimensione-' . $row['ID'] . '">
+            <td>' . $row['dimensione_ID'] . '</td>
             <td>' . $row['opzione_nome']  . '</td>
             <td>' . $arrayConfronti[ (int) $row['confronto']]  . '</td>
             <td>' . $row['valore']  . '</td>
             <td>' . ( (int) $row['esito'] === 0 ? 'Escludi' : 'Includi' )  . '</td>
             <td>
-                <span class="spanClickable" onclick="dimensioniEditor(' . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ', ' . $row['ID'] .')">Modifica</span> | 
-                Elimina
+                <span class="spanClickable" onclick="dimensioniEditor(' . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ', ' . $ID . ', ' . $row['ID'] .')">Modifica</span> | 
+                <span class="spanClickable" onclick="if(confirm(\'Vuoi eliminare il ckeck sulla dimensione?\')) { dimensioniElimina(' . $row['ID'] .') }">Elimina</span>
             </td>
           </tr>';
     }
@@ -64,4 +65,4 @@ if (!$db->affected_rows) {
 </table>';
 }
 
-echo '<span class="btn btn-info btn-default" onclick="dimensioniEditor('. $categoria_ID .', ' . $step_ID . ',' . $sottostep_ID . ', 0)">Nuovo check dimensioni</span>';
+echo '<span class="btn btn-info btn-default" onclick="dimensioniEditor('. $categoria_ID .', ' . $step_ID . ',' . $sottostep_ID . ',' . $ID . ', 0)">Nuovo check dimensioni</span>';

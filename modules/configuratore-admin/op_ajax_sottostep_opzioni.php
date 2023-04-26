@@ -13,7 +13,7 @@ if (!$sottostep_ID = (int) $_POST['sottostep_ID'] ) {
     echo 'Manca l\'ID del sottostep';
 }
 $categoria_ID = (int) $_POST['categoria_ID'];
-$step_ID = (int) $_POST['categoria_ID'];
+$step_ID = (int) $_POST['step_ID'];
 
 $query = 'SELECT * 
           FROM configuratore_opzioni

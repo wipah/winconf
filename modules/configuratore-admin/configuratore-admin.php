@@ -24,6 +24,9 @@ switch ($path[2]) {
     case 'ajax-opzioni-elimina':
         require_once 'op_ajax_sottostep_opzioni_elimina.php';
         break;
+    case 'ajax-dimensione-elimina':
+        require_once 'op_ajax_sottostep_dimensioni_elimina.php';
+        break;
     case 'ajax-sottostep-dipendenze-editor':
         require_once 'op_ajax_sottostep_dipendenze_editor.php';
         break;
@@ -38,6 +41,12 @@ switch ($path[2]) {
         break;
     case 'ajax-dimensioni':
         require_once 'op_ajax_dimensioni.php';
+        break;
+    case 'ajax-sottostep-dimensioni-editor':
+        require_once 'op_ajax_sottostep_dimensioni_editor.php';
+        break;
+    case 'ajax-sottostep-dimensioni-editor-post':
+        require_once 'op_ajax_sottostep_dimensioni_editor_post.php';
         break;
 
     case 'ajax-sottostep-opzioni-editor':

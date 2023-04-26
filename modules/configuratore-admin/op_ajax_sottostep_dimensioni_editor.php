@@ -10,10 +10,10 @@ if (!$user->logged) {
     return;
 }
 
-
 $categoria_ID       = (int) $_POST['categoria_ID'];
 $step_ID            = (int) $_POST['step_ID'];
 $sottostep_ID       = (int) $_POST['sottostep_ID'];
+$opzione_ID       =   (int) $_POST['opzione_ID'];
 $ID                 = (int) $_POST['ID'];
 
 if ($ID !== 0) {
@@ -27,14 +27,12 @@ if ($ID !== 0) {
     }
 
     if (!$db->affected_rows) {
-        echo 'La dipendenza non esiste';
+        echo 'Il controllo sulla dimensione non esiste. (ID: ' . $ID . ')';
         return;
     }
 
     $row = mysqli_fetch_assoc($result);
 }
-
-
 
 
 $selectConfronto = '<div class="form-group row">
@@ -49,6 +47,16 @@ $selectConfronto = '<div class="form-group row">
         <option ' . ( (int) $row['confronto'] === 5 ? ' selected ' : '') . ' value="5">Diverso da</option>
       </select></div></div>';
 
+
+
+echo '<div class="form-group row">
+    <label for="dimensione" class="col-4 col-form-label">Dimensione</label> 
+    <div class="col-8">
+      <select id="dimensione" name="dimensione" class="custom-select">
+        <option ' . ( (int) $row['dimensione'] === 0 ? ' selected ' : '') . ' value="0">Larghezza</option>
+        <option ' . ( (int) $row['dimensione'] === 1 ? ' selected ' : '') . ' value="1">Lunghezza</option>
+<!--        <option ' . ( (int) $row['dimensione'] === 2 ? ' selected ' : '') . ' value="2">Spessore</option> -->
+      </select></div></div>';
 
 
 echo $selectStep;
@@ -73,30 +81,31 @@ echo '  <div class="form-group row">
   
     <div class="form-group row">
     <div class="offset-4 col-8">
-      <span onclick="salvaDipendenza(' . $categoria_ID . ', ' . $step_ID . ',' . $sottostep_ID .' ,' . $ID .');" class="btn btn-primary">Aggiorna</span>
+      <span onclick="salvaDimensione(' . $categoria_ID . ', ' . $step_ID . ',' . $sottostep_ID .' ,' . $opzione_ID . ', ' . $ID .');" class="btn btn-primary">Aggiorna</span>
     </div>
   </div>
   
 <script>
-function salvaDipendenza(categoria_ID, step_ID, sottostep_ID, ID) {
+function salvaDimensione(categoria_ID, step_ID, sottostep_ID, opzione_ID, ID) {
     
-    opzione     = $("#opzione").find(":selected").val();
+    dimensione     = $("#dimensione").find(":selected").val();
     confronto   = $("#confronto").find(":selected").val();
     esito       = $("#esito").find(":selected").val();
     valore      = $("#valore").val();
     
-    $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-editor-post/", { 
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-dimensioni-editor-post/", { 
                                                                                   categoria_ID  : categoria_ID,
                                                                                   step_ID       : step_ID,
                                                                                   sottostep_ID  : sottostep_ID,
+                                                                                  opzione_ID    : opzione_ID,
                                                                                   ID            : ID,
-                                                                                  opzione_ID    : opzione,
+                                                                                  dimensione    : dimensione,
                                                                                   confronto     : confronto ,
                                                                                   esito         : esito ,
                                                                                   valore        : valore ,
     }).done(function( data ) {
         console.log(data)
-        mostraDipendenze(categoria_ID, step_ID, sottostep_ID);
+        mostraDimensioni(categoria_ID, step_ID, sottostep_ID, opzione_ID);
         $("#modalDialog").modal();
     });
     

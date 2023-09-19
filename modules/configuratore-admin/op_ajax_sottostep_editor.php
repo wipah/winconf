@@ -92,7 +92,8 @@ echo '
   </div>
   
 <script>
-function sottostepPostData(categoria_ID, step_ID, sottostep_ID) {
+function sottostepPostData(categoria_ID, step_ID, sottostep_ID) 
+{
     console.log("[Sottostep post data]");
     console.log("-> step_ID: " + step_ID);
     console.log("-> sottostep_ID: " + sottostep_ID);
@@ -103,8 +104,7 @@ function sottostepPostData(categoria_ID, step_ID, sottostep_ID) {
     sottostepTipoScelta     = $("#sottostepTipoScelta").find(":selected").val();
     sottostepDipendenza     = $("#sottostepCheckDipendenze").find(":selected").val();
     sottostepVisibile       = $("#sottostepVisibile").find(":selected").val();
-    
-    
+     
     $.post( jsPath + "configuratore-admin/ajax-sottostep-editor-post/", { categoria_ID          : categoria_ID ,
                                                                           step_ID               : step_ID ,
                                                                           sottostep_ID          : sottostep_ID ,

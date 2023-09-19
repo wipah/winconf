@@ -10,8 +10,10 @@ if (!$user->logged) {
 
 $this->noTemplateParse = true;
 
+
 $categoria_ID = (int) $_POST['categoria_ID'];
 $step_ID      = (int) $_POST['step_ID'];
+$sottostep_ID = (int) $_POST['sottostep_ID'];
 $ID =  (int) $_POST['ID'];
 
 if (!$sottostep_ID = (int) $_POST['sottostep_ID']) {
@@ -26,8 +28,14 @@ if ($ID === 0) {
 }
 
 
-$query = 'SELECT * FROM configuratore_formule';
+$query = 'SELECT * 
+          FROM configuratore_opzioni 
+          WHERE ID = ' . $ID;
+$result = $db->query($query);
+$row = mysqli_fetch_assoc($result);
 
+
+$query = 'SELECT * FROM configuratore_formule';
 if (!$resultFormule = $db->query($query)) {
     echo 'Query error. ' . $query;
     return;
@@ -49,19 +57,19 @@ echo '
    <div class="form-group row">
     <label for="nome" class="col-4 col-form-label">Nome</label> 
     <div class="col-8">
-      <input id="nome" name="nome" placeholder="Nome dell\'opzione" type="text" class="form-control">
+      <input id="nome" name="nome" placeholder="Nome dell\'opzione" type="text" class="form-control" value="' . $row['opzione_nome'] . '">
     </div>
   </div>
   <div class="form-group row">
     <label for="sigla" class="col-4 col-form-label">Sigla</label> 
     <div class="col-8">
-      <input id="sigla" name="sigla" type="text" class="form-control">
+      <input id="sigla" name="sigla" type="text" class="form-control" value="' . $row['opzione_sigla'] . '">
     </div>
   </div>
   <div class="form-group row">
     <label for="descrizione" class="col-4 col-form-label">Descrizione</label> 
     <div class="col-8">
-      <textarea id="descrizione" name="descrizione" cols="40" rows="5" class="form-control"></textarea>
+      <textarea id="descrizione" name="descrizione" cols="40" rows="5" class="form-control">' . $row['opzione_descrizione'] . '</textarea>
     </div>
   </div>
 
@@ -92,15 +100,15 @@ echo '
   <div class="form-group row">
     <label for="Valore formula" class="col-4 col-form-label">Valore formula</label> 
     <div class="col-8">
-      <input id="valoreFormula" name="valoreFormula" type="text" class="form-control">
+      <input id="valoreFormula" name="valoreFormula" type="text" class="form-control" value="' . $row['opzione_formula_valore']  . '">
     </div>
   </div>
   <div class="form-group row">
     <label for="visibile" class="col-4 col-form-label">Visibile</label> 
     <div class="col-8">
       <select id="visibile" name="visibile" class="custom-select">
-        <option value="1">Si</option>
-        <option value="0">No</option>
+        <option ' . ( (int) $row['visibile']  === 1 ? 'selected' : '' ) . ' value="1">Si</option>
+        <option ' . ( (int) $row['visibile']  === 0 ? 'selected' : '' ) . ' value="0">No</option>
       </select>
     </div>
   </div> 

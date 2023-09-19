@@ -19,3 +19,19 @@ if (!$db->query($query)) {
 } else {
     echo '--OK--';
 }
+
+$query = 'DELETE FROM configuratore_check_dimensioni WHERE opzione_ID = ' . $opzione_ID . ' LIMIT 1';
+
+if (!$db->query($query)) {
+    echo '--KO--' . $query;
+} else {
+    echo '--OK--';
+}
+
+$query = 'DELETE FROM configuratore_check_dipendenze WHERE opzione_ID = ' . $opzione_ID . ' LIMIT 1';
+
+if (!$db->query($query)) {
+    echo '--KO--' . $query;
+} else {
+    echo '--OK--';
+}

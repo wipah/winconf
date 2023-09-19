@@ -20,6 +20,15 @@ $sottostepTipoScelta    =   (int) $_POST['sottostepTipoScelta'];
 $sottostepDipendenza    =   (int) $_POST['sottostepDipendenza'];
 $sottostepVisibile      =   (int) $_POST['sottostepVisibile'];
 
+$query = 'SELECT MAX(ordine) ordine 
+          FROM configuratore_sottostep 
+          WHERE step_ID = ' . $step_ID;
+
+$risultatoStep = $db->query($query);
+$rowStep = mysqli_fetch_assoc($risultatoStep);
+
+$ordine = $rowStep['ordine'] + 1;
+
 if ($sottostep_ID === 0 ) {
     $query = 'INSERT INTO configuratore_sottostep 
                 (
@@ -30,6 +39,7 @@ if ($sottostep_ID === 0 ) {
                     sottostep_descrizione, 
                     tipo_scelta, 
                     check_dipendenze,
+                    ordine,
                     visibile
                 )
                  VALUES 
@@ -41,6 +51,7 @@ if ($sottostep_ID === 0 ) {
                     ,   \'' . $sottostepDescrizione  . '\' 
                     ,   \'' . $sottostepTipoScelta  . '\' 
                     ,   \'' . $sottostepDipendenza  . '\' 
+                    ,   \'' . $ordine  . '\' 
                     ,   \'' . $sottostepVisibile  . '\' 
                 )';
 } else {

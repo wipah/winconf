@@ -12,17 +12,27 @@ switch ($path[2]) {
     case 'ajax-riordina-categorie':
         require_once 'op_ajax_categorie_riordina.php';
         break;
+    case 'ajax-sottostep-elimina':
+        require_once 'op_ajax_sottostep_elimina.php';
+        break;
     case 'ajax-riordina-step':
         require_once 'op_ajax_step_riordina.php';
         break;
     case 'ajax-riordina-sottostep':
         require_once 'op_ajax_sottostep_riordina.php';
         break;
+    case 'ajax-riordina-sottostep-opzioni':
+        require_once 'op_ajax_sottostep_opzioni_riordina.php';
+        break;
+
     case 'elimina-categoria':
         require_once 'op_categoria_elimina.php';
         break;
     case 'ajax-opzioni-elimina':
         require_once 'op_ajax_sottostep_opzioni_elimina.php';
+        break;
+    case 'ajax-dimensione-elimina':
+        require_once 'op_ajax_sottostep_dimensioni_elimina.php';
         break;
     case 'ajax-sottostep-dipendenze-editor':
         require_once 'op_ajax_sottostep_dipendenze_editor.php';
@@ -38,6 +48,12 @@ switch ($path[2]) {
         break;
     case 'ajax-dimensioni':
         require_once 'op_ajax_dimensioni.php';
+        break;
+    case 'ajax-sottostep-dimensioni-editor':
+        require_once 'op_ajax_sottostep_dimensioni_editor.php';
+        break;
+    case 'ajax-sottostep-dimensioni-editor-post':
+        require_once 'op_ajax_sottostep_dimensioni_editor_post.php';
         break;
 
     case 'ajax-sottostep-opzioni-editor':

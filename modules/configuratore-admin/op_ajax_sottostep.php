@@ -54,7 +54,9 @@ if (!$db->affected_rows) {
             <th>ID</th>
             <th>Nome</th>
             <th>Sigla</th>
+            <th>Tipo scelta</th>
             <th>Check dipendenze</th>
+            <th>Visibile</th>
             <th>Operazioni</th>
             <th>Ordine</th>
         </tr>
@@ -62,15 +64,35 @@ if (!$db->affected_rows) {
     <tbody>';
 
     while ($row = mysqli_fetch_assoc($result)) {
+
+        switch ((int) $row['tipo_scelta']) {
+            case 0:
+                $tipoScelta = 'Scelta singola';
+                break;
+            case 1:
+                $tipoScelta = 'Scelta multipla';
+                 break;
+            case 2:
+                $tipoScelta = 'Testo libero';
+                break;
+            default:
+                $tipoScelta = 'ERRORE';
+        }
+
         echo '
-                <tr data-sort-id="' . $row['ID'] . '">
+                <tr id="sottostep-' . $row['ID'] . '" data-sort-id="' . $row['ID'] . '">
                     <td>' . $row['ID'] . '</td>
                     <td>' . $row['sottostep_nome'] . '</td>
                     <td>' . $row['sottostep_sigla']  .'</td>
+                    <td>' . $tipoScelta  .'</td>
                     <td>' . ( (int) $row['check_dipendenze'] === 1 ? 'Si' : 'No') . '</td>
+                    <td>' . ( (int) $row['visibile'] === 1 ? 'Visibile' : 'Non visibile' ) . '</td>
                     <td>
-                        <span class="spanClickable" onclick="sottoStepEditor(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .');">Modifica sottostep</span> | <span class="spanClickable" onclick="mostraOpzioni(' . $categoria_ID . ', ' . $step_ID . ', ' . $row['ID'] . ');">Editor opzioni</a>
+                        <span class="spanClickable" onclick="sottoStepEditor(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .');">Modifica sottostep</span> | 
+                        <span class="spanClickable" onclick="mostraOpzioni(' . $categoria_ID . ', ' . $step_ID . ', ' . $row['ID'] . ');">Editor opzioni</span>
+                        | <span class="spanClickable" onclick="sottostepElimina(' . $row['ID'] . ');">Elimina sottostep</a>
                     </td>
+                    
                     <td align="center"><i class="fa fa-fw fa-arrows-alt"></i></td>
                 </tr>';
     }

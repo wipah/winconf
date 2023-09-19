@@ -76,6 +76,7 @@ class template {
         global $order;
         global $dbHelper;
         global $arrayConfronti;
+        global $configuratore;
         ob_start();
             require_once $conf['path'] . 'modules/' . $module . '/' . $module . '.php';
 
@@ -157,6 +158,33 @@ class template {
   </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
+  
+.lds-dual-ring {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 35px;
+  height: 35px;
+  margin: 1px;
+  border-radius: 50%;
+  border: 5px solid #e8b08a;
+  border-color: #e8b08a transparent #e8b08a transparent;
+  animation: lds-dual-ring 1.6s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+  
     .spanClickable {
         text-decoration: underline;
         color: blue !important;
@@ -221,6 +249,23 @@ class template {
         color: #333;
         font-weight: bolder;
     }
+    
+    .layoutLaterale {
+        background-color: #2a64a6;
+        color: white;
+    }
+    
+    .layoutLaterale > h2 {
+        border: 0px;
+        border-bottom: 1px solid white !important;
+        color: white;
+        background-color: transparent;
+    }
+    .layoutLaterale > a {
+        border: 0px;
+        color: white;
+    }
+    
     /*
     h2 {
     background-color: #d6ecff;
@@ -249,18 +294,20 @@ class template {
             </a>
           </li>
           
+          
           <li class="nav-item">
-            <a class="nav-link" href="' .$conf['URI'] . 'configuratore-admin/">Backend</a>
+            <a class="nav-link" href="' .$conf['URI'] . 'clienti/">Clienti</a>
           </li>
           
           <li class="nav-item">
             <a class="nav-link" href="' .$conf['URI'] . 'configuratore/">Configuratore</a>
           </li>
           
-           <li class="nav-item">
-            <a class="nav-link popupBubbly" href="#">Supporto</a>
-          </li>
           
+          
+          <li class="nav-item">
+            <a class="nav-link" href="' .$conf['URI'] . 'configuratore-admin/">Backend</a>
+          </li>
         </ul>
       </div>
   </nav>
@@ -281,7 +328,7 @@ class template {
 ' . $this->content  . '
 </div>
 <footer class="footer">
-WinConf v0.1 aplha
+WinConf v0.1 alpha
 </footer>
 ' . ($user->isAdmin ? '<div style="border:1px solid gray; padding: 6px;"><!--WINCONFdebug--></div>' : '') . '
 

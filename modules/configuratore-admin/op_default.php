@@ -45,7 +45,7 @@ if (!$db->affected_rows) {
         $queryStep = 'SELECT * 
                       FROM configuratore_step 
                       WHERE categoria_ID = ' . $row['ID'] . '
-                        AND visibile = 1 
+                         
                       ORDER BY ordine ASC';
 
         $step = '';

@@ -3,7 +3,7 @@
 $conf['db_user'] = 'root';
 $conf['db_password'] = '';
 $conf['db_host'] = 'localhost';
-$conf['db_dbname'] = 'salesapp';
+$conf['db_dbname'] = 'winconf';
 
 $conf['path'] = 'd:\\laragon\\www\\difar-sales\\';
 

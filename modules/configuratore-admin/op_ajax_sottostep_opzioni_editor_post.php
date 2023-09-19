@@ -20,7 +20,6 @@ if (!$sottostep_ID = (int) $_POST['sottostep_ID']) {
 $categoria_ID = (int) $_POST['categoria_ID'];
 $step_ID      = (int) $_POST['step_ID'];
 
-
 $ID = (int) $_POST['ID'];
 
 $nome               =   $core->in($_POST['nome']);
@@ -31,6 +30,12 @@ $checkDimensioni    =   (int) $_POST['checkDimensioni'];
 $formula            =   (int) $_POST['formula'];
 $valoreFormula      =   (float) $_POST['valoreFormula'];
 $visibile           =   (int) $_POST['visibile'];
+
+$query = 'SELECT MAX(ordine) ordine 
+          FROM configuratore_opzioni 
+          WHERE sottostep_ID = ' . $sottostep_ID;
+$resultOrdine   = $db->query($query);
+$rowOrdine      = mysqli_fetch_assoc($resultOrdine);
 
 if ($ID === 0 ) {
     $query = 'INSERT INTO configuratore_opzioni 
@@ -45,6 +50,7 @@ if ($ID === 0 ) {
                  , check_dipendenze
                  , check_dimensioni
                  , opzione_formula_valore
+                 , ordine
                  , visibile
                 ) VALUES 
                 (  ' . $categoria_ID . '
@@ -57,6 +63,7 @@ if ($ID === 0 ) {
                  ,  ' . $checkDipendenze  . ' 
                  ,  ' . $checkDimensioni  . ' 
                  ,  \'' . $valoreFormula  . '\' 
+                 ,  \'' . ($rowOrdine['ordine'] + 1)  . '\' 
                  ,  \'' . $visibile  . '\' 
                 );';
 } else {

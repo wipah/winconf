@@ -5,24 +5,23 @@ if (!$core)
 
 $this->noTemplateParse = true;
 
-if (!$user->logged){
+if (!$user->logged) {
     echo 'Devi essere loggato';
     return;
 }
 
-$arrayOrdine = explode(",",$_REQUEST['sortOrder']);
+$arrayOrdine = explode(",", $_REQUEST['sortOrder']);
 
 $i = 0;
-foreach($arrayOrdine as $ID){
-    $query = 'UPDATE configuratore_categorie
+foreach ($arrayOrdine as $ID) {
+    $query = 'UPDATE configuratore_opzioni
               SET ordine = ' . $i . ' 
-              WHERE ID = '. $ID . ' 
+              WHERE ID = ' . $ID . ' 
               LIMIT 1';
 
-    if(!$db->query($query)){
+    if (!$db->query($query)) {
         echo 'Query error. ' . $query;
     } else {
-
         echo '--OK--';
     }
 

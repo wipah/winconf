@@ -27,13 +27,13 @@ class user
 		       U.surname,
 		       U.company_ID,
 		       U.group_ID,
-		       U.is_admin,
-		       U.zones
+		       U.is_admin
 		FROM users AS U
 		WHERE U.email       = \'' . $email . '\'		
-		    AND U.password  = \'' . md5($password . 'SALESAPP') . '\'
+		    AND U.password  = \'' . md5($password . 'WINCONF') . '\'
 		    AND U.enabled   = 1
 		LIMIT 1';
+
 
         if (!$result = $db->query($query)) {
             die ("Errore in query." . $query);
@@ -52,11 +52,11 @@ class user
             $this->isAdmin      =   $row['is_admin'];
 
             $this->logged = true;
-            $this->getZones($row['zones']);
+            // $this->getZones($row['zones']);
 
             $sessionID = md5(rand());
 
-            $cookieSecurity = md5($sessionID . $this->ID . 'SALESAPP');
+            $cookieSecurity = md5($sessionID . $this->ID . 'WINCONF');
 
             $query = 'INSERT INTO sessions 
 					  (user_ID, 
@@ -138,7 +138,7 @@ class user
             $this->group_ID     =   $row['group_ID'];
             $this->isAdmin      =   $row['is_admin'];
 
-            $this->getZones($row['zones']);
+
             $this->logged   = true;
 
             $this->loadCompanyData();
@@ -146,13 +146,6 @@ class user
         }
     }
 
-    public function getZones($zones)
-    {
-        $zones = explode('|', $zones);
-        foreach ($zones as $zone) {
-            $this->zones[] = $zone;
-        }
-    }
 
     function loadCompanyData()
     {

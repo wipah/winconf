@@ -6,13 +6,22 @@ require_once 'core/core/class_core.php';
 require_once 'core/math/class_math.php';
 $core = new framework\math();
 
+
+require_once __DIR__ . '/core/db/class_db.php';
+
+$db = new db($conf['db_host'], $conf['db_user'], $conf['db_password'], $conf['db_dbname']);
+/*
 if (!$db = new mysqli($conf['db_host'], $conf['db_user'], $conf['db_password'], $conf['db_dbname'])) {
     echo 'Errore critico nella connessione al DB. Il server non ha risposto in modo corretto.';
     die();
 }
-
+*/
 require_once __DIR__ . '/core/dbhelper/class_dbhelper.php';
 $dbHelper = new class_dbhelper();
+
+require_once __DIR__ . '/core/configuratore/class_configuratore.php';
+$configuratore = new configuratore();
+
 
 
 CONST MINORE = 0;

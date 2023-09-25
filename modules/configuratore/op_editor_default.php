@@ -51,6 +51,11 @@ console.log("Il documento ha ID " + documento_ID);
     border-bottom: 1px solid blue !important;
 }
 
+.topBarButtonSelected{
+    background-color: #e8b08a;
+border-bottom: 1px solid #9aa2ad !important;
+}
+
 .layoutEditorSottostep {
     margin-bottom: 24px;
     padding-bottom: 8px;
@@ -107,7 +112,11 @@ echo '
         <h2>Importo totale</h2>
     </div>
 </div>';
-echo '<script>';
+echo '<script>
+$(function() {
+    ottieniUltimoStep();    
+});';
+
 foreach ($documentoSteps as $step_ID => $stepNome) {
     echo '$(function() {
             visualizzaStep(' . $step_ID . ');
@@ -120,9 +129,13 @@ echo '<script>
 function mostraStep (step_ID) {
     $(".layoutStepScheda").hide();
     $("#layoutStepScheda-" + step_ID).show();
+    
+    $(".configuratoreTopBarButton").removeClass("topBarButtonSelected");
+    $("#layoutStepBottone-" + step_ID).addClass("topBarButtonSelected");
+    
 }
 
-function cambiaSingolaOpzione(linea_ID, opzione_ID) 
+function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID) 
 {
     console.log ("[CAMBIO OPZIONE]");    
     console.log ("--> Linea ID: "   + linea_ID);    
@@ -134,11 +147,26 @@ function cambiaSingolaOpzione(linea_ID, opzione_ID)
       .done(function( data ) {
     
         $("#layoutEditorSottostepStatus-" + linea_ID).removeClass("lds-dual-ring");
-         
-        console.log("--> stato: " + data);
+        obj = JSON.parse(data); 
+        console.log("--> stato: " + obj.status + ". Messaggio " + obj.message + ". step_ID = " + obj.step_ID);
+
+    
+        if ( parseInt(obj.step_ID) !== 0) {
+            visualizzaStep(obj.step_ID);
+            mostraStep(obj.step_ID)
+        }
+            
       });
 }
 
+function ottieniUltimoStep () {
+    console.log ("[OTTIENI ULTIMO STEP]");
+    $.post( jsPath + "configuratore/editor/ajax-ottieni-ultimo-step/", { documento_ID: ' . $documento_ID . ' })
+      .done(function( data ) {
+        obj = JSON.parse(data);
+        mostraStep(obj.step_ID);
+      });
+}
 function aggiornaNote() 
 {
     console.log ("[AGGIORNA NOTE]");
@@ -150,6 +178,8 @@ function aggiornaNote()
 }
 function visualizzaStep(step_ID) {
     console.log ("[CARICO STEP]");
+    console.log ("--> step_ID: " + step_ID);
+    
     $.post( jsPath + "configuratore/editor/ajax-visualizza-step/", { documento_ID: ' . $documento_ID . ', step_ID : step_ID })
       .done(function( data ) {
         $("#layoutStepScheda-" + step_ID).html(data);

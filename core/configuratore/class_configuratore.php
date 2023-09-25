@@ -41,7 +41,7 @@ class configuratore {
         }
     }
 
-    function layoutCreaSottoStep( int $sottostep_ID, $linea_ID) :string
+    function layoutCreaSottoStep(int $step_ID, int $sottostep_ID, $linea_ID) :string
     {
         global $db;
 
@@ -71,7 +71,7 @@ class configuratore {
 
             $risultatoOpzioni = $db->query($query);
 
-            $partSelect = '<select class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val());" id="">';
+            $partSelect = '<select class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ');" id="">';
             while ($rowOpzioni = mysqli_fetch_assoc($risultatoOpzioni)) {
                 $partSelect .= '<option ' . ( (int) $rowOpzioni['ID'] === (int) $rowOpzioneScelta['opzione_ID'] ? ' selected ' : '') . ' 
                                         value="' . $rowOpzioni['ID'] .'">' . $rowOpzioni['opzione_nome'] . '

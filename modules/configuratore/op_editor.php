@@ -13,6 +13,9 @@ switch ($path[3]) {
     case 'ajax-aggiorna-note':
         require_once 'op_ajax_editor_aggiorna_note.php';
         break;
+    case 'ajax-ottieni-ultimo-step':
+        require_once 'op_ajax_ottieni_ultimo_step.php';
+        break;
     default:
         require_once 'op_editor_default.php';
         break;

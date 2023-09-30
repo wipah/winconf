@@ -31,7 +31,7 @@ CONST MAGGIORE_UGUALE = 3;
 CONST MAGGIORE = 4;
 CONST DIVERSO = 5;
 
-$arrayConfronti = ['Minore', 'Minore o uguale', 'Uguale', 'Maggiore o uguale', 'Maggiore', 'Diverso'];
+$arrayConfronti = ['Minore', 'Minore o uguale', 'Uguale', 'Maggiore o uguale', 'Maggiore', 'Diverso', '', '', '', 'Selezionata'];
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use framework\core;

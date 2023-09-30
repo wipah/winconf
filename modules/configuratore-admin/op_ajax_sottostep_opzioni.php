@@ -9,12 +9,12 @@ if (!$user->logged) {
 
 $this->noTemplateParse = true;
 
+$categoria_ID = (int) $_POST['categoria_ID'];
+$step_ID     = (int) $_POST['step_ID'];
 if (!$sottostep_ID = (int) $_POST['sottostep_ID'] ) {
     echo 'Manca l\'ID del sottostep';
     return;
 }
-$categoria_ID = (int) $_POST['categoria_ID'];
-$step_ID = (int) $_POST['step_ID'];
 
 $query = 'SELECT   configuratore_step.step_nome 
                  , configuratore_sottostep.sottostep_nome
@@ -69,9 +69,9 @@ if (!$db->affected_rows) {
                 <td>' . $rowOpzioni['opzione_nome'] . '</td>
                 <td>' . $rowOpzioni['opzione_sigla'] . '</td>
                 <td>' . ( (int) $rowOpzioni['check_dipendenze'] === 1 ? ' Sì ': ' No ' ). ' <hr />
-                    <span class="spanClickable" onclick="mostraDipendenze(' . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ', 0);">Editor dipendenze</span>
+                    <span class="spanClickable" onclick="mostraDipendenzeOpzioni(' . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ', 0);">Editor check dipendenze</span>
                 </td>
-                <td>' . ( (int) $rowOpzioni['check_dimensioni'] === 1 ? ' Sì ': ' No ' ). ' <hr /><span class="spanClickable" onclick="mostraDimensioni('   . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ', 0);">Editor check dimensioni</span></td>
+                <td>' . ( (int) $rowOpzioni['check_dimensioni'] === 1 ? ' Sì ': ' No ' ). ' <hr /><span class="spanClickable" onclick="mostraDimensioniOpzioni('   . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ', 0);">Editor check dimensioni</span></td>
                <td>' . $rowOpzioni['formula_sigla'] . '</td> 
                <td>' . (round($rowOpzioni['opzione_formula_valore'], 3)) . '</td> 
                <td>' . ( (int) $rowOpzioni['visibile'] === 1 ? 'Visibile' : 'Non visibile' ) . '</td>

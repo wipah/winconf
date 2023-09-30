@@ -14,13 +14,21 @@ if (!$user->logged) {
 $categoria_ID       =   (int) $_POST['categoria_ID'];
 $step_ID            =   (int) $_POST['step_ID'];
 $sottostep_ID       =   (int) $_POST['sottostep_ID'];
-$opzione_ID         =   (int) $_POST['opzione_ID'];
+$opzione_ID         =  (int) $_POST['opzione_ID'];
 $ID                 =   (int) $_POST['ID'];
+
+
+if ($opzione_ID === 0) {
+    echo '<h2>Check dimensione del sottostep</h2>';
+} else {
+    echo '<h2>Dimensione dell\'opzione<h2></h2>';
+}
 
 if ($ID !== 0) {
     $query = 'SELECT * 
               FROM configuratore_opzioni_check_dimensioni 
               WHERE ID = ' . $ID . ' LIMIT 1';
+
 
     if (!$result = $db->query($query)) {
         echo 'Query error. ' . $query;
@@ -36,7 +44,9 @@ if ($ID !== 0) {
 }
 
 
-$selectConfronto = '<div class="form-group row">
+
+$selectConfronto = '
+    <div class="form-group row">
     <label for="confronto" class="col-4 col-form-label">Tipo confronto</label> 
     <div class="col-8">
       <select id="confronto" name="confronto" class="custom-select">
@@ -89,7 +99,11 @@ echo '  <div class="form-group row">
 <script>
 function salvaDimensione(categoria_ID, step_ID, sottostep_ID, opzione_ID, ID) 
 {
-    
+    /* Questa funzione salva il check della dimensione.
+     Se è passata una opzione_ID verrà salvata l\'opzione relativa al sottostep altrimenti verrà salvato il ckeck
+     della dimensione del sottostep.   
+     */
+     
     dimensione      =   $("#dimensione").find(":selected").val();
     confronto       =   $("#confronto").find(":selected").val();
     esito           =   $("#esito").find(":selected").val();
@@ -107,7 +121,15 @@ function salvaDimensione(categoria_ID, step_ID, sottostep_ID, opzione_ID, ID)
                                                                                   valore        : valore ,
     }).done(function( data ) {
         console.log(data)
-        mostraDimensioni(categoria_ID, step_ID, sottostep_ID, opzione_ID);
+        
+        if (opzione_ID == 0) {
+            mostraDimensioniSottostep(categoria_ID, step_ID, sottostep_ID, opzione_ID);    
+        } else {
+            
+            mostraDimensioniOpzioni(categoria_ID, step_ID, sottostep_ID, opzione_ID);
+        }
+        
+        
         $("#modalDialog").modal();
     });
     

@@ -46,8 +46,14 @@ switch ($path[2]) {
     case 'ajax-dipendenze':
         require_once 'op_ajax_dipendenze.php';
         break;
+    case 'ajax-sottostep-dipendenze':
+        require_once 'op_ajax_sottostep_dipendenze.php';
+        break;
     case 'ajax-dimensioni':
         require_once 'op_ajax_dimensioni.php';
+        break;
+    case 'ajax-sottostep-dimensioni':
+        require_once 'op_ajax_sottostep_dimensioni.php';
         break;
     case 'ajax-sottostep-dimensioni-editor':
         require_once 'op_ajax_sottostep_dimensioni_editor.php';

@@ -43,14 +43,16 @@ if ($ID === 0) {
               )';
 } else {
     $query = 'UPDATE configuratore_opzioni_check_dimensioni 
-              SET   dimensione   =  ' . ( (int) $_POST['dimensione']  ) . '
-                 ,  confronto    =  ' . ( (int) $_POST['confronto']  )  . ' 
-                 ,  valore       =  ' . ( (float) $_POST['valore']  )   . ' 
+              SET   dimensione    =  ' . ( (int) $_POST['dimensione']  ) . '
+                 ,  confronto   =  ' . ( (int) $_POST['confronto']  )  . ' 
+                 ,  valore      =  ' . ( (float) $_POST['valore']  )   . ' 
+                 ,  opzione_ID  =  ' . $opzione_ID . ' 
                  ,  esito       =   ' . ( (int) $_POST['esito']  )      . '
               WHERE ID = ' . $ID .'
               LIMIT 1;';
 }
 
+echo $query;
 if (!$db->query($query)) {
     echo '--KO--' . $query;
 }

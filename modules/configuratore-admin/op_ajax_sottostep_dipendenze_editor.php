@@ -14,12 +14,20 @@ if (!$user->logged) {
 $categoria_ID       = (int) $_POST['categoria_ID'];
 $step_ID            = (int) $_POST['step_ID'];
 $sottostep_ID       = (int) $_POST['sottostep_ID'];
+$opzione_ID         = (int) $_POST['opzione_ID'];
 $ID                 = (int) $_POST['ID'];
+
+if ($opzione_ID === 0 ) {
+    echo '<h2>Editor sottostep</h2>';
+} else {
+    echo '<h2>Editor opzione</h2>';
+}
 
 if ($ID !== 0) {
     $query = 'SELECT * 
               FROM configuratore_opzioni_check_dipendenze 
               WHERE ID = ' . $ID . ' LIMIT 1';
+
 
     if (!$result = $db->query($query)) {
         echo 'Query error. ' . $query;
@@ -73,6 +81,7 @@ $selectConfronto = '<div class="form-group row">
     <label for="confronto" class="col-4 col-form-label">Tipo confronto</label> 
     <div class="col-8">
       <select id="confronto" name="confronto" class="custom-select">
+        <option ' . ( (int) $row['confronto'] === 9 ? ' selected ' : '') . ' value="9">Selezionata </option>
         <option ' . ( (int) $row['confronto'] === 0 ? ' selected ' : '') . ' value="0">Minore di </option>
         <option ' . ( (int) $row['confronto'] === 1 ? ' selected ' : '') . ' value="1">Minore o uguale di</option>
         <option ' . ( (int) $row['confronto'] === 2 ? ' selected ' : '') . ' value="2">Uguale a</option>
@@ -105,30 +114,36 @@ echo '  <div class="form-group row">
   
     <div class="form-group row">
     <div class="offset-4 col-8">
-      <span onclick="salvaDipendenza(' . $categoria_ID . ', ' . $step_ID . ',' . $sottostep_ID .' ,' . $ID .');" class="btn btn-primary">Aggiorna</span>
+      <span onclick="salvaDipendenza(' . $categoria_ID . ', ' . $step_ID . ',' . $sottostep_ID .' ,' . $opzione_ID . ', ' . $ID  . ');"0 class="btn btn-primary">Aggiorna</span>
     </div>
   </div>
   
 <script>
-function salvaDipendenza(categoria_ID, step_ID, sottostep_ID, ID) {
+function salvaDipendenza(categoria_ID, step_ID, sottostep_ID, opzione_ID, ID) {
     
-    opzione     = $("#opzione").find(":selected").val();
-    confronto   = $("#confronto").find(":selected").val();
-    esito       = $("#esito").find(":selected").val();
-    valore      = $("#valore").val();
+    opzione_valore_ID   = $("#opzione").find(":selected").val();
+    confronto           = $("#confronto").find(":selected").val();
+    esito               = $("#esito").find(":selected").val();
+    valore              = $("#valore").val();
     
     $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-editor-post/", { 
                                                                                   categoria_ID  : categoria_ID,
                                                                                   step_ID       : step_ID,
                                                                                   sottostep_ID  : sottostep_ID,
                                                                                   ID            : ID,
-                                                                                  opzione_ID    : opzione,
+                                                                                  opzione_ID    : opzione_ID,
+                                                                                  opzione_valore_ID    : opzione_valore_ID,
                                                                                   confronto     : confronto ,
                                                                                   esito         : esito ,
                                                                                   valore        : valore ,
     }).done(function( data ) {
         console.log(data)
-        mostraDipendenze(categoria_ID, step_ID, sottostep_ID);
+        if (opzione_ID === 0) {
+            mostraDipendenzeSottostep(categoria_ID, step_ID, sottostep_ID, 0);        
+        } else {
+            mostraDipendenze(categoria_ID, step_ID, sottostep_ID, opzione_ID);    
+        }
+        
         $("#modalDialog").modal();
     });
     

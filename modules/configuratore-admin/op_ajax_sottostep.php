@@ -56,6 +56,7 @@ if (!$db->affected_rows) {
             <th>Sigla</th>
             <th>Tipo scelta</th>
             <th>Check dipendenze</th>
+            <th>Check dimensioni</th>
             <th>Visibile</th>
             <th>Operazioni</th>
             <th>Ordine</th>

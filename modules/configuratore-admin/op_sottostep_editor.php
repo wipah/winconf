@@ -141,14 +141,15 @@ function sottostepElimina(sottostep_ID)
 }
 
 
-function dipendenzeEditor(categoria_ID, step_ID, sottostep_ID, ID)
+function dipendenzeEditor(categoria_ID, step_ID, sottostep_ID, opzione_ID, ID)
 {
     console.log("[Editor dipendenze]");
     console.log("->sottostep_ID: " + sottostep_ID);
+    console.log("->opzione_ID: " + opzione_ID);
     console.log("->ID: " + ID);
     
     $("#modalDialog").modal();
-    $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-editor/", { categoria_ID: categoria_ID, step_ID: step_ID, sottostep_ID: sottostep_ID, ID: ID })
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-editor/", { categoria_ID: categoria_ID, step_ID: step_ID, sottostep_ID: sottostep_ID, opzione_ID: opzione_ID, ID: ID })
     .done(function( data ) {
         $("#modalBody").html(data);
     });
@@ -174,26 +175,69 @@ function dimensioniEditor(categoria_ID, step_ID, sottostep_ID, opzione_ID, ID)
     });
 }
 
-function mostraDipendenze(categoria_ID, step_ID, sottostep_ID, opzione_ID)
+function dimensioniSottoStepEditor(categoria_ID, step_ID, sottostep_ID, ID)
+{
+    alert ("DEPRECATO");
+    
+    console.log("[Editor sottostep dimensioni]");
+    console.log("->categoria_ID: "  +   categoria_ID);
+    console.log("->step_ID: "       +   step_ID);
+    console.log("->sottostep_ID: "  +   sottostep_ID);
+    console.log("->ID: "            +   ID);
+    
+    $("#modalDialog").modal();
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-dimensioni-editor/", { categoria_ID: categoria_ID, 
+                                                                                step_ID: step_ID, 
+                                                                                sottostep_ID: sottostep_ID, 
+                                                                                ID: ID })
+    .done(function( data ) {
+        $("#modalBody").html(data);
+    });
+}
+
+
+
+function mostraDipendenzeSottostep(categoria_ID, step_ID, sottostep_ID)
 {
     console.log("[Mostra dipendenze]");
     console.log("-> categoria_ID: " + categoria_ID);
     console.log("-> step_ID: " + step_ID);
     console.log("-> sottostep_ID: " + sottostep_ID);
-    console.log("-> opzione_ID: " + opzione_ID);
     
     $("#dimensioni").html("");
-    $.post( jsPath + "configuratore-admin/ajax-dipendenze/", { categoria_ID: categoria_ID, 
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze/", { categoria_ID: categoria_ID, 
                                                                step_ID: step_ID, 
-                                                               sottostep_ID: sottostep_ID, 
-                                                               opzione_ID: opzione_ID })
+                                                               sottostep_ID: sottostep_ID
+    })
       .done(function( data ) {
         $("#dipendenze").html(data);
     });    
 }
 
 
-function mostraDimensioni(categoria_ID, step_ID, sottostep_ID, opzione_ID)
+
+function mostraDimensioniSottostep(categoria_ID, step_ID, sottostep_ID)
+{
+    console.log("[Mostra dimensioni sottostep]");
+    console.log("-> categoria_ID: " + categoria_ID);
+    console.log("-> step_ID: " + step_ID);
+    console.log("-> sottostep_ID: " + sottostep_ID);
+    
+    $("#dipendenze").html("");
+    
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-dimensioni/", { categoria_ID: categoria_ID, 
+                                                                         step_ID: step_ID, 
+                                                                         sottostep_ID: sottostep_ID })
+      .done(function( data ) {
+        $("#dipendenze").html(data);
+    });    
+}
+
+/*
+ * Helper per le varie opzioni
+ */
+
+function mostraDimensioniOpzioni(categoria_ID, step_ID, sottostep_ID, opzione_ID)
 {
     console.log("[Mostra dimensioni]");
     console.log("-> categoria_ID: " + categoria_ID);
@@ -211,5 +255,24 @@ function mostraDimensioni(categoria_ID, step_ID, sottostep_ID, opzione_ID)
         $("#dipendenze").html(data);
     });    
 }
+
+function mostraDipendenzeOpzioni(categoria_ID, step_ID, sottostep_ID, opzione_ID)
+{
+    console.log("[Mostra dipendenze]");
+    console.log("-> categoria_ID: " + categoria_ID);
+    console.log("-> step_ID: " + step_ID);
+    console.log("-> sottostep_ID: " + sottostep_ID);
+    console.log("-> opzione_ID: " + opzione_ID);
+    
+    $("#dimensioni").html("");
+    $.post( jsPath + "configuratore-admin/ajax-dipendenze/", { categoria_ID: categoria_ID, 
+                                                               step_ID: step_ID, 
+                                                               sottostep_ID: sottostep_ID, 
+                                                               opzione_ID: opzione_ID })
+      .done(function( data ) {
+        $("#dipendenze").html(data);
+    });    
+}
+
 
 </script>';

@@ -61,7 +61,9 @@ switch ($path[2]) {
     case 'ajax-sottostep-dimensioni-editor-post':
         require_once 'op_ajax_sottostep_dimensioni_editor_post.php';
         break;
-
+    case 'ajax-sottostep-dipendenze-elimina':
+        require_once 'op_ajax_sottostep_dipendenze_elimina.php';
+        break;
     case 'ajax-sottostep-opzioni-editor':
         require_once 'op_ajax_sottostep_opzioni_editor.php';
         break;

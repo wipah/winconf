@@ -149,12 +149,24 @@ function dipendenzeEditor(categoria_ID, step_ID, sottostep_ID, opzione_ID, ID)
     console.log("->ID: " + ID);
     
     $("#modalDialog").modal();
+    
     $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-editor/", { categoria_ID: categoria_ID, step_ID: step_ID, sottostep_ID: sottostep_ID, opzione_ID: opzione_ID, ID: ID })
     .done(function( data ) {
         $("#modalBody").html(data);
     });
 }
 
+function dipendenzeElimina(dipendenza_ID) 
+{
+    console.log("[Elimina dipendenza]");
+    console.log("->ID: " + dipendenza_ID);
+    
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-elimina/", { dipendenza_ID: dipendenza_ID })
+    .done(function( data ) {
+        $("#dipendenza-" + dipendenza_ID).toggle();
+    });
+    
+}
 function dimensioniEditor(categoria_ID, step_ID, sottostep_ID, opzione_ID, ID)
 {
     console.log("[Editor dimensioni]");

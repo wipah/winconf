@@ -64,7 +64,7 @@ if (!$db->affected_rows) {
 
 
     while ($row = mysqli_fetch_assoc($result)) {
-        echo '<tr>
+        echo '<tr id="dipendenza-' . $row['ID'] . '">
             <td>' . $row['dipendenza_ID'] . '</td>
             <td>' . $row['opzione_nome']  . '</td>
             <td>' . $arrayConfronti[ (int) $row['confronto']]  . '</td>
@@ -72,7 +72,7 @@ if (!$db->affected_rows) {
             <td>' . ( (int) $row['esito'] === 0 ? 'Escludi' : 'Includi' )  . '</td>
             <td>
                 <span class="spanClickable" onclick="dipendenzeEditor(' . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ', 0, ' . $row['ID'] .')">Modifica</span> | 
-                Elimina
+                <span class="spanClickable" onclick="dipendenzeElimina(' . $row['ID'] . ')">Elimina</span>
             </td>
           </tr>';
     }

@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `configuratore_opzioni_check_dimensioni` (
                                                                         KEY `step_ID` (`step_ID`),
                                                                         KEY `sottostep_ID` (`sottostep_ID`),
                                                                         KEY `opzione_ID` (`opzione_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- L’esportazione dei dati non era selezionata.
 
@@ -183,14 +183,16 @@ CREATE TABLE IF NOT EXISTS `configuratore_opzioni_check_dipendenze` (
                                                                         `categoria_ID` mediumint(8) unsigned DEFAULT NULL,
                                                                         `step_ID` mediumint(8) unsigned DEFAULT NULL,
                                                                         `sottostep_ID` mediumint(9) unsigned NOT NULL DEFAULT 0,
+                                                                        `opzione_ID` mediumint(9) DEFAULT NULL,
                                                                         `opzione_valore_ID` mediumint(9) unsigned NOT NULL DEFAULT 0,
                                                                         `valore` float DEFAULT NULL,
-                                                                        `confronto` tinyint(3) unsigned DEFAULT NULL COMMENT '0: < (minore); \r\n1: <= minore uguale; \r\n2: = (uguale);\r\n3: >= (maggiore o uguale)\r\n4: > (maggiore)\r\n5: != diverso',
+                                                                        `confronto` tinyint(3) unsigned DEFAULT NULL COMMENT '0: < (minore); \r\n1: <= minore uguale; \r\n2: = (uguale);\r\n3: >= (maggiore o uguale)\r\n4: > (maggiore)\r\n5: != diverso\r\n9: selezionata',
                                                                         `esito` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0 = escludi; 1 = includi;',
                                                                         PRIMARY KEY (`ID`),
-                                                                        KEY `opzione_ID` (`sottostep_ID`) USING BTREE,
                                                                         KEY `categoria_ID` (`categoria_ID`),
-                                                                        KEY `step_ID` (`step_ID`)
+                                                                        KEY `step_ID` (`step_ID`),
+                                                                        KEY `opzione_ID` (`opzione_ID`),
+                                                                        KEY `sottostep_ID` (`sottostep_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- L’esportazione dei dati non era selezionata.
@@ -214,21 +216,39 @@ CREATE TABLE IF NOT EXISTS `configuratore_sottostep` (
 
 -- L’esportazione dei dati non era selezionata.
 
--- Dump della struttura di tabella winconf.configuratore_sottostep_check
-CREATE TABLE IF NOT EXISTS `configuratore_sottostep_check` (
-                                                               `ID` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
-                                                               `categoria_ID` mediumint(8) unsigned DEFAULT NULL,
-                                                               `step_ID` mediumint(9) NOT NULL DEFAULT 0,
-                                                               `sottostep_ID` mediumint(8) unsigned DEFAULT NULL,
-                                                               `opzione_ID` mediumint(9) unsigned DEFAULT NULL,
-                                                               `tipo_check` smallint(6) unsigned DEFAULT NULL COMMENT '0 = escludi; 1 = includi',
-                                                               `confronto` smallint(6) unsigned DEFAULT NULL COMMENT '0: < (minore); \r\n1: <= minore uguale; \r\n2: = (uguale);\r\n3: >= (maggiore o uguale)\r\n4: > (maggiore)\r\n5: != diverso',
-                                                               `valore` decimal(20,6) DEFAULT NULL,
-                                                               PRIMARY KEY (`ID`),
-                                                               KEY `step_ID` (`step_ID`),
-                                                               KEY `opzione_ID` (`opzione_ID`),
-                                                               KEY `sottostep_ID` (`sottostep_ID`),
-                                                               KEY `categoria_ID` (`categoria_ID`)
+-- Dump della struttura di tabella winconf.configuratore_sottostep_check_dimensioni
+CREATE TABLE IF NOT EXISTS `configuratore_sottostep_check_dimensioni` (
+                                                                          `ID` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+                                                                          `categoria_ID` mediumint(8) unsigned DEFAULT NULL,
+                                                                          `step_ID` mediumint(8) unsigned DEFAULT NULL,
+                                                                          `sottostep_ID` mediumint(8) unsigned DEFAULT NULL,
+                                                                          `valore` decimal(20,6) unsigned DEFAULT NULL COMMENT 'Valore da controllare',
+                                                                          `dimensione` tinyint(3) unsigned DEFAULT NULL COMMENT '0 = larghezza; 1 = lunghezza; 2 = spessore',
+                                                                          `confronto` int(11) DEFAULT NULL COMMENT '0: < (minore); \r\n1: <= minore uguale; \r\n2: = (uguale);\r\n3: >= (maggiore o uguale)\r\n4: > (maggiore)\r\n5: != diverso',
+                                                                          `esito` tinyint(3) unsigned DEFAULT NULL COMMENT '0 = escludi; 1 = includi',
+                                                                          PRIMARY KEY (`ID`) USING BTREE,
+                                                                          KEY `categoria_ID` (`categoria_ID`) USING BTREE,
+                                                                          KEY `step_ID` (`step_ID`) USING BTREE,
+                                                                          KEY `sottostep_ID` (`sottostep_ID`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+-- L’esportazione dei dati non era selezionata.
+
+-- Dump della struttura di tabella winconf.configuratore_sottostep_check_dipendenze
+CREATE TABLE IF NOT EXISTS `configuratore_sottostep_check_dipendenze` (
+                                                                          `ID` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+                                                                          `categoria_ID` mediumint(8) unsigned DEFAULT NULL,
+                                                                          `step_ID` mediumint(9) NOT NULL DEFAULT 0,
+                                                                          `sottostep_ID` mediumint(8) unsigned DEFAULT NULL,
+                                                                          `opzione_ID` mediumint(9) unsigned DEFAULT NULL,
+                                                                          `tipo_check` smallint(6) unsigned DEFAULT NULL COMMENT '0 = escludi; 1 = includi',
+                                                                          `confronto` smallint(6) unsigned DEFAULT NULL COMMENT '0: < (minore); \r\n1: <= minore uguale; \r\n2: = (uguale);\r\n3: >= (maggiore o uguale)\r\n4: > (maggiore)\r\n5: != diverso',
+                                                                          `valore` decimal(20,6) DEFAULT NULL,
+                                                                          PRIMARY KEY (`ID`),
+                                                                          KEY `step_ID` (`step_ID`),
+                                                                          KEY `opzione_ID` (`opzione_ID`),
+                                                                          KEY `sottostep_ID` (`sottostep_ID`),
+                                                                          KEY `categoria_ID` (`categoria_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Questa tabella regola la visualizzazione dei sottostep (configuratore_step) in base alle condizioni imposte';
 
 -- L’esportazione dei dati non era selezionata.

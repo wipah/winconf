@@ -75,6 +75,19 @@ echo '
       <span id="sottostepCheckDipendenzeHelpBlock" class="form-text text-muted">Determina se controllare eventuali dipendenze</span>
     </div>
   </div>
+  
+    <div class="form-group row">
+    <label for="sottostepCheckDipendenze" class="col-4 col-form-label">Check dipendenze</label> 
+    <div class="col-8">
+      <select id="sottostepCheckDimensioni" name="sottostepCheckDimensioni" class="custom-select" aria-describedby="sottostepCheckDipendenzeHelpBlock">
+        <option ' . ( (int) $row['check_dimensioni'] === 0 ? ' selected ' : '' )  . ' value="0">No, non controlla le dimensioni</option>
+        <option ' . ( (int) $row['check_dimensioni'] === 1 ? ' selected ' : '' )  . ' value="1">Sì, controlla le dimensioni</option>
+      </select> 
+      <span id="sottostepCheckDipendenzeHelpBlock" class="form-text text-muted">Determina se controllare eventuali dipendenze</span>
+    </div>
+  </div>
+  
+  
   <div class="form-group row">
     <label for="sottostepVisibile" class="col-4 col-form-label">Visibile</label> 
     <div class="col-8">
@@ -103,6 +116,7 @@ function sottostepPostData(categoria_ID, step_ID, sottostep_ID)
     sottostepDescrizione    = $("#sottostepDescrizione").val();
     sottostepTipoScelta     = $("#sottostepTipoScelta").find(":selected").val();
     sottostepDipendenza     = $("#sottostepCheckDipendenze").find(":selected").val();
+    sottostepDimensioni     = $("#sottostepCheckDimensioni").find(":selected").val();
     sottostepVisibile       = $("#sottostepVisibile").find(":selected").val();
      
     $.post( jsPath + "configuratore-admin/ajax-sottostep-editor-post/", { categoria_ID          : categoria_ID ,
@@ -113,6 +127,7 @@ function sottostepPostData(categoria_ID, step_ID, sottostep_ID)
                                                                           sottostepDescrizione  : sottostepDescrizione,
                                                                           sottostepTipoScelta   : sottostepTipoScelta,
                                                                           sottostepDipendenza   : sottostepDipendenza,
+                                                                          sottostepDimensioni   : sottostepDimensioni,
                                                                           sottostepVisibile     : sottostepVisibile,
                                                                         })
     .done(function( data ) {

@@ -15,7 +15,6 @@ $queryTestata = 'SELECT *
                  WHERE ID = ' . $documento_ID . ' 
                  AND user_ID = ' . $user->ID;
 
-
 if (!$resultTestata = $db->query($queryTestata)) {
     echo 'Query error.';
     return;
@@ -62,9 +61,16 @@ border-bottom: 1px solid #9aa2ad !important;
     border-bottom: 1px solid #e3e3e3;
 }
 </style>';
+
 $rowTestata = mysqli_fetch_assoc($resultTestata);
 
-$queryCliente = 'SELECT * FROM clienti WHERE ID = ' . $rowTestata['customer_ID'];
+
+$configuratore->lunghezza = $rowTestata['lunghezza'];
+$configuratore->larghezza = $rowTestata['larghezza'];
+
+$queryCliente = 'SELECT * 
+                 FROM clienti 
+                 WHERE ID = ' . $rowTestata['customer_ID'];
 if (!$resultCliente = $db->query($queryCliente)) {
     echo 'Errore nella query. ' . $queryCliente;
     return;

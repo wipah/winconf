@@ -10,6 +10,9 @@ $lunghezza      = (float) $_POST['lunghezza'];
 $larghezza      = (float) $_POST['larghezza'];
 $metri_quadri   = $larghezza * $lunghezza;
 
+$configuratore->lunghezza = $lunghezza;
+$configuratore->larghezza = $larghezza;
+
 $query = 'INSERT INTO documenti 
           ( user_ID
           , customer_ID
@@ -72,7 +75,6 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
         $query = 'SELECT * 
                   FROM configuratore_sottostep 
                   WHERE step_ID = ' . $rowStep['ID'] . ' 
-                  AND visibile = 1 
                   ORDER BY ordine ASC';
 
         if (!$risultatoSottostep = $db->query($query)) {
@@ -81,6 +83,19 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
         }
 
         while ($rowSottostep = mysqli_fetch_assoc($risultatoSottostep)) {
+
+            // Controlla le dipendenze dalle dimensioni
+
+            if ( (int) $rowSottostep['check_dimensioni'] === 1)
+                $checkDimensioni = $configuratore->checkDipendenzaDimensione($documento_ID,0, $rowSottostep['ID']);
+
+            switch ($checkDimensioni) {
+                case -1:
+                    continue;
+                case 1:
+                    $rowSottostep['visibile'] = 1;
+                    continue;
+            }
 
             // Controlla se è il primo sottostep visibile.
             if ($primo) {
@@ -103,6 +118,7 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
                   , importo
                   , qta
                   , primo_step
+                  , visibile
                   )
                   VALUES (
                   ' . $documento_ID .'      
@@ -117,11 +133,14 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
                   , 0      
                   , 0
                   , ' . $primoStep . '
+                  , ' . ( (int) $rowSottostep['visibile'] ) . ' 
                   );';
             if (!$db->query($query)) {
                 echo '--KO-- Errore nella query';
                 return;
             }
+
+
         }
 
     }

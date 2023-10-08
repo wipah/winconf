@@ -18,6 +18,7 @@ $sottostepSigla         =   $core->in($_POST['sottostepSigla']);
 $sottostepDescrizione   =   $core->in($_POST['sottostepDescrizione']);
 $sottostepTipoScelta    =   (int) $_POST['sottostepTipoScelta'];
 $sottostepDipendenza    =   (int) $_POST['sottostepDipendenza'];
+$sottostepDimensioni   =   (int) $_POST['sottostepDimensioni'];
 $sottostepVisibile      =   (int) $_POST['sottostepVisibile'];
 
 $query = 'SELECT MAX(ordine) ordine 
@@ -39,6 +40,7 @@ if ($sottostep_ID === 0 ) {
                     sottostep_descrizione, 
                     tipo_scelta, 
                     check_dipendenze,
+                    check_dimensioni,
                     ordine,
                     visibile
                 )
@@ -51,6 +53,7 @@ if ($sottostep_ID === 0 ) {
                     ,   \'' . $sottostepDescrizione  . '\' 
                     ,   \'' . $sottostepTipoScelta  . '\' 
                     ,   \'' . $sottostepDipendenza  . '\' 
+                    ,   \'' . $sottostepDimensioni  . '\' 
                     ,   \'' . $ordine  . '\' 
                     ,   \'' . $sottostepVisibile  . '\' 
                 )';
@@ -62,6 +65,7 @@ if ($sottostep_ID === 0 ) {
             , sottostep_descrizione   = \'' . $sottostepDescrizione . '\'
             , tipo_scelta             = \'' . $sottostepTipoScelta . '\'
             , check_dipendenze        = \'' . $sottostepDipendenza . '\'
+            , check_dimensioni        = \'' . $sottostepDimensioni . '\'
             , visibile                = \'' . $sottostepVisibile . '\'
     WHERE ID = ' . $sottostep_ID . ' 
     LIMIT 1';

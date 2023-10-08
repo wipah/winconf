@@ -30,5 +30,5 @@ if (!$db->affected_rows) {
 
 echo '<h2>Step: ' . $step_ID .'</h2>';
 while ($row = mysqli_fetch_assoc($risultato)) {
-    echo $configuratore->layoutCreaSottoStep($step_ID, $row['sottostep_ID'], $row['ID']);
+    echo $configuratore->layoutCreaSottoStep($documento_ID, $step_ID, $row['sottostep_ID'], $row['ID']);
 }

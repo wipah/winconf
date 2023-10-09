@@ -56,5 +56,4 @@ if (!$db->query($query)){
 }
 
 
-
 echo json_encode(['status' => 1, 'message' => 'Operazione completata', 'step_ID' => $rowStepID]);

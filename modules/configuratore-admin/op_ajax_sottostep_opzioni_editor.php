@@ -100,7 +100,7 @@ echo '
   <div class="form-group row">
     <label for="Valore formula" class="col-4 col-form-label">Valore formula</label> 
     <div class="col-8">
-      <input id="valoreFormula" name="valoreFormula" type="text" class="form-control" value="' . $row['opzione_formula_valore']  . '">
+      <input id="valoreFormula" name="valoreFormula" type="text" class="form-control" value="' . ($row['opzione_formula_valore'] ?? 1) . '">
     </div>
   </div>
   <div class="form-group row">

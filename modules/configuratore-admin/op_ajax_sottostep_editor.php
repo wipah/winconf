@@ -77,13 +77,13 @@ echo '
   </div>
   
     <div class="form-group row">
-    <label for="sottostepCheckDipendenze" class="col-4 col-form-label">Check dipendenze</label> 
+    <label for="sottostepCheckDipendenze" class="col-4 col-form-label">Check dimensioni</label> 
     <div class="col-8">
       <select id="sottostepCheckDimensioni" name="sottostepCheckDimensioni" class="custom-select" aria-describedby="sottostepCheckDipendenzeHelpBlock">
         <option ' . ( (int) $row['check_dimensioni'] === 0 ? ' selected ' : '' )  . ' value="0">No, non controlla le dimensioni</option>
         <option ' . ( (int) $row['check_dimensioni'] === 1 ? ' selected ' : '' )  . ' value="1">Sì, controlla le dimensioni</option>
       </select> 
-      <span id="sottostepCheckDipendenzeHelpBlock" class="form-text text-muted">Determina se controllare eventuali dipendenze</span>
+      <span id="sottostepCheckDipendenzeHelpBlock" class="form-text text-muted">Determina se controllare eventuali dimensioni</span>
     </div>
   </div>
   

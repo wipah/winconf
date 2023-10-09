@@ -55,6 +55,7 @@ if (!$db->affected_rows) {
                 <tr>
                     <th>ID</th>
                     <th>Opzione</th>
+                    <th>Dimensione</th>
                     <th>Confronto</th>
                     <th>Valore</th>
                     <th>Esito</th>
@@ -64,9 +65,22 @@ if (!$db->affected_rows) {
             <tbody>';
 
     while ($row = mysqli_fetch_assoc($result)) {
+        switch ( (int) $row['dimensione']) {
+            case 0:
+                $dimensione = 'Larghezza';
+                break;
+            case 1:
+                $dimensione = 'Lunghezza';
+                break;
+            case 2:
+                $dimensione = 'Spessore';
+                break;
+        }
+
         echo '<tr id="dimensione-' . $row['ID'] . '">
             <td>' . $row['dimensione_ID'] . '</td>
             <td>' . $row['opzione_nome']  . '</td>
+            <td>' . $dimensione . '</td>
             <td>' . $arrayConfronti[ (int) $row['confronto']]  . '</td>
             <td>' . $row['valore']  . '</td>
             <td>' . ( (int) $row['esito'] === 0 ? 'Escludi' : 'Includi' )  . '</td>

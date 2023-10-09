@@ -24,7 +24,6 @@ class configuratore
         $this->lunghezza = $row['lunghezza'];
         $this->larghezza = $row['larghezza'];
 
-
         switch ($tipo) {
             case 0: // Controllo dimensioni per sottostep
                 $query = 'SELECT * FROM configuratore_opzioni_check_dimensioni 

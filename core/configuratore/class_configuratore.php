@@ -7,6 +7,53 @@ class configuratore
     public float $larghezza;
     public float $lunghezza;
 
+
+    function getDimensioni ( int $documento_ID) : void {
+        global $db;
+
+
+        $query = 'SELECT * 
+                  FROM documenti WHERE ID = ' . $documento_ID;
+        $result = $db->query($query);
+        $row = mysqli_fetch_assoc($result);
+
+        $this->lunghezza = $row['lunghezza'];
+        $this->larghezza = $row['larghezza'];
+
+    }
+
+    /**
+     * @param int $documento_ID
+     * @param int $sottostep_ID
+     * @param     $opzione_ID
+     * @return void
+     */
+    function checkDipendenzaOpzione (int $documento_ID, $opzione_valore_ID) : void {
+        global $db;
+
+        $this->getDimensioni($documento_ID);
+
+        $query = 'SELECT * 
+                  FROM configuratore_opzioni_check_dipendenze 
+                  WHERE opzione_valore_ID = ' . $opzione_valore_ID . ';';
+
+        $result = $db->query($query);
+
+        if (!$db->affected_rows)
+            return;
+
+        while ($row  = mysqli_fetch_assoc($result)) {
+
+            echo 'Cambio opzione. Sottostep_ID : ' . $row['sottostep_ID'];
+
+            $query = 'UPDATE documenti_corpo 
+                      SET  esclusa  = 0
+                         , visibile = 0
+                      WHERE ID = ' . $row['sottostep_ID'] . '
+                      LIMIT 1';
+        }
+    }
+
     /**
      * @param int $tipo 0 = sottostep, 1 = opzione
      * @param int $ID
@@ -16,13 +63,7 @@ class configuratore
     {
         global $db;
 
-
-        $query = 'SELECT * FROM documenti WHERE ID = ' . $documento_ID;
-        $result = $db->query($query);
-        $row = mysqli_fetch_assoc($result);
-
-        $this->lunghezza = $row['lunghezza'];
-        $this->larghezza = $row['larghezza'];
+        $this->getDimensioni($documento_ID);
 
         switch ($tipo) {
             case 0: // Controllo dimensioni per sottostep

@@ -28,7 +28,7 @@ class configuratore
      * @param     $opzione_ID
      * @return void
      */
-    function checkDipendenzaOpzione (int $documento_ID, $opzione_valore_ID) : void {
+    function checkDipendenzaOpzione (int $documento_ID, $opzione_valore_ID) : array {
         global $db;
 
         $this->getDimensioni($documento_ID);
@@ -40,18 +40,32 @@ class configuratore
         $result = $db->query($query);
 
         if (!$db->affected_rows)
-            return;
+            return ['status' => -2];
 
+        $step = [];
+        $sottostep = [];
         while ($row  = mysqli_fetch_assoc($result)) {
+            $step[] = $row['step_ID'];
+            $sottostep[] = $row['sottostep_ID'];
 
             echo 'Cambio opzione. Sottostep_ID : ' . $row['sottostep_ID'];
 
+            if ( (int) $row['esito'] === 0) {
+                $esclusa = 1;
+                $visibile = 0;
+            } else {
+                $esclusa = 0;
+                $visibile = 1;
+            }
+
             $query = 'UPDATE documenti_corpo 
-                      SET  esclusa  = 0
-                         , visibile = 0
+                      SET  esclusa  = ' . $esclusa . '
+                         , visibile = ' . $visibile . '
                       WHERE ID = ' . $row['sottostep_ID'] . '
                       LIMIT 1';
         }
+
+        return ['status' => 1, 'step' => $step, 'sottoStep' => $sottostep];
     }
 
     /**
@@ -278,12 +292,13 @@ class configuratore
                  * Controlla se l'opzione ha un check sulle dimensioni.
                  */
                 if ( (int) $rowOpzioni['check_dimensioni'] === 1) {
+
                     $checkDimensioni = $configuratore->checkDipendenzaDimensione($documento_ID,1, $sottostep_ID,$rowOpzioni['ID']);
 
                     switch ($checkDimensioni) {
                         case -1:
                         case 0 && (int)$rowOpzioni['visibile'] === 0:
-                            break 2;
+                            break 1;
                             continue;
 
                     }

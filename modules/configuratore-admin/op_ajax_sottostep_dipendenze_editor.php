@@ -20,7 +20,7 @@ $ID                 = (int) $_POST['ID'];
 if ($opzione_ID === 0 ) {
     echo '<h2>Editor sottostep</h2>';
 } else {
-    echo '<h2>Editor opzione</h2>';
+    echo '<h2>Editor opzione (ID opzione: ' . $opzione_ID . ' )</h2>';
 }
 
 if ($ID !== 0) {

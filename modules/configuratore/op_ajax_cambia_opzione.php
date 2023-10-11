@@ -4,9 +4,10 @@ $this->noTemplateParse = true;
 if (!$user->validateLogin())
     return;
 
-$opzione_ID     = (int) $_POST['opzione_ID'];
-$linea_ID       = (int) $_POST['linea_ID'];
 $documento_ID   = (int) $_POST['documento_ID'];
+$linea_ID       = (int) $_POST['linea_ID'];
+$opzione_ID     = (int) $_POST['opzione_ID'];
+
 
 $query = 'UPDATE documenti_corpo 
           SET opzione_ID = ' . $opzione_ID . ' 
@@ -14,6 +15,9 @@ $query = 'UPDATE documenti_corpo
           LIMIT 1';
 
 $db->query($query);
+
+// Controlla le dipendenze
+$configuratore->checkDipendenzaOpzione($documento_ID, $opzione_ID);
 
 // Elimina la valorizzazione e l'eventuale scelta delle opzioni successive
 $query = 'UPDATE documenti_corpo 

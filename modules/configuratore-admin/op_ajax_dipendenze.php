@@ -13,7 +13,7 @@ $categoria_ID = (int) $_POST['categoria_ID'];
 $step_ID      = (int) $_POST['step_ID'];
 $sottostep_ID = (int) $_POST['sottostep_ID'];
 $opzione_ID   = (int) $_POST['opzione_ID'];
-$ID           = (int) $_POST['ID'];
+$ID           = (int) $_POST['ID']; /* Eventuale ID della dipendenza in tabella */
 
 
 $query = 'SELECT categoria_nome, 
@@ -80,4 +80,4 @@ if (!$db->affected_rows) {
     echo '</tbody></table>';
 }
 
-echo '<span class="btn btn-info btn-default" onclick="dipendenzeEditor('. $categoria_ID .', ' . $step_ID . ',' . $sottostep_ID . ', 0)">Nuova dipendenza</span>';
+echo '<span class="btn btn-info btn-default" onclick="dipendenzeEditor('. $categoria_ID .', ' . $step_ID . ',' . $sottostep_ID . ', '. $opzione_ID. ')">Nuova dipendenza</span>';

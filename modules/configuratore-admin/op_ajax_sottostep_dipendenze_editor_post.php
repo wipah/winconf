@@ -27,8 +27,6 @@ $esito               = (int) $_POST['esito'];
 
 $ID = (int) $_POST['ID'];
 
-var_dump($_POST);
-
 if ($ID === 0) {
     $query = 'INSERT INTO configuratore_opzioni_check_dipendenze (categoria_ID, step_ID, sottostep_ID, opzione_ID, opzione_valore_ID, confronto, esito, valore)
               VALUES 

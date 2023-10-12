@@ -69,7 +69,7 @@ if (!$db->affected_rows) {
             <td>' . $row['dipendenza_ID'] . '</td>
             <td>' . $row['opzione_nome']  . '</td>
             <td>' . $arrayConfronti[ (int) $row['confronto']]  . '</td>
-            <td>' . $row['valore']  . '</td>
+            <!-- <td>' . $row['valore']  . '</td> -->
             <td>' . ( (int) $row['esito'] === 0 ? 'Escludi' : 'Includi' )  . '</td>
             <td>
                 <span class="spanClickable" onclick="dipendenzeEditor(' . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ', ' . $row['ID'] .')">Modifica</span> | 

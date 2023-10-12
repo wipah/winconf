@@ -10,12 +10,15 @@ if (!$user->logged) {
     return;
 }
 
+/*
+ * $core->echoPost();
+ */
 
 $categoria_ID       = (int) $_POST['categoria_ID'];
 $step_ID            = (int) $_POST['step_ID'];
 $sottostep_ID       = (int) $_POST['sottostep_ID'];
-$opzione_ID         = (int) $_POST['opzione_ID'];
-$ID                 = (int) $_POST['ID'];
+/* $opzione_ID         = (int) $_POST['opzione_ID']; */
+$ID                 = (int) $_POST['opzione_ID'];
 
 if ($opzione_ID === 0 ) {
     echo '<h2>Editor sottostep</h2>';
@@ -24,6 +27,7 @@ if ($opzione_ID === 0 ) {
 }
 
 if ($ID !== 0) {
+
     $query = 'SELECT * 
               FROM configuratore_opzioni_check_dipendenze 
               WHERE ID = ' . $ID . ' LIMIT 1';
@@ -68,7 +72,7 @@ $selectStep = '<div class="form-group row">
       <select id="opzione" name="opzione" class="custom-select">';
 
 while ($rowSelect = mysqli_fetch_assoc($result)) {
-    $selectStep .= '<option ' . ( (int) $row['opzioni_formula_ID'] === $rowSelect['opzione_ID'] ? ' selected ' : '' ) . ' value="' . $rowSelect['opzione_ID'] . '">' . $rowSelect['step_nome'] . ' - ' . $rowSelect['sottostep_nome'] . ' - ' . $rowSelect['opzione_nome'] . '</option>';
+    $selectStep .= '<option ' . ( (int) $row['opzione_valore_ID'] === (int) $rowSelect['opzione_ID'] ? ' selected ' : '' ) . ' value="' . $rowSelect['opzione_ID'] . '">' . $rowSelect['step_nome'] . ' - ' . $rowSelect['sottostep_nome'] . ' - ' . $rowSelect['opzione_nome'] .  '</option>';
 }
 
 $selectStep .= '
@@ -82,12 +86,14 @@ $selectConfronto = '<div class="form-group row">
     <div class="col-8">
       <select id="confronto" name="confronto" class="custom-select">
         <option ' . ( (int) $row['confronto'] === 9 ? ' selected ' : '') . ' value="9">Selezionata </option>
+        <!--
         <option ' . ( (int) $row['confronto'] === 0 ? ' selected ' : '') . ' value="0">Minore di </option>
         <option ' . ( (int) $row['confronto'] === 1 ? ' selected ' : '') . ' value="1">Minore o uguale di</option>
         <option ' . ( (int) $row['confronto'] === 2 ? ' selected ' : '') . ' value="2">Uguale a</option>
         <option ' . ( (int) $row['confronto'] === 3 ? ' selected ' : '') . ' value="3">Maggiore di</option>
         <option ' . ( (int) $row['confronto'] === 4 ? ' selected ' : '') . ' value="4">Maggiore o uguale a</option>
         <option ' . ( (int) $row['confronto'] === 5 ? ' selected ' : '') . ' value="5">Diverso da</option>
+        -->
       </select></div></div>';
 
 
@@ -95,12 +101,12 @@ $selectConfronto = '<div class="form-group row">
 echo $selectStep;
 echo $selectConfronto;
 
-echo '  <div class="form-group row">
+echo '  <!--<div class="form-group row">
     <label for="valore" class="col-4 col-form-label">Valore</label> 
     <div class="col-8">
       <input value="' . $row['valore'] . '" id="valore" name="valore" placeholder="valore" type="text" class="form-control">
     </div>
-  </div>
+  </div>-->
   <div class="form-group row">
     <label for="esito" class="col-4 col-form-label">Esito</label> 
     <div class="col-8">

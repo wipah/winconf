@@ -140,7 +140,14 @@ function sottostepElimina(sottostep_ID)
     });
 }
 
-
+/**
+* 
+* @param categoria_ID
+* @param step_ID
+* @param sottostep_ID
+* @param opzione_ID
+* @param ID ID della tabella
+*/
 function dipendenzeEditor(categoria_ID, step_ID, sottostep_ID, opzione_ID, ID)
 {
     console.log("[Editor dipendenze]");

@@ -28,8 +28,9 @@ class configuratore
      * @param     $opzione_ID
      * @return void
      */
-    function checkDipendenzaOpzione (int $documento_ID, $opzione_valore_ID) : array {
+    function checkDipendenzaOpzione (int $tipo, int $documento_ID, $opzione_valore_ID) : array {
         global $db;
+
 
         $this->getDimensioni($documento_ID);
 
@@ -42,28 +43,58 @@ class configuratore
         if (!$db->affected_rows)
             return ['status' => -2];
 
-        $step = [];
-        $sottostep = [];
-        while ($row  = mysqli_fetch_assoc($result)) {
-            $step[] = $row['step_ID'];
-            $sottostep[] = $row['sottostep_ID'];
+        $step       = [];
+        $sottostep  = [];
 
-            echo 'Cambio opzione. Sottostep_ID : ' . $row['sottostep_ID'];
 
-            if ( (int) $row['esito'] === 0) {
-                $esclusa = 1;
-                $visibile = 0;
-            } else {
-                $esclusa = 0;
-                $visibile = 1;
-            }
+            while ($row  = mysqli_fetch_assoc($result)) {
 
-            $query = 'UPDATE documenti_corpo 
-                      SET  esclusa  = ' . $esclusa . '
-                         , visibile = ' . $visibile . '
+                $step[]         =   $row['step_ID'];
+                $sottostep[]    =   $row['sottostep_ID'];
+
+                if ( (int) $row['esito'] === 0) {
+                    $esclusa = 1;
+                    $visibile = 0;
+                } else {
+                    $esclusa = 0;
+                    $visibile = 1;
+                }
+
+                if ($tipo === 0 ) {
+                    $query = 'UPDATE documenti_corpo 
+                                SET  esclusa  = ' . $esclusa . '
+                                    , visibile = ' . $visibile . '
                       WHERE ID = ' . $row['sottostep_ID'] . '
                       LIMIT 1';
-        }
+
+                    $db->query($query);
+                } else {
+
+                    $query = 'DELETE FROM documenti_corpo_opzioni 
+                              WHERE documento_ID = ' . $documento_ID . ' AND opzione_ID = '. $row['opzione_ID'];
+
+                    $db->query($query);
+
+                    $query = 'INSERT INTO documenti_corpo_opzioni 
+                                        ( 
+                                          documento_ID
+                                        , opzione_ID
+                                        , stato
+                                        )
+                               VALUES   ( 
+                                          ' . $documento_ID . '
+                                        ,  ' . $row['opzione_ID']. '
+                                        , ' . $visibile . '
+                                        );';
+
+
+                    $db->query($query);
+
+                }
+
+            }
+
+
 
         return ['status' => 1, 'step' => $step, 'sottoStep' => $sottostep];
     }
@@ -277,9 +308,12 @@ class configuratore
         $partSelect = '';
 
         if ((int)$row['tipo_scelta'] === 0) {
-            $query = 'SELECT * 
+            $query = 'SELECT configuratore_opzioni.*,
+                            documenti_corpo_opzioni.stato
                       FROM configuratore_opzioni 
-                      WHERE sottostep_ID = ' . $sottostep_ID;
+                      LEFT JOIN documenti_corpo_opzioni 
+                        ON documenti_corpo_opzioni.opzione_ID = configuratore_opzioni.ID
+                      WHERE configuratore_opzioni. sottostep_ID = ' . $sottostep_ID;
 
             $risultatoOpzioni = $db->query($query);
 
@@ -287,6 +321,8 @@ class configuratore
             $partSelect = '<select class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ');" id="">';
             while ($rowOpzioni = mysqli_fetch_assoc($risultatoOpzioni)) {
 
+                if (!is_null($rowOpzioni['stato']) && (int) $rowOpzioni['stato'] !== 1)
+                    continue;
 
                 /*
                  * Controlla se l'opzione ha un check sulle dimensioni.

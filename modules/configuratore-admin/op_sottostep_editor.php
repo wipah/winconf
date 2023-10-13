@@ -146,18 +146,18 @@ function sottostepElimina(sottostep_ID)
 * @param step_ID
 * @param sottostep_ID
 * @param opzione_ID
-* @param ID ID della tabella
+* @param opzione_valore_ID ID della tabella
 */
-function dipendenzeEditor(categoria_ID, step_ID, sottostep_ID, opzione_ID, ID)
+function dipendenzeEditor(categoria_ID, step_ID, sottostep_ID, opzione_ID, opzione_valore_ID)
 {
     console.log("[Editor dipendenze]");
     console.log("->sottostep_ID: " + sottostep_ID);
     console.log("->opzione_ID: " + opzione_ID);
-    console.log("->ID: " + ID);
-    
+    console.log("->opzione_valore_ID: " + opzione_valore_ID);
+   
     $("#modalDialog").modal();
     
-    $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-editor/", { categoria_ID: categoria_ID, step_ID: step_ID, sottostep_ID: sottostep_ID, opzione_ID: opzione_ID, ID: ID })
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-editor/", { categoria_ID: categoria_ID, step_ID: step_ID, sottostep_ID: sottostep_ID, opzione_ID: opzione_ID, opzione_valore_ID: opzione_valore_ID })
     .done(function( data ) {
         $("#modalBody").html(data);
     });

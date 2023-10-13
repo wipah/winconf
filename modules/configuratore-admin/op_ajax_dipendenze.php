@@ -16,6 +16,9 @@ $opzione_ID   = (int) $_POST['opzione_ID'];
 $ID           = (int) $_POST['ID']; /* Eventuale ID della dipendenza in tabella */
 
 
+/*
+ * Cerca le descrizioni delle categorie, degli step, dei sottostep e delle opzioni
+ */
 $query = 'SELECT categoria_nome, 
                  configuratore_step.step_nome,
                  configuratore_sottostep.sottostep_nome,
@@ -64,6 +67,15 @@ if (!$db->affected_rows) {
 
 
 
+    /*
+     * La funzione dipendenzeEditor dovrebbe ricevere i seguenti parametri:
+     *  $categoria_ID
+     *  $step_ID
+     *  $sottostep_ID
+     *  $opzione_ID : l'ID dell'opzione della tabella configuratore_opzioni
+     *  $opzione_check_ID : l'ID dell'opzione della tabella configuratore_opzioni_check_dipendenze
+     *  $opzione_valore_ID : l'ID dell'opzione che triggera il controllo
+     */
     while ($row = mysqli_fetch_assoc($result)) {
         echo '<tr>
             <td>' . $row['dipendenza_ID'] . '</td>
@@ -72,7 +84,7 @@ if (!$db->affected_rows) {
             <!-- <td>' . $row['valore']  . '</td> -->
             <td>' . ( (int) $row['esito'] === 0 ? 'Escludi' : 'Includi' )  . '</td>
             <td>
-                <span class="spanClickable" onclick="dipendenzeEditor(' . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ', ' . $row['ID'] .')">Modifica</span> | 
+                <span class="spanClickable" onclick="dipendenzeEditor(' . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ', ' . $row['ID'] . ', ' . $row['opzione_valore_ID'] . ')">Modifica</span> | 
                 Elimina
             </td>
           </tr>';
@@ -80,4 +92,4 @@ if (!$db->affected_rows) {
     echo '</tbody></table>';
 }
 
-echo '<span class="btn btn-info btn-default" onclick="dipendenzeEditor('. $categoria_ID .', ' . $step_ID . ',' . $sottostep_ID . ', '. $opzione_ID. ')">Nuova dipendenza</span>';
+echo '<span class="btn btn-info btn-default" onclick="dipendenzeEditor('. $categoria_ID .', ' . $step_ID . ',' . $sottostep_ID . ', '. $opzione_ID . ')">Nuova dipendenza</span>';

@@ -10,15 +10,11 @@ if (!$user->logged) {
     return;
 }
 
-/*
- * $core->echoPost();
- */
-
 $categoria_ID       = (int) $_POST['categoria_ID'];
 $step_ID            = (int) $_POST['step_ID'];
 $sottostep_ID       = (int) $_POST['sottostep_ID'];
-/* $opzione_ID         = (int) $_POST['opzione_ID']; */
-$ID                 = (int) $_POST['opzione_ID'];
+$opzione_ID         = (int) $_POST['opzione_ID'];
+$opzione_valore_ID                 = (int) $_POST['opzione_valore_ID'];
 
 if ($opzione_ID === 0 ) {
     echo '<h2>Editor sottostep</h2>';
@@ -30,7 +26,7 @@ if ($ID !== 0) {
 
     $query = 'SELECT * 
               FROM configuratore_opzioni_check_dipendenze 
-              WHERE ID = ' . $ID . ' LIMIT 1';
+              WHERE ID = ' . $opzione_ID . ' LIMIT 1';
 
 
     if (!$result = $db->query($query)) {

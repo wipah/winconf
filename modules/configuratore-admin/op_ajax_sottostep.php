@@ -86,14 +86,12 @@ if (!$db->affected_rows) {
                     <td>' . $row['sottostep_nome'] . '</td>
                     <td>' . $row['sottostep_sigla']  .'</td>
                     <td>' . $tipoScelta  .'</td>
-                    <td>' . ( (int) $row['check_dipendenze'] === 1 ? 'Si' : 'No') . '</td>
-                    
-                    <td>' . ( (int) $row['check_dimensioni'] === 1 ? 'Si' : 'No') . '<hr/>
-                        <span class="spanClickable"
-                              onclick="mostraDimensioniSottostep(' . $row['categoria_ID'] . ' , ' . $row['step_ID'] . ' , ' . $row['ID'] .' );"  
-                        >Editor check dimensioni</span>
+                    <td>' . ( (int) $row['check_dipendenze'] === 1 ? 'Si' : 'No') . '<br/>
+                        <span onclick="mostraDipendenzeSottostep(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .')" class="spanClickable">Editor check dipendenze</span>
                     </td>
-                    
+                    <td>' . ( (int) $row['check_dimensioni'] === 1 ? 'Si' : 'No') . '<br/>
+                        <span onclick="mostraDimensioniSottostep(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .')" class="spanClickable">Editor check dimensioni</span>
+                    </td>
                     <td>' . ( (int) $row['visibile'] === 1 ? 'Visibile' : 'Non visibile' ) . '</td>
                     <td>
                         <span class="spanClickable" onclick="sottoStepEditor(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .');">Modifica sottostep</span> | 

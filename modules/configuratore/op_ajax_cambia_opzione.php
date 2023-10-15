@@ -16,8 +16,8 @@ $query = 'UPDATE documenti_corpo
 
 $db->query($query);
 
-// Controlla le dipendenze
-$configuratore->checkDipendenzaOpzione($documento_ID, $opzione_ID);
+// Controlla le dipendenze, viene passato "tipo 1" per instradare il controllo sulle opzioni e non sul sottostep
+$configuratore->checkDipendenzaOpzione(1,$documento_ID, $opzione_ID);
 
 // Elimina la valorizzazione e l'eventuale scelta delle opzioni successive
 $query = 'UPDATE documenti_corpo 

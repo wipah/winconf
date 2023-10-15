@@ -44,6 +44,7 @@ class configuratore
 
         $step = [];
         $sottostep = [];
+
         while ($row  = mysqli_fetch_assoc($result)) {
             $step[] = $row['step_ID'];
             $sottostep[] = $row['sottostep_ID'];
@@ -58,19 +59,48 @@ class configuratore
                 $visibile = 1;
             }
 
-            $query = 'UPDATE documenti_corpo 
-                      SET  esclusa  = ' . $esclusa . '
-                         , visibile = ' . $visibile . '
+            if ($tipo === 0 ) {
+                $query = 'UPDATE documenti_corpo 
+                                SET  esclusa  = ' . $esclusa . '
+                                   , visibile = ' . $visibile . '
                       WHERE ID = ' . $row['sottostep_ID'] . '
                       LIMIT 1';
+
+                $db->query($query);
+            } else {
+
+                $query = 'DELETE FROM documenti_corpo_opzioni 
+                              WHERE documento_ID = ' . $documento_ID . ' AND opzione_ID = '. $row['opzione_ID'];
+
+                $db->query($query);
+
+                $query = 'INSERT INTO documenti_corpo_opzioni 
+                                        ( 
+                                          documento_ID
+                                        , opzione_ID
+                                        , stato
+                                        )
+                               VALUES   ( 
+                                          ' . $documento_ID . '
+                                        ,  ' . $row['opzione_ID']. '
+                                        , ' . $visibile . '
+                                        );';
+
+
+                $db->query($query);
+
+            }
+
         }
 
         return ['status' => 1, 'step' => $step, 'sottoStep' => $sottostep];
     }
 
     /**
-     * @param int $tipo 0 = sottostep, 1 = opzione
-     * @param int $ID
+     * @param int  $documento_ID ID del docmento
+     * @param int  $tipo 0 = sottostep, 1 = opzione
+     * @param int  $sottostep_ID ID dell'opzione
+     * @param null $opzione_ID
      * @return int
      */
     function checkDipendenzaDimensione(int $documento_ID, int $tipo, int $sottostep_ID, $opzione_ID = null): int
@@ -81,24 +111,32 @@ class configuratore
 
         switch ($tipo) {
             case 0: // Controllo dimensioni per sottostep
-                $query = 'SELECT * FROM configuratore_opzioni_check_dimensioni 
-                      WHERE sottostep_ID = ' . $sottostep_ID . ' AND (opzione_ID = 0 || opzione_ID IS NULL)';
+                $query = 'SELECT * 
+                          FROM configuratore_opzioni_check_dimensioni 
+                          WHERE sottostep_ID = ' . $sottostep_ID . ' 
+                            AND (opzione_ID = 0 || opzione_ID IS NULL)';
                 break;
             case 1: // Controllo dimensioni per opzione
-                $query = 'SELECT * FROM configuratore_opzioni_check_dimensioni 
-                      WHERE sottostep_ID = ' . $sottostep_ID . ' AND opzione_ID = ' . $opzione_ID . ';';
+                $query = 'SELECT * 
+                          FROM configuratore_opzioni_check_dimensioni 
+                          WHERE sottostep_ID = ' . $sottostep_ID . ' 
+                            AND opzione_ID = ' . $opzione_ID . ';';
                 break;
-
         }
 
         $result = $db->query($query);
 
-        // Non esistono controlli, quindi il sottostep oppure l'opzione rimane nello stato attuale
+        /*
+         * La tabella configuratore_opzioni_check_dimensioni non contiene alcun riferimento
+         * per il sottostep oppure per l'opzione passata. Si presumo che lo stato di visibilità
+         * del sottostep oppure dell'opzione rimanga inalterato.
+         *
+         */
+
         if (!$db->affected_rows)
             return 0;
 
         $risultato = 0;
-
         while ($row = mysqli_fetch_assoc($result)) {
             switch ((int)$row['dimensione']) {
                 case 0:
@@ -112,23 +150,24 @@ class configuratore
                     break;
             }
 
-            $valore = (float)$row['valore'];
-            $esito = (int)$row['esito'];
-            $confronto = (int)$row['confronto'];
+            $valore     = (float)   $row['valore'];
+            $esito      = (int)     $row['esito'];
+            $confronto  = (int)     $row['confronto'];
 
             if (
-                ($confronto === 0 && $dimensione < $valore) ||
+                ($confronto === 0 && $dimensione < $valore)  ||
                 ($confronto === 1 && $dimensione <= $valore) ||
                 ($confronto === 2 && $dimensione == $valore) ||
                 ($confronto === 3 && $dimensione >= $valore) ||
-                ($confronto === 4 && $dimensione > $valore) ||
+                ($confronto === 4 && $dimensione > $valore)  ||
                 ($confronto === 5 && $dimensione != $valore)
-            ) {
-                if ($esito !== 0) {
+              ) {
+
+                if ($esito === 1) {
                     $risultato = 1;
+                } else {
+                    return -1;
                 }
-                // Se esito è 0, il risultato rimane 0 e il loop continuerà con la prossima iterazione
-                break;
             }
         }
 
@@ -297,15 +336,15 @@ class configuratore
 
                     switch ($checkDimensioni) {
                         case -1:
-                        case 0 && (int)$rowOpzioni['visibile'] === 0:
-                            break 1;
-                            continue;
+                        case 0 && (int) $rowOpzioni['visibile'] === 0:
+                            break 2;
+
 
                     }
                 }
 
                 $partSelect .= '<option ' . ((int)$rowOpzioni['ID'] === (int)$rowOpzioneScelta['opzione_ID'] ? ' selected ' : '') . ' 
-                                        value="' . $rowOpzioni['ID'] . '">' . $rowOpzioni['opzione_nome'] . '
+                                        value="' . $rowOpzioni['ID'] . '">' . $rowOpzioni['opzione_nome'] . ' <!-- [CDM:' . $checkDimensioni . '] -->
                                 </option>';
             }
             $partSelect .= '</select>';

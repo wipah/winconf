@@ -18,10 +18,8 @@ if (!$result = $db->query($query)) {
     return;
 }
 
-echo '<a href="' . $conf['URI'] . 'configuratore-admin/editor/" class="btn btn-info float-right">Crea nuova categoria</a>';
-
 if (!$db->affected_rows) {
-    echo 'Nessun dato trovato.';
+    echo $this->infoBox('Categoria non trovata','Non è stata trovata nessuna categoria');
 } else {
     echo '
     <h2>Categorie / Step</h2>
@@ -150,6 +148,10 @@ if (!$db->affected_rows) {
 });
 </script>
     ';
-
     echo $jsSortable;
 }
+
+echo '
+<div class="clearfix">
+    <a href="' . $conf['URI'] . 'configuratore-admin/editor/" class="btn btn-info float-right">Crea nuova categoria</a>
+</div>';

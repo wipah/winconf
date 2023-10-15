@@ -156,12 +156,31 @@ class template {
             return +(Math.round(this + "e+" + places)  + "e-" + places);
         }
   </script>
+  
+  <script src="https://unpkg.com/tiny-editor/dist/bundle.js"></script>
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   
   <link href="https://cdn.jsdelivr.net/npm/css.gg/icons/icons.css" rel="stylesheet" />
-  
+  <link rel="stylesheet" 
+      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" 
+      integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+      crossorigin="anonymous">
   <style>
-  
+
+:root {
+/* CSS HEX */
+--lavender-web: #d1ccdcff;
+--charcoal: #424c55ff;
+--lavender-blush: #f5edf0ff;
+--cinereous: #886f68ff;
+--van-dyke: #3d2c2eff;
+
+}
+
+html, body {
+background-color: #fdf7f7;
+}
 .lds-dual-ring {
   display: inline-block;
   width: 64px;
@@ -187,33 +206,63 @@ class template {
   }
 }
 
-  
-    .spanClickable {
-        text-decoration: underline;
-        color: blue !important;
-        cursor: pointer;
-    }
+.alert-primary {
+    background-color: var(--cinereous) !important;
+    color: white;
+    border: 1px solid var(--van-dyke);
+}
+
+.alert-primary > a {
+    background-color: var(--cinereous) !important;
+    color: white;
+    text-decoration: underline;
     
-    .winConfMenu {
-        border-bottom: 1px solid gainsboro;
-    }
+}
+
+.btn-info {
+    background-color: var(--charcoal) !important;
+    color: white !important;
+    border: 1px solid var(--van-dyke);
+     font-weight: bold;
+}
+
+.btn-info:hover {
+    background-color: var(--lavender-web) !important;
+    color: var(--van-dyke) !important;
+    font-weight: bold;
+}
+.spanClickable {
+    text-decoration: underline;
+    color: blue !important;
+    cursor: pointer;
+}
     
-    .dataTable > thead > tr {
-        background-color: lightgray;
-    }
+.winConfMenu {
+    border-bottom: 1px solid gainsboro;
+}
     
-    .table > thead > tr {
-        background-color: lightgray;
-    }
+.table > thead > tr {
+    background-color: var(--charcoal) !important;
+    color: white;
+}
+
+.table > tbody > tr > td {
+    background-color: var(--lavender-web) !important;
+   font-weight: normal;
+}
     
-    .footer {
-        margin-top: 12px;
-        background-color: #3f3d3d;
-        color: white;
-        padding: 8px;
-    }
+.table > thead > tr {
+    background-color: lightgray;
+}
     
-    h1, h2 {
+.footer {
+    margin-top: 12px;
+    background-color: #3f3d3d;
+    color: white;
+    padding: 8px;
+}
+    
+h1, h2 {
     background: lightgray;
     padding: 12px;
     font-size: large;
@@ -221,63 +270,41 @@ class template {
     text-transform: uppercase;
     color: #555;
     border-left: 4px solid darkgray;
-    }
+}
     
-    input:focus{
-        background-color: #e0e8a9;
-        border-bottom: 1px solid darkgreen;
-        font-weight: bolder;
-    }
-    .btn-farmaco {
-        border: 1px solid #1d6416;;
-        background-color: #D1F36B;
-        color: #222;
-        border-radius: 0 !important;
-    }
-    
-    .btn-parafarmaco {
-        border: 1px solid #7c7676;;
-        background-color: #564b4b;
-        border-radius: 0 !important;
-        color: white;
-    }
-    
-    .nav-tabs {
-        border-bottom: 1px solid #9b7b2e !important;
-    }
-    
-    .nav-link.active {
-        border-color: #9b7b2e #9b7b2e #FFF !important;
-        background-color: #FFBC35 !important;
-        color: #333;
-        font-weight: bolder;
-    }
-    
-    .layoutLaterale {
-        background-color: #2a64a6;
-        color: white;
-    }
-    
-    .layoutLaterale > h2 {
-        border: 0px;
-        border-bottom: 1px solid white !important;
-        color: white;
-        background-color: transparent;
-    }
-    .layoutLaterale > a {
-        border: 0px;
-        color: white;
-    }
-    
-    /*
-    h2 {
-    background-color: #d6ecff;
-    padding: 6px;
-    font-size: x-large;
-    border-bottom: 1px solid #d0d0ff;
-    }
-    */
-     */
+input:focus{
+    background-color: #e0e8a9;
+    border-bottom: 1px solid darkgreen;
+    font-weight: bolder;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #9b7b2e !important;
+}
+
+.nav-link.active {
+    border-color: #9b7b2e #9b7b2e #FFF !important;
+    background-color: #FFBC35 !important;
+    color: #333;
+    font-weight: bolder;
+}
+
+.layoutLaterale {
+    background-color: #2a64a6;
+    color: white;
+}
+
+.layoutLaterale > h2 {
+    border: 0px;
+    border-bottom: 1px solid white !important;
+    color: white;
+    background-color: transparent;
+}
+.layoutLaterale > a {
+    border: 0px;
+    color: white;
+}
+
   </style>
 </head>
 

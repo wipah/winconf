@@ -59,8 +59,8 @@ echo '
     <div class="col-8">
       <select id="sottostepTipoScelta" name="sottostepTipoScelta" class="custom-select" aria-describedby="sottostepTipoSceltaHelpBlock">
         <option ' . ( (int) $row['tipo_scelta'] === 0 ? ' selected ' : '' )  . ' value="0">Scelta singola</option>
-        <option ' . ( (int) $row['tipo_scelta'] === 1 ? ' selected ' : '' )  . ' value="1">Scelta multipla</option>
-        <option ' . ( (int) $row['tipo_scelta'] === 2 ? ' selected ' : '' )  . ' value="2">Campo llbero</option>
+        <!-- <option ' . ( (int) $row['tipo_scelta'] === 1 ? ' selected ' : '' )  . ' value="1">Scelta multipla</option>
+        <option ' . ( (int) $row['tipo_scelta'] === 2 ? ' selected ' : '' )  . ' value="2">Campo llbero</option> -->
       </select> 
       <span id="sottostepTipoSceltaHelpBlock" class="form-text text-muted">Tipo di scelta</span>
     </div>
@@ -99,8 +99,8 @@ echo '
     </div>
   </div> 
   <div class="form-group row">
-    <div class="offset-4 col-8">
-      <span onclick="sottostepPostData(' . $categoria_ID . ',' . $step_ID .', ' . $ID . ');" name="submit" type="submit" class="btn btn-primary">' . $button . '</span>
+    <div class="offset-4 col-8 clearfix">
+      <span onclick="sottostepPostData(' . $categoria_ID . ',' . $step_ID .', ' . $ID . ');" name="submit" type="submit" class="btn btn-primary float-right">' . $button . '</span>
     </div>
   </div>
   

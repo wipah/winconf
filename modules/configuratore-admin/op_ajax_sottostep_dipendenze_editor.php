@@ -10,12 +10,11 @@ if (!$user->logged) {
     return;
 }
 
-
 $categoria_ID       = (int) $_POST['categoria_ID'];
 $step_ID            = (int) $_POST['step_ID'];
 $sottostep_ID       = (int) $_POST['sottostep_ID'];
 $opzione_ID         = (int) $_POST['opzione_ID'];
-$ID                 = (int) $_POST['ID'];
+$opzione_check_ID   = (int) $_POST['opzione_check_ID'];
 
 if ($opzione_ID === 0 ) {
     echo '<h2>Editor sottostep</h2>';
@@ -23,10 +22,10 @@ if ($opzione_ID === 0 ) {
     echo '<h2>Editor opzione (ID opzione: ' . $opzione_ID . ' )</h2>';
 }
 
-if ($ID !== 0) {
+if ($opzione_check_ID !== 0) {
     $query = 'SELECT * 
               FROM configuratore_opzioni_check_dipendenze 
-              WHERE ID = ' . $ID . ' LIMIT 1';
+              WHERE ID = ' . $opzione_check_ID . ' LIMIT 1';
 
 
     if (!$result = $db->query($query)) {
@@ -35,13 +34,14 @@ if ($ID !== 0) {
     }
 
     if (!$db->affected_rows) {
-        echo 'La dipendenza non esiste';
+        echo 'Il controllo da dipendenza non è stato trovato in tabella. L\'ID passato è ' . $opzione_check_ID;
         return;
     }
 
-    $row = mysqli_fetch_assoc($result);
+    $rowCheckDipendenze = mysqli_fetch_assoc($result);
 }
 
+// Ottiene i nomi della categoria, step e sottostep
 $query = "SELECT configuratore_step.step_nome
                , configuratore_sottostep.sottostep_nome
                , configuratore_sottostep.ID sottostep_ID
@@ -68,7 +68,7 @@ $selectStep = '<div class="form-group row">
       <select id="opzione" name="opzione" class="custom-select">';
 
 while ($rowSelect = mysqli_fetch_assoc($result)) {
-    $selectStep .= '<option ' . ( (int) $row['opzioni_formula_ID'] === $rowSelect['opzione_ID'] ? ' selected ' : '' ) . ' value="' . $rowSelect['opzione_ID'] . '">' . $rowSelect['step_nome'] . ' - ' . $rowSelect['sottostep_nome'] . ' - ' . $rowSelect['opzione_nome'] . '</option>';
+    $selectStep .= '<option ' . ( (int) $rowCheckDipendenze['opzione_valore_ID'] === (int) $rowSelect['opzione_ID'] ? ' selected ' : '' ) . ' value="' . $rowSelect['opzione_ID'] . '">' . $rowSelect['step_nome'] . ' - ' . $rowSelect['sottostep_nome'] . ' - ' . $rowSelect['opzione_nome'] . ' [ID:' . $rowSelect['opzione_ID'] . ']</option>';
 }
 
 $selectStep .= '
@@ -81,32 +81,34 @@ $selectConfronto = '<div class="form-group row">
     <label for="confronto" class="col-4 col-form-label">Tipo confronto</label> 
     <div class="col-8">
       <select id="confronto" name="confronto" class="custom-select">
-        <option ' . ( (int) $row['confronto'] === 9 ? ' selected ' : '') . ' value="9">Selezionata </option>
-        <option ' . ( (int) $row['confronto'] === 0 ? ' selected ' : '') . ' value="0">Minore di </option>
-        <option ' . ( (int) $row['confronto'] === 1 ? ' selected ' : '') . ' value="1">Minore o uguale di</option>
-        <option ' . ( (int) $row['confronto'] === 2 ? ' selected ' : '') . ' value="2">Uguale a</option>
-        <option ' . ( (int) $row['confronto'] === 3 ? ' selected ' : '') . ' value="3">Maggiore di</option>
-        <option ' . ( (int) $row['confronto'] === 4 ? ' selected ' : '') . ' value="4">Maggiore o uguale a</option>
-        <option ' . ( (int) $row['confronto'] === 5 ? ' selected ' : '') . ' value="5">Diverso da</option>
+        <option ' . ( (int) $rowCheckDipendenze['confronto'] === 9 ? ' selected ' : '') . ' value="9">Selezionata </option>
+        <!--
+        <option ' . ( (int) $rowCheckDipendenze['confronto'] === 0 ? ' selected ' : '') . ' value="0">Minore di </option>
+        <option ' . ( (int) $rowCheckDipendenze['confronto'] === 1 ? ' selected ' : '') . ' value="1">Minore o uguale di</option>
+        <option ' . ( (int) $rowCheckDipendenze['confronto'] === 2 ? ' selected ' : '') . ' value="2">Uguale a</option>
+        <option ' . ( (int) $rowCheckDipendenze['confronto'] === 3 ? ' selected ' : '') . ' value="3">Maggiore di</option>
+        <option ' . ( (int) $rowCheckDipendenze['confronto'] === 4 ? ' selected ' : '') . ' value="4">Maggiore o uguale a</option>
+        <option ' . ( (int) $rowCheckDipendenze['confronto'] === 5 ? ' selected ' : '') . ' value="5">Diverso da</option>
+        -->
       </select></div></div>';
-
 
 
 echo $selectStep;
 echo $selectConfronto;
 
-echo '  <div class="form-group row">
+echo '<!-- <div class="form-group row">
     <label for="valore" class="col-4 col-form-label">Valore</label> 
     <div class="col-8">
-      <input value="' . $row['valore'] . '" id="valore" name="valore" placeholder="valore" type="text" class="form-control">
+      <input value="' . $rowCheckDipendenze['valore'] . '" id="valore" name="valore" placeholder="valore" type="text" class="form-control">
     </div>
   </div>
+  -->
   <div class="form-group row">
     <label for="esito" class="col-4 col-form-label">Esito</label> 
     <div class="col-8">
       <select id="esito" name="esito" class="custom-select" aria-describedby="esitoHelpBlock">
-        <option ' . ( $row['esito'] === 0 ? ' selected ' : ' ' ) . ' value="0">Escludi</option>
-        <option ' . ( $row['esito'] === 1 ? ' selected ' : ' ' ) . ' value="1">Includi</option>
+        <option ' . ( (int) $rowCheckDipendenze['esito'] === 0 ? ' selected ' : ' ' ) . ' value="0">Escludi</option>
+        <option ' . ( (int) $rowCheckDipendenze['esito'] === 1 ? ' selected ' : ' ' ) . ' value="1">Includi</option>
       </select> 
       <span id="esitoHelpBlock" class="form-text text-muted">Se la condizione è valida lo step può essere escluso o incluso.</span>
     </div>
@@ -114,7 +116,7 @@ echo '  <div class="form-group row">
   
     <div class="form-group row">
     <div class="offset-4 col-8">
-      <span onclick="salvaDipendenza(' . $categoria_ID . ', ' . $step_ID . ',' . $sottostep_ID .' ,' . $opzione_ID . ', ' . $ID  . ');"0 class="btn btn-primary">Aggiorna</span>
+      <span onclick="salvaDipendenza(' . $categoria_ID . ', ' . $step_ID . ',' . $sottostep_ID .' ,' . $opzione_ID . ', ' . $opzione_check_ID  . ');" class="btn btn-primary">Aggiorna</span>
     </div>
   </div>
   
@@ -141,7 +143,7 @@ function salvaDipendenza(categoria_ID, step_ID, sottostep_ID, opzione_ID, ID) {
         if (opzione_ID === 0) {
             mostraDipendenzeSottostep(categoria_ID, step_ID, sottostep_ID, 0);        
         } else {
-            mostraDipendenze(categoria_ID, step_ID, sottostep_ID, opzione_ID);    
+            mostraDipendenzeOpzioni(categoria_ID, step_ID, sottostep_ID, opzione_ID);    
         }
         
         $("#modalDialog").modal();

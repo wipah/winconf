@@ -94,4 +94,7 @@ if (!$db->affected_rows) {
 </table>';
 }
 
-echo '<span class="btn btn-info btn-default" onclick="dimensioniEditor('. $categoria_ID .', ' . $step_ID . ',' . $sottostep_ID . ',' . $opzione_ID . ', 0)">Nuovo check dimensioni</span>';
+echo '
+<div class="clearfix">
+    <span class="btn btn-info btn-default float-right" onclick="dimensioniEditor('. $categoria_ID .', ' . $step_ID . ',' . $sottostep_ID . ',' . $opzione_ID . ', 0)">Nuovo check dimensioni</span>
+</div>';

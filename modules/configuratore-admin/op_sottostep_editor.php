@@ -141,16 +141,20 @@ function sottostepElimina(sottostep_ID)
 }
 
 
-function dipendenzeEditor(categoria_ID, step_ID, sottostep_ID, opzione_ID, ID)
+function dipendenzeEditor(categoria_ID, step_ID, sottostep_ID, opzione_ID, opzione_check_ID)
 {
     console.log("[Editor dipendenze]");
     console.log("->sottostep_ID: " + sottostep_ID);
     console.log("->opzione_ID: " + opzione_ID);
-    console.log("->ID: " + ID);
+    console.log("->opzione_check_ID: " + opzione_check_ID);
     
     $("#modalDialog").modal();
     
-    $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-editor/", { categoria_ID: categoria_ID, step_ID: step_ID, sottostep_ID: sottostep_ID, opzione_ID: opzione_ID, ID: ID })
+    $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze-editor/", { categoria_ID: categoria_ID
+                                                                              , step_ID: step_ID
+                                                                              , sottostep_ID: sottostep_ID
+                                                                              , opzione_ID: opzione_ID
+                                                                              , opzione_check_ID: opzione_check_ID })
     .done(function( data ) {
         $("#modalBody").html(data);
     });
@@ -216,6 +220,8 @@ function mostraDipendenzeSottostep(categoria_ID, step_ID, sottostep_ID)
     console.log("-> step_ID: " + step_ID);
     console.log("-> sottostep_ID: " + sottostep_ID);
     
+    $("#opzioni").html("");
+    
     $("#dimensioni").html("");
     $.post( jsPath + "configuratore-admin/ajax-sottostep-dipendenze/", { categoria_ID: categoria_ID, 
                                                                step_ID: step_ID, 
@@ -234,6 +240,9 @@ function mostraDimensioniSottostep(categoria_ID, step_ID, sottostep_ID)
     console.log("-> categoria_ID: " + categoria_ID);
     console.log("-> step_ID: " + step_ID);
     console.log("-> sottostep_ID: " + sottostep_ID);
+    
+    
+    $("#opzioni").html("");
     
     $("#dipendenze").html("");
     

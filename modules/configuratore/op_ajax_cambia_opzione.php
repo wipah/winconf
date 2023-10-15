@@ -37,6 +37,7 @@ $query = 'SELECT ID, step_ID
           FROM documenti_corpo 
           WHERE documento_ID = ' . $documento_ID . '
           AND visibile = 0
+          AND esclusa = 0
           AND ID > ' . $linea_ID . '
           LIMIT 1';
 

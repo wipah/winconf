@@ -126,4 +126,6 @@ echo '
 $( "#sortable" ).disableSelection();
 </script>
 
-<span class="btn btn-info" onclick="sottoStepEditor(' . $categoria_ID .', ' . $step_ID . ',0);">Aggiungi sottostep</span>';
+<div class="clearfix">
+    <span class="btn btn-info float-right" onclick="sottoStepEditor(' . $categoria_ID .', ' . $step_ID . ',0);">Aggiungi sottostep</span>
+</div>';

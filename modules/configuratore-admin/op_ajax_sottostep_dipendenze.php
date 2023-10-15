@@ -46,7 +46,7 @@ if (!$result = $db->query($query)) {
 }
 
 if (!$db->affected_rows) {
-    echo '<div>Nessuna dipendenza trovata.</div>';
+    echo $this->getBox('info', 'Nessuna dipendenza trovata.');
 } else {
     echo '<table class="table table-bordered table-condensed">
         <thead>
@@ -79,4 +79,7 @@ if (!$db->affected_rows) {
     echo '</tbody></table>';
 }
 
-echo '<span class="btn btn-info btn-default" onclick="dipendenzeEditor('. $categoria_ID .', ' . $step_ID . ',' . $sottostep_ID . ', 0, 0)">Nuova dipendenza</span>';
+echo '
+<div class="clearfix">
+    <span class="btn btn-info btn-default float-right" onclick="dipendenzeEditor('. $categoria_ID .', ' . $step_ID . ',' . $sottostep_ID . ', 0, 0)">Nuova dipendenza</span>
+</div>';

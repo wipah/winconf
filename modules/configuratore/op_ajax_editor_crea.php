@@ -89,9 +89,13 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
             if ( (int) $rowSottostep['check_dimensioni'] === 1)
                 $checkDimensioni = $configuratore->checkDipendenzaDimensione($documento_ID,0, $rowSottostep['ID']);
 
+            /*
+             * In base al valore della variabile $checkDimensioni viene settata la visibilità del sottostep
+             */
+            // echo 'Risultato sottostep ' . $rowSottostep['sottostep_nome'] .': ' . $checkDimensioni . PHP_EOL;
             switch ($checkDimensioni) {
                 case -1:
-                    continue;
+                    continue 2;
                 case 1:
                     $rowSottostep['visibile'] = 1;
                     continue;
@@ -118,6 +122,7 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
                   , importo
                   , qta
                   , primo_step
+                  , esclusa
                   , visibile
                   )
                   VALUES (
@@ -133,6 +138,7 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
                   , 0      
                   , 0
                   , ' . $primoStep . '
+                  , ' . ( (int) $rowSottostep['visibile'] === 1 ? 0 : 1  ) . ' 
                   , ' . ( (int) $rowSottostep['visibile'] ) . ' 
                   );';
             if (!$db->query($query)) {

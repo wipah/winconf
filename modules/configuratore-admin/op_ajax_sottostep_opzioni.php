@@ -111,4 +111,8 @@ if (!$db->affected_rows) {
     </script>';
 }
 
-echo '<span class="btn btn-info" onclick="opzioniEditor(' . $categoria_ID . ',' . $step_ID .', ' . $sottostep_ID . ',0);">Aggiungi opzione</span>';
+echo '
+<div class="clearfix">
+<span class="btn btn-info float-right" onclick="opzioniEditor(' . $categoria_ID . ',' . $step_ID .', ' . $sottostep_ID . ',0);">Aggiungi opzione</span>
+</div>
+';

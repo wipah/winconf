@@ -46,6 +46,7 @@ if (!$db->affected_rows) {
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Dimensione</th>
                     <th>Confronto</th>
                     <th>Valore</th>
                     <th>Esito</th>
@@ -54,9 +55,21 @@ if (!$db->affected_rows) {
             </thead>
             <tbody>';
 
+    switch ( (int) $row['dimensione']) {
+        case 0:
+            $dimensione = 'Larghezza';
+            break;
+        case 1:
+            $dimensione = 'Lunghezza';
+            break;
+        case 2:
+            $dimensione = 'Spessore';
+            break;
+    }
     while ($row = mysqli_fetch_assoc($result)) {
         echo '<tr id="dimensione-' . $row['ID'] . '">
             <td>' . $row['dimensione_ID'] . '</td>
+            <td>' .$dimensione  . '</td>
             <td>' . $arrayConfronti[ (int) $row['confronto']]  . '</td>
             <td>' . $row['valore']  . '</td>
             <td>' . ( (int) $row['esito'] === 0 ? 'Escludi' : 'Includi' )  . '</td>
@@ -70,4 +83,7 @@ if (!$db->affected_rows) {
 </table>';
 }
 
-echo '<span class="btn btn-info btn-default" onclick="dimensioniEditor('. $categoria_ID .', ' . $step_ID . ',' . $sottostep_ID . ', 0)">Nuovo check dimensioni</span>';
+echo '
+<div class="clearfix">
+    <span class="btn btn-info btn-default float-right" onclick="dimensioniEditor('. $categoria_ID .', ' . $step_ID . ',' . $sottostep_ID . ', 0)">Nuovo check dimensioni</span>
+</div>';

@@ -115,7 +115,8 @@ echo '
     ' . $stepSchede . '
     </div>
     <div class="col-md-3">
-        <h2>Importo totale</h2>
+        <h2>Riepilogo</h2>
+        <div id="documentoTotale"></div>
     </div>
 </div>';
 echo '<script>

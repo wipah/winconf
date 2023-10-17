@@ -254,7 +254,16 @@ background-color: #fdf7f7;
 .table > thead > tr {
     background-color: lightgray;
 }
-    
+
+.layoutEditorSottostepNome {
+    font-weight: bolder;
+    text-transform: uppercase;
+}
+
+.layoutEditorSottostepDescrizione {
+    font-size: smaller;
+}    
+
 .footer {
     margin-top: 12px;
     background-color: #3f3d3d;

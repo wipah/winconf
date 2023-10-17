@@ -352,8 +352,12 @@ class configuratore
 
         $part = '<div class="layoutEditorSottostep">
                     <div class="row">
-                        <div class="col-md-3 layoutEditorSottostepNome">' . $row['sottostep_nome'] . '</div>
-                        <div class="col-md-8">' . $partSelect . '</div>
+                        <div class="col-md-4"> 
+                            <div class="layoutEditorSottostepNome">' . $row['sottostep_nome'] . '</div>
+                            <hr />
+                            <div class="layoutEditorSottostepDescrizione">' . $row['sottostep_descrizione'] . '</div>
+                        </div>
+                        <div class="col-md-7">' . $partSelect . '</div>
                         <div class="col-md-1"><div id="layoutEditorSottostepStatus-' . $linea_ID . '"></div></div>
                     </div>
                 </div>';

@@ -16,6 +16,9 @@ switch ($path[3]) {
     case 'ajax-ottieni-ultimo-step':
         require_once 'op_ajax_ottieni_ultimo_step.php';
         break;
+    case 'ajax-ottieni-totale':
+        require_once 'op_ajax_ottieni_totale.php';
+        break;
     default:
         require_once 'op_editor_default.php';
         break;

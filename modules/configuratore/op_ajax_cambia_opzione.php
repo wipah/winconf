@@ -10,7 +10,8 @@ $opzione_ID     = (int) $_POST['opzione_ID'];
 
 
 $query = 'UPDATE documenti_corpo 
-          SET opzione_ID = ' . $opzione_ID . ' 
+          SET opzione_ID = ' . $opzione_ID . '
+            , valorizzata = 1 
           WHERE ID = ' . $linea_ID . ' 
           LIMIT 1';
 

@@ -365,4 +365,67 @@ class configuratore
         return $part;
 
     }
+
+    function totaleDocumento (int $documento_ID) : float {
+        global $db;
+
+
+        $totale = 1;
+
+        $query = '
+        SELECT  CORPO.ID corpo_ID
+              , OPZIONI.opzione_formula_valore
+              , FORMULE.formula_sigla
+        FROM documenti_corpo CORPO 
+        LEFT JOIN configuratore_opzioni OPZIONI
+            ON OPZIONI.ID = CORPO.opzione_ID
+        LEFT JOIN configuratore_formule FORMULE
+            ON FORMULE.ID = OPZIONI.opzioni_formula_ID	
+        
+        WHERE   CORPO.visibile = 1 
+            AND CORPO.valorizzata = 1
+            AND CORPO.documento_ID = ' . $documento_ID . ';';
+
+        $result = $db->query($query);
+
+        if (!$db->affected_rows) {
+            $this->aggiornaTotaleDocumento($documento_ID, 0);
+            return 1;
+        }
+
+        while ($row = mysqli_fetch_assoc( $result )) {
+
+            $sigla = strtolower($row['formula_sigla']);
+            $valore = (float) $row['opzione_formula_valore'];
+
+            switch (  $sigla) {
+                case 'coeff-k':
+                    $totale = $totale * $valore;
+                    break;
+                case 'somma-v':
+                    $totale += $valore;
+                    break;
+                case 'somma-kdim':
+                    $totale += $valore * ($this->larghezza * $this->lunghezza);
+                    break;
+                default:
+                    echo 'Opzione ' . $sigla . ' non trovata. <br/>';
+                    break;
+            }
+        }
+
+        $this->aggiornaTotaleDocumento($documento_ID, $totale);
+
+        return $totale;
+    }
+
+    function aggiornaTotaleDocumento( int $documento_ID, float $totale ) : void {
+        global $db;
+
+        $query = 'UPDATE documenti 
+                  SET totale = ' . $totale . ' 
+                  WHERE ID = ' . $documento_ID;
+
+        $db->query($query);
+    }
 }

@@ -121,7 +121,8 @@ echo '
 </div>';
 echo '<script>
 $(function() {
-    ottieniUltimoStep();    
+    ottieniUltimoStep();
+    ottieniTotale();
 });';
 
 foreach ($documentoSteps as $step_ID => $stepNome) {
@@ -133,7 +134,8 @@ echo '</script>';
 
 
 echo '<script>
-function mostraStep (step_ID) {
+function mostraStep (step_ID) 
+{
     $(".layoutStepScheda").hide();
     $("#layoutStepScheda-" + step_ID).show();
     
@@ -160,13 +162,15 @@ function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID)
     
         if ( parseInt(obj.step_ID) !== 0) {
             visualizzaStep(obj.step_ID);
-            mostraStep(obj.step_ID)
+            mostraStep(obj.step_ID);
+            ottieniTotale();
         }
             
       });
 }
 
-function ottieniUltimoStep () {
+function ottieniUltimoStep () 
+{
     console.log ("[OTTIENI ULTIMO STEP]");
     $.post( jsPath + "configuratore/editor/ajax-ottieni-ultimo-step/", { documento_ID: ' . $documento_ID . ' })
       .done(function( data ) {
@@ -174,6 +178,17 @@ function ottieniUltimoStep () {
         mostraStep(obj.step_ID);
       });
 }
+
+function ottieniTotale () 
+{
+    console.log ("[OTTIENI TOTALE]");
+   
+    $.post( jsPath + "configuratore/editor/ajax-ottieni-totale/", { documento_ID: ' . $documento_ID . ' })
+      .done(function( data ) {
+        $("#documentoTotale").html(data);
+      });
+}
+
 function aggiornaNote() 
 {
     console.log ("[AGGIORNA NOTE]");

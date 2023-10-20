@@ -44,6 +44,7 @@ if (!$result = $db->query($query)) {
 
 if (!$db->affected_rows) {
     echo 'Non esistono categorie';
+    return;
 }
 
 echo '

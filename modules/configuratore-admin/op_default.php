@@ -11,7 +11,10 @@ $this->menuItems[] = '<a href="' . $conf['URI'] . 'configuratore-admin/">Backend
 
 echo '<h1>Configurazione</h1>';
 
-$query = 'SELECT * FROM configuratore_categorie ORDER BY ordine ASC';
+$query = 'SELECT * FROM 
+          configuratore_categorie
+          WHERE company_ID = ' . $user->company_ID . ' 
+          ORDER BY ordine ASC';
 
 if (!$result = $db->query($query)) {
     echo 'Query error.' . $query;

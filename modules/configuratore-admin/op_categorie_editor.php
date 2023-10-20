@@ -65,7 +65,8 @@ if ($ID = (int) ($_GET['ID'])) {
     if (isset($_GET['save'])) {
         $query = 'INSERT INTO configuratore_categorie 
                   (
-                      categoria_nome 
+                      company_ID 
+                    , categoria_nome  
                     , categoria_sigla 
                     , categoria_descrizione 
                     , categoria_formula_ID 
@@ -74,7 +75,8 @@ if ($ID = (int) ($_GET['ID'])) {
                   ) 
                   VALUES 
                   (
-                      \'' . $nome . '\'
+                      \'' . $user->company_ID . '\'
+                    , \'' . $sigla . '\'
                     , \'' . $sigla . '\'
                     , \'' . $descrizione . '\'
                     , \'' . $formula . '\'

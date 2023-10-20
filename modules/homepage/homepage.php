@@ -15,7 +15,8 @@ $query = 'SELECT documenti.*
           LEFT JOIN configuratore_categorie
           ON configuratore_categorie.ID = documenti.categoria_ID
           LEFT JOIN clienti
-          ON clienti.ID = documenti.customer_ID';
+          ON clienti.ID = documenti.customer_ID
+          WHERE documenti.user_ID = ' . $user->ID;
 
 
 if (!$result = $db->query($query)) {

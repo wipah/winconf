@@ -108,6 +108,11 @@ $selectFormule = '<div class="form-group row">
                         <div class="col-8">
                             <select id="formula" name="formula" class="custom-select" aria-describedby="formulaHelpBlock" required="required">';
 while ($rowFormule = mysqli_fetch_assoc($resultFormule)) {
+
+    // Controlla se le formule appartengono a categorie per le quali sarebbe impossibile configurare un totale
+    if ($rowFormule['formula_sigla'] === 'coeff-k' || $rowFormule['formula_sigla'] === 'coeff-percentuale')
+        continue;
+
     $selectFormule .= '<option ' . ( (int) $row['categoria_formula_ID'] === (int) $rowFormule['ID'] ? ' selected ' : '' ) . ' value="' .$rowFormule['ID'] . '">' . $rowFormule['formula_sigla'] .'</option>';
 }
 $selectFormule .= '</select> 

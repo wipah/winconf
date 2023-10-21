@@ -369,10 +369,43 @@ class configuratore
     function totaleDocumento (int $documento_ID) : float {
         global $db;
 
+        // Ottiene la valorizzazione iniziale che deriva dalla categoria del progetto
+        $query = 'SELECT  configuratore_categorie.categoria_formula_valore
+                        , configuratore_formule.formula_sigla
+                  FROM documenti 
+                  LEFT JOIN configuratore_categorie
+                    ON configuratore_categorie.ID = documenti.categoria_ID
+                  LEFT JOIN configuratore_formule
+                    ON configuratore_formule.ID = configuratore_categorie.categoria_formula_ID
+                  WHERE documenti.ID = ' . $documento_ID;
 
-        $totale = 1;
 
-        $query = '
+        if (!$result = $db->query($query))
+            return -1;
+
+        if (!$db->affected_rows)
+            return -2;
+
+        $row = mysqli_fetch_assoc($result);
+
+        $totale = 0;
+        $valore = $row['categoria_formula_valore'];
+
+        $sigla = strtolower($row['formula_sigla']);
+        switch ($sigla) {
+            case 'somma-v':
+                $totale = $valore;
+                break;
+            case 'somma-kdim':
+                $totale = $valore * ($this->larghezza * $this->lunghezza);
+                break;
+            default:
+                echo 'Categoria di formula ' . $sigla . ' non trovata. <br/>';
+                break;
+        }
+
+
+            $query = '
         SELECT  CORPO.ID corpo_ID
               , OPZIONI.opzione_formula_valore
               , FORMULE.formula_sigla
@@ -389,8 +422,8 @@ class configuratore
         $result = $db->query($query);
 
         if (!$db->affected_rows) {
-            $this->aggiornaTotaleDocumento($documento_ID, 0);
-            return 1;
+            $this->aggiornaTotaleDocumento($documento_ID, $totale);
+            return $totale;
         }
 
         while ($row = mysqli_fetch_assoc( $result )) {
@@ -398,7 +431,7 @@ class configuratore
             $sigla = strtolower($row['formula_sigla']);
             $valore = (float) $row['opzione_formula_valore'];
 
-            switch (  $sigla) {
+            switch ( $sigla) {
                 case 'coeff-k':
                     $totale = $totale * $valore;
                     break;

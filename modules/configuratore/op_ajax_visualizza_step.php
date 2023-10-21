@@ -20,7 +20,6 @@ $query = 'SELECT *
           AND ( primo_step = 1 OR visibile = true)
           ORDER BY ID ASC';
 
-
 $risultato = $db->query($query);
 
 if (!$db->affected_rows) {

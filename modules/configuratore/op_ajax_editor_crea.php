@@ -1,6 +1,9 @@
 <?php
 
 $this->noTemplateParse = true;
+if (!$user->validateLogin())
+    return;
+
 if(!$user->validateLogin())
     return;
 
@@ -47,6 +50,10 @@ if (!$db->query($query)) {
 
 $documento_ID = $db->insert_id;
 
+/*
+ * Inserimento delle categorie. Le categorie sono sempre visualizzate quindi, qualsiasi categoria non visibile non
+ * sarà inserita nel documento.
+ */
 $query = 'SELECT * 
           FROM configuratore_categorie 
           WHERE ID = ' . $categoria_ID . ' 
@@ -58,6 +65,10 @@ if (!$risultatoCategoria = $db->query($query)) {
 }
 
 while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
+
+    /*
+     * Gli step sono sempre visibili, dunque sono inseriti soltanto se nel backend sono settati come tali
+     */
     $query = 'SELECT * 
               FROM configuratore_step 
               WHERE categoria_ID = ' . $rowCategorie['ID'] . ' 
@@ -69,9 +80,13 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
         return;
     }
 
-    $primo = true;
+    $primo = 0;
     while ($rowStep = mysqli_fetch_assoc($resultStep)) {
-
+        unset($checkDimensioni);
+        /*
+         * I sottostep possono essere, da configurazione, invisibili ma possono diventare visibili a seguito di una
+         * opzione.
+         */
         $query = 'SELECT * 
                   FROM configuratore_sottostep 
                   WHERE step_ID = ' . $rowStep['ID'] . ' 
@@ -84,30 +99,37 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
 
         while ($rowSottostep = mysqli_fetch_assoc($risultatoSottostep)) {
 
-            // Controlla le dipendenze dalle dimensioni
+            $origineVisibile = (int) $rowSottostep['visibile'];
 
-            if ( (int) $rowSottostep['check_dimensioni'] === 1)
+            // Controlla le dipendenze dalle dimensioni
+            if ( (int) $rowSottostep['check_dimensioni'] === 1) {
                 $checkDimensioni = $configuratore->checkDipendenzaDimensione($documento_ID,0, $rowSottostep['ID']);
+
+                switch ($checkDimensioni) {
+                    case -1:
+                        continue 2;
+                    case 1:
+                        $rowSottostep['visibile'] = 1;
+                        continue;
+                }
+
+            }
 
             /*
              * In base al valore della variabile $checkDimensioni viene settata la visibilità del sottostep
              */
-            // echo 'Risultato sottostep ' . $rowSottostep['sottostep_nome'] .': ' . $checkDimensioni . PHP_EOL;
-            switch ($checkDimensioni) {
-                case -1:
-                    continue 2;
-                case 1:
-                    $rowSottostep['visibile'] = 1;
-                    continue;
-            }
 
             // Controlla se è il primo sottostep visibile.
-            if ($primo) {
+            if (!$primo && (int) $rowSottostep['visibile'] === 1) {
                 $primoStep = 1;
-                $primo = false;
+                $primo = 1;
             } else {
                 $primoStep = 0;
+                $rowSottostep['visibile'] = 0;
             }
+
+            // $primoStep = ($primo) ? 1 : 0;
+            // $primo = false;
 
             $query = 'INSERT INTO documenti_corpo 
                   ( documento_ID
@@ -123,6 +145,7 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
                   , qta
                   , primo_step
                   , esclusa
+                  , origine_visibile
                   , visibile
                   )
                   VALUES (
@@ -138,14 +161,56 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
                   , 0      
                   , 0
                   , ' . $primoStep . '
-                  , ' . ( (int) $rowSottostep['visibile'] === 1 ? 0 : 1  ) . ' 
+                  , ' . ( 0 ) . ' 
+                  , ' . ( $origineVisibile ) . ' 
                   , ' . ( (int) $rowSottostep['visibile'] ) . ' 
                   );';
+
             if (!$db->query($query)) {
                 echo '--KO-- Errore nella query';
                 return;
             }
 
+            $corpoLinea_ID = $db->insert_id;
+
+            /*
+             * Seleziona tutte le opzioni di corpo che hanno un controllo sulle dipendenze
+             */
+            $query = 'SELECT * 
+                      FROM configuratore_opzioni 
+                      WHERE sottostep_ID = ' . $rowSottostep['ID']  . '
+                      AND check_dipendenze = 1';
+
+            if (!$resultOpzioni = $db->query($query)) {
+                echo 'Errore nella query' . $query;
+                return;
+            }
+
+            while ($rowOpzioni = mysqli_fetch_assoc($resultOpzioni)) {
+                $query = 'INSERT INTO documenti_corpo_opzioni 
+                          (
+                            documento_ID
+                          , categoria_ID
+                          , step_ID
+                          , sottostep_ID
+                          , opzione_ID 
+                          , corpo_ID
+                          , stato
+                          )
+                          VALUES 
+                          (
+                            ' . $documento_ID . ' 
+                          , ' . $categoria_ID . ' 
+                          , ' . $rowStep['ID'] . ' 
+                          , ' . $rowSottostep['ID'] . ' 
+                          , ' . $rowOpzioni['ID'] . ' 
+                          , ' . $corpoLinea_ID . ' 
+                          , ' . $rowOpzioni['visibile'] . ' 
+                          )    
+                          ';
+
+                $db->query($query);
+            }
 
         }
 

@@ -144,7 +144,7 @@ function mostraStep (step_ID)
     
 }
 
-function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID) 
+function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID, sottostep_ID) 
 {
     console.log ("[CAMBIO OPZIONE]");    
     console.log ("--> Linea ID: "   + linea_ID);    
@@ -152,7 +152,11 @@ function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID)
     
     $("#layoutEditorSottostepStatus-" + linea_ID).addClass("lds-dual-ring");
     
-    $.post( jsPath + "configuratore/editor/ajax-cambia-opzione/", { linea_ID: linea_ID, opzione_ID: opzione_ID, documento_ID: documento_ID })
+    $.post( jsPath + "configuratore/editor/ajax-cambia-opzione/", { linea_ID: linea_ID
+                                                                  , opzione_ID: opzione_ID
+                                                                  , documento_ID: documento_ID
+                                                                  , step_ID : step_ID
+                                                                  , sottostep_ID: sottostep_ID})
       .done(function( data ) {
     
         $("#layoutEditorSottostepStatus-" + linea_ID).removeClass("lds-dual-ring");

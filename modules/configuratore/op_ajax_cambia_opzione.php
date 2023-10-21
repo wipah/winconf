@@ -34,18 +34,10 @@ if (!$db->query($query)){
 }
 
 // Cerca e abilita la successiva linea
-/*
-$query = 'SELECT ID, step_ID
-          FROM documenti_corpo
-          WHERE documento_ID = ' . $documento_ID . '
-          AND visibile = 0
-          AND esclusa = 0
-          AND ID > ' . $linea_ID . '
-          LIMIT 1';
-*/
-
-$query = 'SELECT documenti_corpo.ID, 
-       documenti_corpo.step_ID,
+$query = 'SELECT documenti_corpo.ID
+       , documenti_corpo.step_ID
+       , documenti_corpo.sottostep_ID
+       ,
        (
        SELECT COUNT(configuratore_opzioni.ID) totale
        FROM configuratore_opzioni

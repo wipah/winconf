@@ -30,6 +30,14 @@ if (isset($_GET['conferma'])) {
         echo '&bull; Corpo eliminato. <br/>';
     }
 
+    $query = 'DELETE FROM documenti_corpo_opzioni WHERE documento_ID = ' . $documento_ID . ';';
+
+    if (!$db->query($query)) {
+        echo 'Query error. ' . $query;
+
+    } else {
+        echo '&bull; Opzioni del corpo eliminate. <br/>';
+    }
     return;
 }
 

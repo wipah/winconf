@@ -7,7 +7,23 @@ if (!$user->validateLogin())
 $documento_ID   = (int) $_POST['documento_ID'];
 $linea_ID       = (int) $_POST['linea_ID'];
 $opzione_ID     = (int) $_POST['opzione_ID'];
+$step_ID        = (int) $_POST['step_ID'];
+$sottostep_ID   = (int) $_POST['sottostep_ID'];
+$debug          = '';
 
+// Ottiene l'ID della vecchia opzione
+$opzionePrecedente_ID = $configuratore->ottieneOpzioneSelezionata($sottostep_ID);
+
+/*
+ * Resetta le linee di corpo (sottostep) che hanno una dipendenza con la vecchia opzione.
+ * Ciascun sottostep sarà ulteriormente processato per alterare la visibilità delle opzioni legate alle opzioni del
+ * sottostep stesso.
+ */
+$configuratore->resettaSottoStepDaOpzione($documento_ID, $opzionePrecedente_ID);
+
+$configuratore->resettaOpzioni($documento_ID, $opzionePrecedente_ID);
+
+$debug .= 'Opzione precedentemente selezionata: ' . $opzionePrecedente_ID . PHP_EOL;
 
 $query = 'UPDATE documenti_corpo 
           SET opzione_ID = ' . $opzione_ID . '
@@ -34,26 +50,39 @@ if (!$db->query($query)){
 }
 
 // Cerca e abilita la successiva linea
-$query = 'SELECT documenti_corpo.ID
-       , documenti_corpo.step_ID
-       , documenti_corpo.sottostep_ID
-       ,
+/*
+$query = 'SELECT ID, step_ID
+          FROM documenti_corpo
+          WHERE documento_ID = ' . $documento_ID . '
+          AND visibile = 0
+          AND esclusa = 0
+          AND ID > ' . $linea_ID . '
+          LIMIT 1';
+*/
+
+$query = 'SELECT documenti_corpo.ID, 
+       documenti_corpo.step_ID,
        (
-       SELECT COUNT(configuratore_opzioni.ID) totale
-       FROM configuratore_opzioni
-       WHERE configuratore_opzioni.sottostep_ID = documenti_corpo.sottostep_ID
+        SELECT COUNT(configuratore_opzioni.ID) totale_opzioni
+        FROM configuratore_opzioni
+        WHERE configuratore_opzioni.sottostep_ID = documenti_corpo.sottostep_ID
        ) totale_opzioni
-FROM documenti_corpo 
-WHERE documento_ID = ' . $documento_ID .'
-AND documenti_corpo.visibile = 0
-AND esclusa = 0
-AND documenti_corpo.ID > ' . $linea_ID . '
-HAVING totale_opzioni > 1
-LIMIT 1';
+       FROM documenti_corpo 
+       WHERE documento_ID = ' . $documento_ID .'
+        AND documenti_corpo.visibile = 0
+        AND esclusa = 0
+        AND ( (origine_visibile = 0 && inclusa = 1) || origine_visibile = 1 )
+       HAVING totale_opzioni > 0
+       LIMIT 1';
+
+
 $result = $db->query($query);
 
 if (!$db->affected_rows) {
-    echo json_encode(['status' => -1, 'message' => 'Non sono state trovate linee', 'step_ID' => 0]);
+    echo json_encode([  'status' => -1
+                            , 'message' => 'Non sono state trovate linee'
+                            , 'step_ID' => 0
+                            , 'debug' => $debug]);
     return;
 }
 
@@ -69,5 +98,4 @@ if (!$db->query($query)){
     return;
 }
 
-
-echo json_encode(['status' => 1, 'message' => 'Operazione completata', 'step_ID' => $rowStepID]);
+echo json_encode(['status' => 1, 'message' => 'Operazione completata', 'step_ID' => $rowStepID, 'debug' => $debug]);

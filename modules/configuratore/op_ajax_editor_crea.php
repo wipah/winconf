@@ -7,14 +7,21 @@ if (!$user->validateLogin())
 if(!$user->validateLogin())
     return;
 
+$debug = '*** DEBUG *** ' . PHP_EOL;
+
 $customer_ID    = (int) $_POST['cliente'];
 $categoria_ID   = (int) $_POST['categoria'];
 $lunghezza      = (float) $_POST['lunghezza'];
 $larghezza      = (float) $_POST['larghezza'];
 $metri_quadri   = $larghezza * $lunghezza;
 
-$configuratore->lunghezza = $lunghezza;
-$configuratore->larghezza = $larghezza;
+$debug .= 'Customer_ID: ' . $customer_ID . PHP_EOL;
+$debug .= 'Categoria_ID: ' . $categoria_ID . PHP_EOL;
+$debug .= 'Lunghezza: ' . $lunghezza . PHP_EOL;
+$debug .= 'Larghezza: ' . $larghezza . PHP_EOL;
+
+$configuratore->lunghezza = $lunghezza . PHP_EOL;
+$configuratore->larghezza = $larghezza . PHP_EOL;
 
 $query = 'INSERT INTO documenti 
           ( user_ID
@@ -42,6 +49,7 @@ $query = 'INSERT INTO documenti
           , NOW()       
           );';
 
+$debug .= ' *** Query inserimento documento *** '. PHP_EOL . $query . PHP_EOL . '***' . PHP_EOL;
 
 if (!$db->query($query)) {
     echo '--KO-- Query error. ' . $query;
@@ -49,6 +57,7 @@ if (!$db->query($query)) {
 }
 
 $documento_ID = $db->insert_id;
+$debug .= 'Documento_ID: ' . $documento_ID . PHP_EOL;
 
 /*
  * Inserimento delle categorie. Le categorie sono sempre visualizzate quindi, qualsiasi categoria non visibile non
@@ -59,10 +68,15 @@ $query = 'SELECT *
           WHERE ID = ' . $categoria_ID . ' 
           AND visibile = 1
           ORDER BY ordine ASC';
+
 if (!$risultatoCategoria = $db->query($query)) {
     echo '--KO-- Errore nella query. ' . $query;
     return;
 }
+
+$debug .= '*** Query di selezione delle categorie ***' . PHP_EOL . $query . PHP_EOL .'***';
+
+
 
 while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
 
@@ -75,6 +89,7 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
                 AND visibile = 1
               ORDER BY ordine ASC';
 
+    $debug .= '*** Query ricerca step *** ' . PHP_EOL . $query . PHP_EOL . '***' . PHP_EOL;
     if (!$resultStep = $db->query($query)) {
         echo '--KO-- Query error' . $query;
         return;
@@ -92,6 +107,8 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
                   WHERE step_ID = ' . $rowStep['ID'] . ' 
                   ORDER BY ordine ASC';
 
+        $debug .= '*** Query sottostep *** ' . PHP_EOL . $query . PHP_EOL . '***' . PHP_EOL;
+
         if (!$risultatoSottostep = $db->query($query)) {
             echo '--KO-- Errore nella query' . $query;
             return;
@@ -103,33 +120,34 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
 
             // Controlla le dipendenze dalle dimensioni
             if ( (int) $rowSottostep['check_dimensioni'] === 1) {
+                $debug .= '--> Il sottostep di ID ' . $rowSottostep['ID'] . ' (' . $rowSottostep['nome'] . ') ha il controllo dimensioni attivo' . PHP_EOL;
+
                 $checkDimensioni = $configuratore->checkDipendenzaDimensione($documento_ID,0, $rowSottostep['ID']);
 
+                $debug .= '--> Il check dimensioni ha restituito il valore di ' . $checkDimensioni . PHP_EOL;
                 switch ($checkDimensioni) {
                     case -1:
                         continue 2;
                     case 1:
-                        $rowSottostep['visibile'] = 1;
-                        continue;
+                        $origineVisibile = 1;          // La dimensione è un elemento che non cambierà mai.
+                        $rowSottostep['visibile'] = 1; // Per questo motivo può essere considerato visibile all'origine
+                        break;
                 }
 
+            } else {
+                $debug .= '--> Il sottostep di ID ' . $rowSottostep['ID'] . ' (' . $rowSottostep['nome'] . ') non ha il controllo dimensioni attivo' . PHP_EOL;
             }
-
-            /*
-             * In base al valore della variabile $checkDimensioni viene settata la visibilità del sottostep
-             */
 
             // Controlla se è il primo sottostep visibile.
             if (!$primo && (int) $rowSottostep['visibile'] === 1) {
+                $debug .= '--> Il sottostep è considerato il primo ' . PHP_EOL;
                 $primoStep = 1;
                 $primo = 1;
             } else {
+                $debug .= '--> Il sottostep non è considerato il primo e sarà reso invisibile' . PHP_EOL;
                 $primoStep = 0;
                 $rowSottostep['visibile'] = 0;
             }
-
-            // $primoStep = ($primo) ? 1 : 0;
-            // $primo = false;
 
             $query = 'INSERT INTO documenti_corpo 
                   ( documento_ID
@@ -170,6 +188,8 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
                 echo '--KO-- Errore nella query';
                 return;
             }
+
+            $debug .= '*** Query di inserimento del sottostep *** ' . PHP_EOL . $query . PHP_EOL . '***' . PHP_EOL;
 
             $corpoLinea_ID = $db->insert_id;
 
@@ -216,5 +236,7 @@ while ($rowCategorie = mysqli_fetch_assoc($risultatoCategoria)) {
 
     }
 }
+
+file_put_contents('debug.txt', $debug);
 
 echo $documento_ID;

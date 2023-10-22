@@ -13,12 +13,16 @@ if (!isset($_POST['step_ID'])) {
 $documento_ID   = (int) $_POST['documento_ID'];
 $step_ID        = (int) $_POST['step_ID'];
 
-$query = 'SELECT * 
-          FROM documenti_corpo 
-          WHERE step_ID = ' . $step_ID . '
-          AND documento_ID = ' . $documento_ID . '
-          AND ( primo_step = 1 OR visibile = true)
-          ORDER BY ID ASC';
+$query = 'SELECT  *
+                , CORPO.ID linea_ID
+                , STEP.step_nome
+          FROM documenti_corpo CORPO
+          LEFT JOIN configuratore_step STEP 
+            ON STEP.ID = CORPO.step_ID
+          WHERE CORPO.step_ID = ' . $step_ID . '
+          AND CORPO.documento_ID = ' . $documento_ID . '
+          AND ( CORPO.primo_step = 1 OR CORPO.visibile = true)
+          ORDER BY CORPO.ID ASC';
 
 $risultato = $db->query($query);
 
@@ -27,7 +31,7 @@ if (!$db->affected_rows) {
     return;
 }
 
-echo '<h2>Step: ' . $step_ID .'</h2>';
+echo '<!-- <h2>Step: ' . $row['step_nome'] .'</h2>-->';
 while ($row = mysqli_fetch_assoc($risultato)) {
-    echo $configuratore->layoutCreaSottoStep($documento_ID, $step_ID, $row['sottostep_ID'], $row['ID']);
+    echo $configuratore->layoutCreaSottoStep($documento_ID, $step_ID, $row['sottostep_ID'], $row['linea_ID']);
 }

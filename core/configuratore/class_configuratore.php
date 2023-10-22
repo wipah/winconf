@@ -98,8 +98,6 @@ class configuratore
 
                 $db->query($query);
 
-
-
                 $query = 'INSERT INTO documenti_corpo_opzioni 
                                         ( 
                                           documento_ID
@@ -125,6 +123,34 @@ class configuratore
         }
 
         return ['status' => 1, 'step' => $step, 'sottoStep' => $sottostep, 'debug' => $debug];
+    }
+
+    function resettaOpzioni(int $documento_ID, $opzione_ID) {
+        global $db;
+
+        $query = 'SELECT DIPENDENZE.opzione_ID 
+                  FROM configuratore_opzioni_check_dipendenze DIPENDENZE
+                  WHERE DIPENDENZE.opzione_valore_ID = ' . $opzione_ID;
+
+        $result = $db->query ($query);
+
+        if (!$db->affected_rows)
+            return;
+
+        $arrayOpzioni = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+
+            if (in_array($row['opzione_ID'], $arrayOpzioni ))
+                continue;
+
+            $query = 'UPDATE documenti_corpo_opzioni 
+                    SET stato = 1 ^ stato 
+                    WHERE opzione_ID = ' . $row['opzione_ID'] . ' 
+                    LIMIT 1';
+
+            $arrayOpzioni[] = $row['opzione_ID'];
+            $db->query($query);
+        }
     }
 
     function resettaSottoStepDaOpzione(int $documento_ID, int $opzione_ID)
@@ -156,14 +182,20 @@ class configuratore
 
     }
 
-
+    /**
+     * Ripristina lo stato di visibilità delle opzioni a seguito della modifica di una opzione che ha effetto su
+     * un sottostep controlla altre opzioni.
+     * @param int $documento_ID
+     * @param int $sottostep_ID
+     * @param int $opzione_ID
+     * @return void
+     */
     function resettaOpzioniDaOpzione(int $documento_ID, int $sottostep_ID, int $opzione_ID)
     {
         global $db;
 
         // Viene passato un $sottostep_ID che contiene alcune opzioni.
         // Tramite query vengono ricavati gli ID di queste opzioni
-
         $query = 'SELECT ID 
                   FROM configuratore_opzioni 
                   WHERE sottostep_ID = ' . $sottostep_ID;
@@ -195,7 +227,6 @@ class configuratore
                     continue;
                 }
 
-
                 $query = 'UPDATE documenti_corpo_opzioni
                       SET  stato = 1 - stato
                       WHERE documento_ID = ' . $documento_ID . '
@@ -207,16 +238,10 @@ class configuratore
             }
         }
 
-
-
-
-        $risultato = $db->query($query);
+        $db->query($query);
 
         if (!$db->affected_rows)
             return;
-
-
-
     }
 
 
@@ -485,6 +510,7 @@ class configuratore
         global $db;
         global $configuratore;
 
+
         $query = 'SELECT * 
                  FROM configuratore_sottostep 
                  WHERE ID = ' . $sottostep_ID . ' LIMIT 1';
@@ -519,7 +545,7 @@ class configuratore
             $risultatoOpzioni = $db->query($query);
 
             $partSelect = '<select class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID .');" id="">
-                            <option ' . (is_null($rowOpzioneScelta['opzione_ID']) ? ' selected ' : ' ') . ' disabled>Seleziona una opzione</option>';
+                            <option ' . (is_null($rowOpzioneScelta['opzione_ID']) || (int) $rowOpzioneScelta['opzione_ID'] === 0 ? ' selected ' : ' ') . ' disabled >Seleziona una opzione</option>';
 
             $countOpzioni = 0;
 
@@ -539,21 +565,31 @@ class configuratore
                 }
 
                 // Controlla se l'opzione ha un check sulle dipendenze
-                $checkDipendenza = $configuratore->checkOpzioneDipendenzaDaOpzione($documento_ID, $rowOpzioni['ID']);
-                $opzioneVisibile = (int) $rowOpzioni['visibile'];
+                if ( (int) $rowOpzioni['check_dipendenze'] === 1) {
+                    $checkDipendenza = $configuratore->checkOpzioneDipendenzaDaOpzione($documento_ID, $rowOpzioni['ID']);
 
-                if ($opzioneVisibile === 0 && ($checkDipendenza === -1 || $checkDipendenza === 0)) {
-                    /* echo 'STEP 1. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile */;
-                    break;
-                } elseif ($opzioneVisibile === 1 && $checkDipendenza === 0) {
-                    echo 'STEP 2. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile ;
-                    break;
-                }
+                    $opzioneVisibile = (int) $rowOpzioni['visibile'];
 
-                $countOpzioni++;
-                $partSelect .= '<option ' . ((int)$rowOpzioni['ID'] === (int)$rowOpzioneScelta['opzione_ID'] ? ' selected ' : '') . ' 
+                    if ($opzioneVisibile === 0 && ($checkDipendenza === -1 || $checkDipendenza === 0)) {
+                         echo 'STEP 1. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile ;
+                        // break;
+                    } elseif ($opzioneVisibile === 1 && $checkDipendenza === 0) {
+                         echo 'STEP 2. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile ;
+                        // break;
+                    } else {
+                        $partSelect .= '<option ' . ((int)$rowOpzioni['ID'] === (int)$rowOpzioneScelta['opzione_ID'] ? ' selected ' : '') . ' 
                                         value="' . $rowOpzioni['ID'] . '">' . $rowOpzioni['opzione_nome'] . ' <!-- [CDM:' . $checkDimensioni . '] -->
                                 </option>';
+                    }
+                } else {
+
+                    $countOpzioni++;
+                    $partSelect .= '<option ' . ((int)$rowOpzioni['ID'] === (int)$rowOpzioneScelta['opzione_ID'] ? ' selected ' : '') . ' 
+                                        value="' . $rowOpzioni['ID'] . '">' . $rowOpzioni['opzione_nome'] . ' <!-- [CDM:' . $checkDimensioni . '] -->
+                                </option>';
+                }
+
+
             }
             $partSelect .= '</select>';
         }
@@ -598,6 +634,7 @@ class configuratore
     function totaleDocumento (int $documento_ID) : float {
         global $db;
 
+        $this->getDimensioni($documento_ID);
         // Ottiene la valorizzazione iniziale che deriva dalla categoria del progetto
         $query = 'SELECT  configuratore_categorie.categoria_formula_valore
                         , configuratore_formule.formula_sigla

@@ -116,7 +116,7 @@ echo '
     </div>
     <div class="col-md-3">
         <h2>Riepilogo</h2>
-        <div id="documentoTotale"></div>
+        <div id="totale">Totale €<span id="documentoTotale"></span></div>
     </div>
 </div>';
 echo '<script>
@@ -136,6 +136,9 @@ echo '</script>';
 echo '<script>
 function mostraStep (step_ID) 
 {
+    console.log("[MOSTRA STEP]");
+    console.log("--> step_ID: " + step_ID);
+    
     $(".layoutStepScheda").hide();
     $("#layoutStepScheda-" + step_ID).show();
     
@@ -178,7 +181,9 @@ function ottieniUltimoStep ()
     console.log ("[OTTIENI ULTIMO STEP]");
     $.post( jsPath + "configuratore/editor/ajax-ottieni-ultimo-step/", { documento_ID: ' . $documento_ID . ' })
       .done(function( data ) {
+        console.log("--> Dati ricevuti " + data);
         obj = JSON.parse(data);
+        console.log ("--> ID ottenuto " + obj.step_ID);
         mostraStep(obj.step_ID);
       });
 }

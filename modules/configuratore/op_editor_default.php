@@ -116,7 +116,7 @@ echo '
     </div>
     <div class="col-md-3">
         <h2>Riepilogo</h2>
-        <div id="totale">Totale €<span id="documentoTotale"></span></div>
+        <div id="layoutRiepilogo">Caricamento in corso</div>
     </div>
 </div>';
 echo '<script>
@@ -128,6 +128,8 @@ $(function() {
 foreach ($documentoSteps as $step_ID => $stepNome) {
     echo '$(function() {
             visualizzaStep(' . $step_ID . ');
+            visualizzaRiepilogo();
+            ottieniTotale();
           });';
 }
 echo '</script>';
@@ -170,6 +172,7 @@ function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID, sottostep_ID)
         if ( parseInt(obj.step_ID) !== 0) {
             visualizzaStep(obj.step_ID);
             mostraStep(obj.step_ID);
+            visualizzaRiepilogo();
             ottieniTotale();
         }
             
@@ -215,6 +218,15 @@ function visualizzaStep(step_ID) {
       .done(function( data ) {
         $("#layoutStepScheda-" + step_ID).html(data);
       });
+}
+
+function visualizzaRiepilogo () {
+    console.log ("[VISUALIZZA RIEPILOGO]");
+    
+    $.post( jsPath + "configuratore/editor/ajax-visualizza-riepilogo/", { documento_ID: ' . $documento_ID . ' })
+      .done(function( data ) {
+        $("#layoutRiepilogo").html(data);
+    });
 }
 
 </script>';

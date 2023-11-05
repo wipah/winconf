@@ -247,7 +247,7 @@ background-color: #fdf7f7;
 }
 
 .table > tbody > tr > td {
-    background-color: var(--lavender-web) !important;
+   background-color: var(--lavender-web) !important;
    font-weight: normal;
 }
     
@@ -255,6 +255,10 @@ background-color: #fdf7f7;
     background-color: lightgray;
 }
 
+.table > tfoot > tr > td {
+   background-color: var(--lavender-web) !important;
+   font-weight: bolder;
+}
 .layoutEditorSottostepNome {
     font-weight: bolder;
     text-transform: uppercase;

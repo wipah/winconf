@@ -19,6 +19,9 @@ switch ($path[3]) {
     case 'ajax-ottieni-totale':
         require_once 'op_ajax_ottieni_totale.php';
         break;
+    case 'ajax-visualizza-riepilogo':
+        require_once 'op_ajax_visualizza_riepilogo.php';
+        break;
     default:
         require_once 'op_editor_default.php';
         break;

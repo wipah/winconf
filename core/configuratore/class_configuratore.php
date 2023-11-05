@@ -246,6 +246,15 @@ class configuratore
 
 
     /**
+     * Questa funzione controlla se un sottostep oppure una opzione possano o meno essere visualizzati.
+     * Qualora il parametro $opzione_ID non fosse passato si ritiene che il controllo andrà fatto sul sottostep.
+     *
+     * La funziona restituisce tre tipi di valori:
+     *  -1, se il sottostep oppure l'opzione non vanno mostrati
+     *   0, se non ci sono condizioni nel database (ad esempio se è stato flaggato per una opzione / sottostep
+     *      il controllo delle dimensioni ma non vi sono specificati i controlli.
+     *   1, se il sottostep oppure l'opzione vanno mostrati
+     *
      * @param int  $documento_ID ID del docmento
      * @param int  $tipo 0 = sottostep, 1 = opzione
      * @param int  $sottostep_ID ID dell'opzione
@@ -280,9 +289,7 @@ class configuratore
          * La tabella configuratore_opzioni_check_dimensioni non contiene alcun riferimento
          * per il sottostep oppure per l'opzione passata. Si presumo che lo stato di visibilità
          * del sottostep oppure dell'opzione rimanga inalterato.
-         *
          */
-
         if (!$db->affected_rows)
             return 0;
 
@@ -300,11 +307,25 @@ class configuratore
                     break;
             }
 
-            $valore     = (float)   $row['valore'];
-            $esito      = (int)     $row['esito'];
-            $confronto  = (int)     $row['confronto'];
+            /*
+             * Variabili
+             * $valore      = Valore da verificare
+             * $confronto   = Tipo di confronto da effettuare
+             * $esito       = 0 escludi, 1 = includi
+             */
 
-            // echo 'Dimensione ' . $dimensione . ' valore ' . $valore . ' confronto ' . $confronto . PHP_EOL;
+            $valore     = (float)   $row['valore'];
+            $confronto  = (int)     $row['confronto'];
+            $esito      = (int)     $row['esito'];
+
+            /*
+             * Controlla se il tipo di confronto è coerente con la dimensione e il valore.
+             * ATTENZIONE: In caso di esito 0 il programma restituisce immediatamente -1 poiché il primo match di
+             * esclusione, di fatto, esclude la possibilità che l'opzione possa essere inclusa negli step successivi.
+             *
+             * A fine loop viene restituito l'esito
+             */
+
             if (
                 ($confronto === 0 && $dimensione < $valore)  ||
                 ($confronto === 1 && $dimensione <= $valore) ||
@@ -467,6 +488,7 @@ class configuratore
                       FROM configuratore_opzioni 
                       WHERE sottostep_ID = ' . $sottostep_ID;
 
+
             $risultatoOpzioni = $db->query($query);
 
             $partSelect = '<select class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID .');" id="">
@@ -475,6 +497,7 @@ class configuratore
             $countOpzioni = 0;
             while ($rowOpzioni = mysqli_fetch_assoc($risultatoOpzioni)) {
 
+
                 //Controlla se l'opzione ha un check sulle dimensioni
                 if ( (int) $rowOpzioni['check_dimensioni'] === 1) {
 
@@ -482,9 +505,7 @@ class configuratore
 
                     switch ($checkDimensioni) {
                         case -1:
-                        case 0 && (int) $rowOpzioni['visibile'] === 0:
                             break 2;
-
                     }
                 }
 
@@ -510,8 +531,6 @@ class configuratore
                                         value="' . $rowOpzioni['ID'] . '">' . $rowOpzioni['opzione_nome'] . ' <!-- [CDM:' . $checkDimensioni . '] -->
                                 </option>';
                 }
-
-
             }
             $partSelect .= '</select>';
         }

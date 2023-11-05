@@ -324,78 +324,6 @@ class configuratore
 
         return $risultato;
 
-
-        /* while ($row = mysqli_fetch_assoc($result)) {
-            switch ( (int) $row['dimensione']) {
-                case 0:
-                    $dimensione = $this->larghezza;
-                    break;
-                case 1:
-                    $dimensione = $this->lunghezza;
-                    break;
-            }
-
-            $valore = (float) $row['valore'];
-            $esito  = (int) $row['esito'];
-
-            switch ( (int) $row['confronto']) {
-                case 0:
-                    if ($dimensione < $valore) {
-                        if ($esito === 0 ) {
-                            return 0;
-                        } else {
-                            $risultato = 1;
-                        }
-                    }
-                    break;
-                case 1:
-                    if ($dimensione <= $valore) {
-                        if ($esito === 0 ) {
-                            return 0;
-                        } else {
-                            $risultato = 1;
-                        }
-                    }
-                    break;
-                case 2:
-                    if ($dimensione == $valore) {
-                        if ($esito === 0 ) {
-                            return 0;
-                        } else {
-                            $risultato = 1;
-                        }
-                    }
-                    break;
-                case 3:
-                    if ($dimensione >= $valore) {
-                        if ($esito === 0) {
-                            return 0;
-                        } else {
-                            $risultato = 1;
-                        }
-                    }
-                    break;
-                case 4:
-                    if ($dimensione > $valore) {
-                        if ($esito === 0 ) {
-                            return 0;
-                        } else {
-                            $risultato = 1;
-                        }
-                    }
-                    break;
-                case 5:
-                    if ($dimensione != $valore) {
-                        if ($esito === 0 ) {
-                            return 0;
-                        } else {
-                            $risultato = 1;
-                        }
-                    }
-                    break;
-            }
-
-        } */
     }
 
     function aggiornaHash()
@@ -510,10 +438,10 @@ class configuratore
         global $db;
         global $configuratore;
 
-
         $query = 'SELECT * 
-                 FROM configuratore_sottostep 
-                 WHERE ID = ' . $sottostep_ID . ' LIMIT 1';
+                  FROM configuratore_sottostep 
+                  WHERE ID = ' . $sottostep_ID . ' 
+                  LIMIT 1';
 
         $result = $db->query($query);
 
@@ -522,12 +450,10 @@ class configuratore
 
         $row = mysqli_fetch_assoc($result);
 
-       /*
-        * Controlla se lo step dipende da una opzione e può essere visualizzato
-        */
-
+       // Controlla se lo step dipende da una opzione e può essere visualizzato
         $visibile = $this->sottoStepVisibile($documento_ID, $step_ID, $sottostep_ID, $linea_ID);
 
+        // Ottiene l'ID dell'opzione scelta nel corpo
         $query = 'SELECT opzione_ID 
                   FROM documenti_corpo WHERE ID = ' . $linea_ID;
 
@@ -535,7 +461,6 @@ class configuratore
         $rowOpzioneScelta       = mysqli_fetch_assoc($risultatoOpzioneScelta);
 
         $partSelect = '';
-
         if ( (int) $row['tipo_scelta'] === 0) {
 
             $query = 'SELECT * 
@@ -548,7 +473,6 @@ class configuratore
                             <option ' . (is_null($rowOpzioneScelta['opzione_ID']) || (int) $rowOpzioneScelta['opzione_ID'] === 0 ? ' selected ' : ' ') . ' disabled >Seleziona una opzione</option>';
 
             $countOpzioni = 0;
-
             while ($rowOpzioni = mysqli_fetch_assoc($risultatoOpzioni)) {
 
                 //Controlla se l'opzione ha un check sulle dimensioni
@@ -572,17 +496,15 @@ class configuratore
 
                     if ($opzioneVisibile === 0 && ($checkDipendenza === -1 || $checkDipendenza === 0)) {
                          echo 'STEP 1. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile ;
-                        // break;
                     } elseif ($opzioneVisibile === 1 && $checkDipendenza === 0) {
                          echo 'STEP 2. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile ;
-                        // break;
                     } else {
+                        $countOpzioni++;
                         $partSelect .= '<option ' . ((int)$rowOpzioni['ID'] === (int)$rowOpzioneScelta['opzione_ID'] ? ' selected ' : '') . ' 
                                         value="' . $rowOpzioni['ID'] . '">' . $rowOpzioni['opzione_nome'] . ' <!-- [CDM:' . $checkDimensioni . '] -->
                                 </option>';
                     }
                 } else {
-
                     $countOpzioni++;
                     $partSelect .= '<option ' . ((int)$rowOpzioni['ID'] === (int)$rowOpzioneScelta['opzione_ID'] ? ' selected ' : '') . ' 
                                         value="' . $rowOpzioni['ID'] . '">' . $rowOpzioni['opzione_nome'] . ' <!-- [CDM:' . $checkDimensioni . '] -->
@@ -595,7 +517,7 @@ class configuratore
         }
 
         if ($countOpzioni === 0)
-            $partSelect = 'Errore. Nessuna opzione valida';
+            $partSelect = 'Attenzione. Nessuna opzione sembra essere valida.';
 
         $part = '<div class="layoutEditorSottostep">
                     <div class="row">

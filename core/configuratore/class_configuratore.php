@@ -557,6 +557,7 @@ class configuratore
         global $db;
 
         $this->getDimensioni($documento_ID);
+
         // Ottiene la valorizzazione iniziale che deriva dalla categoria del progetto
         $query = 'SELECT  configuratore_categorie.categoria_formula_valore
                         , configuratore_formule.formula_sigla
@@ -592,20 +593,20 @@ class configuratore
                 break;
         }
 
-
-            $query = '
-        SELECT  CORPO.ID corpo_ID
-              , OPZIONI.opzione_formula_valore
-              , FORMULE.formula_sigla
-        FROM documenti_corpo CORPO 
-        LEFT JOIN configuratore_opzioni OPZIONI
-            ON OPZIONI.ID = CORPO.opzione_ID
-        LEFT JOIN configuratore_formule FORMULE
-            ON FORMULE.ID = OPZIONI.opzioni_formula_ID	
-        
-        WHERE   CORPO.visibile = 1
-                AND CORPO.valorizzata = 1
-                AND CORPO.documento_ID = ' . $documento_ID . ';';
+        // Ottiene i vari elementi di linea
+        $query = '
+                    SELECT  CORPO.ID corpo_ID
+                          , OPZIONI.opzione_formula_valore
+                          , FORMULE.formula_sigla
+                    FROM documenti_corpo CORPO 
+                    LEFT JOIN configuratore_opzioni OPZIONI
+                        ON OPZIONI.ID = CORPO.opzione_ID
+                    LEFT JOIN configuratore_formule FORMULE
+                        ON FORMULE.ID = OPZIONI.opzioni_formula_ID	
+                    
+                    WHERE   CORPO.visibile = 1
+                            AND CORPO.valorizzata = 1
+                            AND CORPO.documento_ID = ' . $documento_ID . ';';
 
         $result = $db->query($query);
 
@@ -633,6 +634,14 @@ class configuratore
                     echo 'Opzione ' . $sigla . ' non trovata. <br/>';
                     break;
             }
+
+            // Aggiorna la linea di corpo con il totale progressivo
+            $query = 'UPDATE documenti_corpo 
+                      SET importo = ' . $totale . ' 
+                      WHERE ID = ' . $row['corpo_ID'] . ' 
+                      LIMIT 1';
+
+            $db->query($query);
         }
 
         $this->aggiornaTotaleDocumento($documento_ID, $totale);

@@ -1,5 +1,6 @@
 <?php
 
+
 $this->noTemplateParse = true;
 if (!$user->validateLogin())
     return;

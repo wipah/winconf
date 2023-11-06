@@ -86,13 +86,18 @@ if (!$db->affected_rows) {
                     <td>' . $row['sottostep_nome'] . '</td>
                     <td>' . $row['sottostep_sigla']  .'</td>
                     <td>' . $tipoScelta  .'</td>
-                    <td>' . ( (int) $row['check_dipendenze'] === 1 ? 'Si' : 'No') . '<br/>
-                        <span onclick="mostraDipendenzeSottostep(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .')" class="spanClickable">Editor check dipendenze</span>
+                    <td>' . ( (int) $row['check_dipendenze'] === 1 ? '<i style="color:green" class="gg-check icon"></i>' : '<i style="color:red" class="gg-check icon"></i>') . '
+                        
+                        <span onclick="mostraDipendenzeSottostep(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .')" 
+                        class="gg-extension icon-link"></span>
                     </td>
-                    <td>' . ( (int) $row['check_dimensioni'] === 1 ? 'Si' : 'No') . '<br/>
-                        <span onclick="mostraDimensioniSottostep(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .')" class="spanClickable">Editor check dimensioni</span>
+                    <td>' . ( (int) $row['check_dimensioni'] === 1 ? '<i style="color:green" class="gg-check icon-link"></i>' : '<i style="color:red" class="icon-link gg-check"></i>') . '
+                        
+                        <span onclick="mostraDimensioniSottostep(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .')" 
+                              class="gg-arrows-shrink-v icon-link">
+                        </span>
                     </td>
-                    <td>' . ( (int) $row['visibile'] === 1 ? 'Visibile' : 'Non visibile' ) . '</td>
+                    <td>' . ( (int) $row['visibile'] === 1 ? '<i style="color:green" class="gg-check-r"></i>' : '<i style="color:red" class="gg-check-r"></i>' ) . '</td>
                     <td>
                         <span class="spanClickable" onclick="sottoStepEditor(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .');">Modifica sottostep</span> | 
                         <span class="spanClickable" onclick="mostraOpzioni(' . $categoria_ID . ', ' . $step_ID . ', ' . $row['ID'] . ');">Editor opzioni</span>

@@ -8,7 +8,7 @@ if (!$user->logged) {
 }
 
 $this->menuItems[] = '<a href="' . $conf['URI'] . 'configuratore-admin/">Backend</a>';
-
+$this->title = 'WinConf - Homepage categorie';
 echo '<h1>Configurazione</h1>';
 
 $query = 'SELECT * FROM 
@@ -76,9 +76,14 @@ if (!$db->affected_rows) {
                     $step .= '<tr data-sort-id="' . $rowSteps['ID'] . '">
                             <td>'  . $rowSteps['ID'] .'</td>
                             <td>'  . $rowSteps['step_nome'] .'</td>
-                            <td>'  . ( (int) $rowSteps['visibile'] === 1 ? 'Si' : 'No') .'</td>
+                            <td>'  . ( (int) $rowSteps['visibile'] === 1 ? '<i style="color:green" class="gg-check-r"></i>' : '<i style="color:red" class="gg-check-r"></i>') .'</td>
                             <td>
-                                <a href="' . $conf['URI']  .'configuratore-admin/step/editor/?ID=' . $rowSteps['ID'] . '">Modifica lo step</a> - 
+                                <span class="icon-link">
+                                    <a href="' . $conf['URI']  .'configuratore-admin/step/editor/?ID=' . $rowSteps['ID'] . '">
+                                        <i class="gg-chevron-double-down-r"></i>
+                                    </a>
+                                </span>
+                                
                                 <a href="' . $conf['URI'] . 'configuratore-admin/sottostep/editor/?step_ID=' . $rowSteps['ID']  . '">Editor sottostep</a>
                             </td>
                             <td align="center"><i class="fa fa-fw fa-arrows-alt"></i></td>
@@ -118,11 +123,21 @@ if (!$db->affected_rows) {
                 <td>' . $row['categoria_nome'] . '</td>
                 <td>' . $row['categoria_sigla'] . '</td>
                 
-                <td>' . $step . ' <div class="configuratoreTabellaStep"><a href="' . $conf['URI'] . 'configuratore-admin/step/editor/?categoria_ID=' . $row['ID'] . '">Aggiungi step</a></div> </td>
-                <td>' . ( (int) $row['visibile'] === 1 ? 'Si' :  'No') .'</td>
+                <td>' . $step . ' 
+                    <div class="configuratoreTabellaStep">
+                        <a  class="btn btn-info float-right" href="' . $conf['URI'] . 'configuratore-admin/step/editor/?categoria_ID=' . $row['ID'] . '">Aggiungi step</a>
+                    </div>
+                </td>
+                <td>' . ( (int) $row['visibile'] === 1 ? '<i style="color:green" class="gg-check-r"></i>' :  '<i style="color:red" class="gg-close-r"></i>') .'</td>
                 <td>
-                    <a href="' . $conf['URI'] . 'configuratore-admin/categorie/editor/?ID=' . $row['ID'] . '">Modifica</a> |
-                    <span onclick="if( confirm(\'Vuoi eliminare la categoria? Questa operazione non è annullabile\')){ location.href = jsPath + \'configuratore-admin/elimina-categoria/?ID=' . $row['ID'] . '\'  } " class="spanClickable">Elimina</span>
+                    <span data-toggle="tooltip" data-placement="top" title="Modifica step" class="icon-link">
+                        <a  href="' . $conf['URI'] . 'configuratore-admin/categorie/editor/?ID=' . $row['ID'] . '">
+                            <i class="gg-file"></i>
+                        </a>
+                    </span>
+                    <span class="icon-link" title="Rimuovi il sottostep" onclick="if( confirm(\'Vuoi eliminare la categoria? Questa operazione non è annullabile\')){ location.href = jsPath + \'configuratore-admin/elimina-categoria/?ID=' . $row['ID'] . '\'  } " class="spanClickable">
+                        <i class="gg-file-remove"></i>
+                    </span>
                 </td>
                 <td align="center"><i class="fa fa-fw fa-arrows-alt"></i></td>
               </tr>';

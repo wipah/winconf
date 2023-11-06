@@ -142,7 +142,9 @@ class template {
   <link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" />
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+  
+  <link href="https://css.gg/css" rel="stylesheet" />
+  
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="' . $conf['URI'] . 'core/js/input-spinner.js"></script>
@@ -268,6 +270,25 @@ background-color: #fdf7f7;
     font-size: smaller;
 }    
 
+.icon-link {
+    text-decoration: none !important;
+    display: inline-flex;
+    margin-right: 18px;
+    color: dodgerblue;
+    cursor: pointer;
+}
+
+.icon {
+    text-decoration: none !important;
+    display: inline-flex;
+    margin-right: 18px;
+    cursor: pointer;
+}
+
+.icon-link > i {
+    color: dodgerblue;
+    cursor: pointer;
+}
 .footer {
     margin-top: 12px;
     background-color: #3f3d3d;
@@ -376,7 +397,11 @@ WinConf v0.1 alpha
 ' . ($user->isAdmin ? '<div style="border:1px solid gray; padding: 6px;"><!--WINCONFdebug--></div>' : '') . '
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-
+<script>
+$(function () {
+  $(\'[data-toggle="tooltip"]\').tooltip()
+})
+</script>
 </body>
 
 </html>';

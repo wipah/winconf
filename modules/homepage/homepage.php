@@ -7,6 +7,8 @@ if (!$user->logged) {
     return;
 }
 
+$this->title = 'WinConf - Pagina principale';
+
 $query = 'SELECT documenti.*
                 , configuratore_categorie.categoria_nome
                 , clienti.ID cliente_ID
@@ -54,8 +56,12 @@ if (!$db->affected_rows) {
                 <td>'. $row['totale'] .'</td>
                 <td>' . ( (int) $row['stato'] === 0 ? 'Aperto' : 'Chiuso') . '</td>
                 <td>
-                    <a href="' . $conf['URI'] . 'configuratore/elimina-documento/?ID=' . $row['ID'] . '">Elimina documento</a>
-                    <a href="' . $conf['URI'] . 'configuratore/editor/?ID=' . $row['ID'] . '">Visualizza documento</a></td>
+                    <span class="icon-link">
+                        <a href="' . $conf['URI'] . 'configuratore/elimina-documento/?ID=' . $row['ID'] . '"><i class="gg-erase icon-link"></i></a>
+                    </span>
+                    <span class="icon-link">
+                        <a href="' . $conf['URI'] . 'configuratore/editor/?ID=' . $row['ID'] . '"><i class="gg-enter"></i></a></td>
+                    </span>
               </tr>';
     }
     $tabellaOrdini .= '</tbody>

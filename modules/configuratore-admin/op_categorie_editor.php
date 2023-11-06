@@ -10,6 +10,7 @@ if (!$user->logged) {
 $this->menuItems[] = '<a href="' . $conf['URI'] . 'configuratore-admin/">Backend</a>';
 $this->menuItems[] = '<a href="' . $conf['URI'] . 'configuratore-admin/editor/">Editor</a>';
 
+$this->title = 'WinConf - Editor di categoria';
 
 echo '<h1>Editor categoria</h1>';
 
@@ -145,7 +146,7 @@ echo '
             <i class="fa fa-table"></i>
           </div>
         </div> 
-        <input value="' . $row['categoria_sigla'] . '" id="sigla" name="sigla" placeholder="Sigla breve della categoria" type="text" class="form-control" aria-describedby="siglaHelpBlock" required="required">
+        <input maxlength="16" value="' . $row['categoria_sigla'] . '" id="sigla" name="sigla" placeholder="Sigla breve della categoria" type="text" class="form-control" aria-describedby="siglaHelpBlock" required="required">
       </div> 
       <span id="siglaHelpBlock" class="form-text text-muted">Sigla breve della categoria.</span>
     </div>

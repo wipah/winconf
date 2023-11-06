@@ -9,7 +9,8 @@ if (!$user->logged) {
 $this->menuItems[] = '<a href="' . $conf['URI'] . 'configuratore-admin/">Backend</a>';
 $this->menuItems[] = '<em>Step editor</em>';
 
-echo '<h1>Editor dello step</h1>';
+echo '<h1>Step editor</h1>';
+$this->title = 'WinConf - Editor step';
 
 if (isset($_GET['save'])) {
     $nome = $core->in($_POST['nome']);
@@ -120,7 +121,7 @@ echo '
             <i class="fa fa-table"></i>
           </div>
         </div> 
-        <input value="' . $row['step_sigla'] . '" id="sigla" name="sigla" placeholder="Sigla breve della categoria" type="text" class="form-control" aria-describedby="siglaHelpBlock" required="required">
+        <input maxlength="16" value="' . $row['step_sigla'] . '" id="sigla" name="sigla" placeholder="Sigla breve della categoria" type="text" class="form-control" aria-describedby="siglaHelpBlock" required="required">
       </div> 
       <span id="siglaHelpBlock" class="form-text text-muted">Sigla breve della categoria.</span>
     </div>
@@ -133,9 +134,6 @@ echo '
     </div>
   </div>
 
-  
-
-  
   <div class="form-group row">
     <label for="select" class="col-4 col-form-label">Visibile</label> 
     <div class="col-8">
@@ -148,7 +146,7 @@ echo '
    
   <div class="form-group row">
     <div class="offset-4 col-8">
-      <button name="submit" type="submit" class="btn btn-primary">' . $button . '</button>
+      <button name="submit" type="submit=" class="btn btn-info float-right">' . $button . '</button>
     </div>
   </div>
 </form>';

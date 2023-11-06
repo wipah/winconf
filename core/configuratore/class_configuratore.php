@@ -601,6 +601,9 @@ class configuratore
 
         $sigla = strtolower($row['formula_sigla']);
         switch ($sigla) {
+            case 'coeff-k':
+                $totale = $totale * $valore;
+                break;
             case 'somma-v':
                 $totale = $valore;
                 break;

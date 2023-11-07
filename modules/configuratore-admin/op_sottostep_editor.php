@@ -16,6 +16,8 @@ if (!$step_ID = (int) $_GET['step_ID']) {
 $this->menuItems[] = '<a href="' . $conf['URI'] . 'configuratore-admin/">Backend</a>';
 $this->menuItems[] = 'Sottostep';
 
+$this->title = 'WinConf - Sottostep editor';
+
 $query = 'SELECT * 
           FROM configuratore_step 
           WHERE ID = ' . $step_ID;

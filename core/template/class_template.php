@@ -168,7 +168,10 @@ class template {
       href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" 
       integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
       crossorigin="anonymous">
+  
+  <link href="https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css" rel="stylesheet" />
   <style>
+
 
 :root {
 /* CSS HEX */
@@ -273,11 +276,14 @@ background-color: #fdf7f7;
 .icon-link {
     text-decoration: none !important;
     display: inline-flex;
-    margin-right: 18px;
+   
     color: dodgerblue;
     cursor: pointer;
 }
 
+.icon-wrapper {
+    margin: 12px;
+}
 .icon {
     text-decoration: none !important;
     display: inline-flex;

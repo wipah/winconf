@@ -78,13 +78,19 @@ if (!$db->affected_rows) {
                             <td>'  . $rowSteps['step_nome'] .'</td>
                             <td>'  . ( (int) $rowSteps['visibile'] === 1 ? '<i style="color:green" class="gg-check-r"></i>' : '<i style="color:red" class="gg-check-r"></i>') .'</td>
                             <td>
-                                <span class="icon-link">
+                                <span class="icon-wrapper">
                                     <a href="' . $conf['URI']  .'configuratore-admin/step/editor/?ID=' . $rowSteps['ID'] . '">
-                                        <i class="gg-chevron-double-down-r"></i>
+                                        <i class="gg-notes icon-link"></i> Modifica
                                     </a>
                                 </span>
                                 
-                                <a href="' . $conf['URI'] . 'configuratore-admin/sottostep/editor/?step_ID=' . $rowSteps['ID']  . '">Editor sottostep</a>
+                                <span class="icon-wrapper">
+                                    <a href="' . $conf['URI'] . 'configuratore-admin/sottostep/editor/?step_ID=' . $rowSteps['ID']  . '">
+                                        <i class="gg-chevron-double-down-r icon-link"></i> Editor sottostep
+                                    </a>
+                                </span>
+                                
+                                
                             </td>
                             <td align="center"><i class="fa fa-fw fa-arrows-alt"></i></td>
                           </tr>';
@@ -130,13 +136,13 @@ if (!$db->affected_rows) {
                 </td>
                 <td>' . ( (int) $row['visibile'] === 1 ? '<i style="color:green" class="gg-check-r"></i>' :  '<i style="color:red" class="gg-close-r"></i>') .'</td>
                 <td>
-                    <span data-toggle="tooltip" data-placement="top" title="Modifica step" class="icon-link">
+                    <span data-toggle="tooltip" data-placement="top" title="Modifica step" class="icon-wrapper">
                         <a  href="' . $conf['URI'] . 'configuratore-admin/categorie/editor/?ID=' . $row['ID'] . '">
-                            <i class="gg-file"></i>
+                            <i class="gg-notes icon-link"></i>
                         </a>
                     </span>
-                    <span class="icon-link" title="Rimuovi il sottostep" onclick="if( confirm(\'Vuoi eliminare la categoria? Questa operazione non è annullabile\')){ location.href = jsPath + \'configuratore-admin/elimina-categoria/?ID=' . $row['ID'] . '\'  } " class="spanClickable">
-                        <i class="gg-file-remove"></i>
+                    <span class="icon-wrapper" title="Rimuovi il sottostep" onclick="if( confirm(\'Vuoi eliminare la categoria? Questa operazione non è annullabile\')){ location.href = jsPath + \'configuratore-admin/elimina-categoria/?ID=' . $row['ID'] . '\'  } " class="spanClickable">
+                        <i class="gg-trash icon-link"></i>
                     </span>
                 </td>
                 <td align="center"><i class="fa fa-fw fa-arrows-alt"></i></td>

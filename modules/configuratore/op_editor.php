@@ -22,6 +22,12 @@ switch ($path[3]) {
     case 'ajax-visualizza-riepilogo':
         require_once 'op_ajax_visualizza_riepilogo.php';
         break;
+    case 'ajax-ottieni-stato':
+        require_once 'op_ajax_ottieni_stato.php';
+        break;
+    case 'finalizza':
+        require_once 'op_finalizza.php';
+        break;
     default:
         require_once 'op_editor_default.php';
         break;

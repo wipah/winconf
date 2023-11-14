@@ -130,6 +130,7 @@ foreach ($documentoSteps as $step_ID => $stepNome) {
             visualizzaStep(' . $step_ID . ');
             visualizzaRiepilogo();
             ottieniTotale();
+            ottieniStato();
           });';
 }
 echo '</script>';
@@ -174,6 +175,7 @@ function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID, sottostep_ID)
             mostraStep(obj.step_ID);
             visualizzaRiepilogo();
             ottieniTotale();
+            ottieniStato();
         }
             
       });
@@ -229,4 +231,24 @@ function visualizzaRiepilogo () {
     });
 }
 
+function ottieniStato() 
+{
+    console.log ("[OTTIENI STATO]");
+   
+    $.post( jsPath + "configuratore/editor/ajax-ottieni-stato/", { documento_ID: ' . $documento_ID . ' })
+      .done(function( data ) {
+        if (parseInt(data) === 1) {
+            $("#btnFinalizza").prop(\'disabled\', false);
+        } else {
+            $("#btnFinalizza").prop(\'disabled\', true);
+        }
+      });
+}
+
+function finalizzaDocumento( ) {
+    if (!confirm("Attenzione, i documenti finalizzati non potranno più essere aperti. Continuare?"))
+        return;
+    
+    location.href = jsPath + "configuratore/editor/finalizza/?documento_ID=' . $documento_ID . '";
+}
 </script>';

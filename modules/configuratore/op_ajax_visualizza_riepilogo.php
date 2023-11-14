@@ -38,4 +38,10 @@ echo '</tbody>
         <td id="documentoTotale"></td>
     </tr>
 </tfoot>
-</table>';
+</table>
+<div class="row">
+    <div class="col">
+        <button onclick="finalizzaDocumento();" id="btnFinalizza" disabled>Finalizza</button>
+    </div>
+</div>
+';

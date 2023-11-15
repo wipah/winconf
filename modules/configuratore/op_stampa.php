@@ -134,7 +134,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             <td>' . $row['ID'] . '</td>
             <td>' . $row['sigla'] . '</td>
             <td>' . $row['opzione_nome'] . '</td>
-            <td>' . $row['importo'] . '</td>
+            <td>' . $core->valuta($row['importo']) . '</td>
 
           </tr>';
 }
@@ -144,7 +144,7 @@ echo '</tbody>
         <td></td>
         <td></td>
         <td></td>
-        <td>' . $rowTestata['totale']  .'</td>
+        <td>' . $core->valuta($rowTestata['totale'])  .'</td>
     </tr>
 </tfood>
 </table>

@@ -13,4 +13,4 @@ if (!isset($_POST['documento_ID'])) {
 
 $documento_ID = (int) $_POST['documento_ID'];
 
-echo $configuratore->totaleDocumento($documento_ID);
+echo $core->valuta($configuratore->totaleDocumento($documento_ID));

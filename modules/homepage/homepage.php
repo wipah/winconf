@@ -53,7 +53,7 @@ if (!$db->affected_rows) {
                 <td>' . $row['categoria_nome'] . '</td>
                 <td>' . $row['lunghezza'] . ' mm</td>
                 <td>' . $row['larghezza'] . ' mm</td>
-                <td>'. $row['totale'] .'</td>
+                <td>'. $core->valuta($row['totale']) .'</td>
                 <td>' . ( (int) $row['stato'] === 0 ? 'Aperto' : 'Chiuso') . '</td>
                 <td>
                     <span class="icon-link">

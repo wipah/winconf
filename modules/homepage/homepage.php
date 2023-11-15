@@ -60,8 +60,12 @@ if (!$db->affected_rows) {
                         <a href="' . $conf['URI'] . 'configuratore/elimina-documento/?ID=' . $row['ID'] . '"><i class="gg-erase icon-link"></i></a>
                     </span>
                     <span class="icon-link">
-                        <a href="' . $conf['URI'] . 'configuratore/editor/?ID=' . $row['ID'] . '"><i class="gg-enter"></i></a></td>
+                        <a href="' . $conf['URI'] . 'configuratore/editor/?ID=' . $row['ID'] . '"><i class="gg-enter"></i></a>
                     </span>
+                    <span class="icon-link">
+                        <a href="' . $conf['URI'] . 'configuratore/editor/stampa/?documento_ID=' . $row['ID'] . '"><i class="gg-printer"></i></a></td>
+                    </span>
+                </td>
               </tr>';
     }
     $tabellaOrdini .= '</tbody>

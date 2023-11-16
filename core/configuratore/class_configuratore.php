@@ -683,6 +683,7 @@ class configuratore
 
     function documentoCompletato( int $documento_ID) : bool {
         global $db;
+
         $query = 'SELECT CORPO.ID 
 			  FROM documenti_corpo CORPO
 			  WHERE (CORPO.valorizzata = 0 AND CORPO.visibile = 1)

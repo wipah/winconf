@@ -29,9 +29,10 @@ $query = 'SELECT categoria_nome,
             ON configuratore_opzioni.sottostep_ID = configuratore_sottostep.ID
           WHERE configuratore_opzioni.ID = ' . $opzione_ID . '
             ';
+
 $rowTitolo = $dbHelper->getSingleRow($query);
 
-echo '<h2>' . $rowTitolo['categoria_nome'] . ' > ' . $rowTitolo['step_nome'] .' > ' . $rowTitolo['sottostep_nome'] . ' > ' . $rowTitolo['opzione_nome'] . '  > Editor dipendenze</h2>';
+echo '<h2>' . $rowTitolo['categoria_nome'] . ' > ' . $rowTitolo['step_nome'] .' > ' . $rowTitolo['sottostep_nome'] . ' > ' . $rowTitolo['opzione_nome'] . '  > Editor dipendenze [opzione]</h2>';
 
 $query = "SELECT  configuratore_opzioni_check_dipendenze.ID dipendenza_ID,
                   configuratore_opzioni_check_dipendenze.*
@@ -39,7 +40,8 @@ $query = "SELECT  configuratore_opzioni_check_dipendenze.ID dipendenza_ID,
           FROM configuratore_opzioni_check_dipendenze
           LEFT JOIN configuratore_opzioni
             ON configuratore_opzioni_check_dipendenze.opzione_valore_ID = configuratore_opzioni.ID
-          WHERE configuratore_opzioni_check_dipendenze.sottostep_ID = $sottostep_ID;";
+          WHERE configuratore_opzioni_check_dipendenze.sottostep_ID = $sottostep_ID
+                AND configuratore_opzioni_check_dipendenze.opzione_ID = $opzione_ID";
 
 if (!$result = $db->query($query)) {
     echo 'Query error.' . $query;

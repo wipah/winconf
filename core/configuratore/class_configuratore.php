@@ -283,6 +283,7 @@ class configuratore
         }
 
 
+
         $result = $db->query($query);
 
         /*
@@ -292,6 +293,8 @@ class configuratore
          */
         if (!$db->affected_rows)
             return 0;
+
+
 
         $risultato = 0;
         while ($row = mysqli_fetch_assoc($result)) {
@@ -318,6 +321,7 @@ class configuratore
             $confronto  = (int)     $row['confronto'];
             $esito      = (int)     $row['esito'];
 
+            // echo 'Valore ' . $valore . ' confronto ' . $confronto . ' esito ' . $esito . ' dimensione ' . $dimensione;
             /*
              * Controlla se il tipo di confronto è coerente con la dimensione e il valore.
              * ATTENZIONE: In caso di esito 0 il programma restituisce immediatamente -1 poiché il primo match di
@@ -336,8 +340,10 @@ class configuratore
               ) {
 
                 if ($esito === 1) {
+                    // echo 'here';
                     $risultato = 1;
                 } else {
+                    // echo 'there';
                     return -1;
                 }
             }
@@ -471,7 +477,7 @@ class configuratore
 
         $row = mysqli_fetch_assoc($result);
 
-       // Controlla se lo step dipende da una opzione e può essere visualizzato
+        // Controlla se lo step dipende da una opzione e può essere visualizzato
         $visibile = $this->sottoStepVisibile($documento_ID, $step_ID, $sottostep_ID, $linea_ID);
 
         // Ottiene l'ID dell'opzione scelta nel corpo
@@ -496,17 +502,12 @@ class configuratore
 
             $countOpzioni = 0;
             while ($rowOpzioni = mysqli_fetch_assoc($risultatoOpzioni)) {
-
-
                 //Controlla se l'opzione ha un check sulle dimensioni
                 if ( (int) $rowOpzioni['check_dimensioni'] === 1) {
-
                     $checkDimensioni = $configuratore->checkDipendenzaDimensione($documento_ID,1, $sottostep_ID,$rowOpzioni['ID']);
 
-                    switch ($checkDimensioni) {
-                        case -1:
-                            break 2;
-                    }
+                    if ($checkDimensioni == -1)
+                        continue;
                 }
 
                 // Controlla se l'opzione ha un check sulle dipendenze

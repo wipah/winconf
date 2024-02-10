@@ -34,6 +34,7 @@ $query = "SELECT    configuratore_opzioni_check_dimensioni.ID dimensione_ID
                 configuratore_opzioni_check_dimensioni.sottostep_ID     =   $sottostep_ID
                  ";
 
+
 if (!$result = $db->query($query)) {
     echo 'Query error.' . $query;
     return;

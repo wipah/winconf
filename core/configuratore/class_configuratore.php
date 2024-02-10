@@ -611,6 +611,9 @@ class configuratore
             case 'somma-kdim':
                 $totale = $valore * ($this->larghezza * $this->lunghezza);
                 break;
+            case 'coeff-p':
+                $totale += ($totale / 100) * $valore;
+                break;
             default:
                 echo 'Categoria di formula ' . $sigla . ' non trovata. <br/>';
                 break;
@@ -652,6 +655,9 @@ class configuratore
                     break;
                 case 'somma-kdim':
                     $totale += $valore * ($this->larghezza * $this->lunghezza);
+                    break;
+                case 'coeff-p':
+                    $totale += ($totale / 100) * $valore;
                     break;
                 default:
                     echo 'Opzione ' . $sigla . ' non trovata. <br/>';

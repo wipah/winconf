@@ -53,8 +53,8 @@ $selectConfronto = '
         <option ' . ( (int) $row['confronto'] === 0 ? ' selected ' : '') . ' value="0">Minore di </option>
         <option ' . ( (int) $row['confronto'] === 1 ? ' selected ' : '') . ' value="1">Minore o uguale di</option>
         <option ' . ( (int) $row['confronto'] === 2 ? ' selected ' : '') . ' value="2">Uguale a</option>
-        <option ' . ( (int) $row['confronto'] === 3 ? ' selected ' : '') . ' value="3">Maggiore di</option>
-        <option ' . ( (int) $row['confronto'] === 4 ? ' selected ' : '') . ' value="4">Maggiore o uguale a</option>
+        <option ' . ( (int) $row['confronto'] === 3 ? ' selected ' : '') . ' value="3">Maggiore o uguale</option>
+        <option ' . ( (int) $row['confronto'] === 4 ? ' selected ' : '') . ' value="4">Maggiore</option>
         <option ' . ( (int) $row['confronto'] === 5 ? ' selected ' : '') . ' value="5">Diverso da</option>
       </select></div></div>';
 

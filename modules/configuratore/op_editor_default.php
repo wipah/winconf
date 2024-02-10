@@ -91,7 +91,7 @@ if ( (int) $rowTestata['stato'] === 1) {
 echo '<div class="row configuratoreDivCliente">
         <div class="col-md-2" style="border-right: 1px solid white; text-align: center">
             <div style="font-size: small">Ordine</div>
-            <div><span style="font-size: x-large">4543</span> del <span style="font-size: x-large">16-06-2023</span> </div>
+            <div><span style="font-size: x-large">' . $documento_ID .'</span> del <span style="font-size: x-large">' . $rowTestata['data_ordine'] . '</span> </div>
         </div>
         <div class="col-md-5" style="border-right: 1px solid white">
             <div style="font-size: small">Cliente</div>
@@ -117,12 +117,18 @@ foreach ($documentoSteps as $step_ID => $stepNome) {
 }
 
 echo '
-<div class="row mt-6">
+<div class="row mt-5">
     <div class="col-md-9">
     ' . $stepSchede . '
     </div>
     <div class="col-md-3">
-        <h2>Riepilogo</h2>
+        <h2>Dimensioni</h2>
+        <div class="row" style="text-align: center">
+            <div class="col-md-5"><span style="font-size: xx-large">' . $configuratore->larghezza . '</span> <br/><small>mm</small></div>
+            <div class="col-md-2" style="vertical-align: center;"> X </div>
+            <div class="col-md-5"><span style="font-size: xx-large">' . $configuratore->lunghezza . '</span> <br/><small>mm</small></div>
+        </div>
+        <h2 class="mt-3">Riepilogo</h2>
         <div id="layoutRiepilogo">Caricamento in corso</div>
     </div>
 </div>';

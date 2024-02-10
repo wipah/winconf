@@ -34,7 +34,7 @@ if (!$db->affected_rows) {
     $tabellaOrdini .= '<table class="table table bordered table-condensed table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Numero</th>
                     <th>Cliente</th>
                     <th>Tipo</th>
                     <th>Lunghezza</th>

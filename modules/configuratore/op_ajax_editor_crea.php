@@ -13,7 +13,7 @@ $customer_ID    = (int) $_POST['cliente'];
 $categoria_ID   = (int) $_POST['categoria'];
 $lunghezza      = (float) $_POST['lunghezza'];
 $larghezza      = (float) $_POST['larghezza'];
-$metri_quadri   = $larghezza * $lunghezza;
+$metri_quadri   = ($larghezza * $lunghezza) / 1000;
 
 $debug .= 'Customer_ID: ' . $customer_ID . PHP_EOL;
 $debug .= 'Categoria_ID: ' . $categoria_ID . PHP_EOL;

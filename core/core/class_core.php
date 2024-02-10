@@ -13,4 +13,13 @@ class core{
         return str_replace("'", "\'", $text);
     }
 
+    public function valuta ( int|float|null $valuta) : string {
+
+            // Formatta il numero come stringa di valuta
+            $numero_formattato = number_format($valuta, 2, ',', '.');
+
+            return "€ $numero_formattato";
+
+    }
+
 }

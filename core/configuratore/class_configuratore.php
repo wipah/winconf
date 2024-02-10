@@ -681,5 +681,36 @@ class configuratore
 
         $db->query($query);
     }
+
+    function documentoCompletato( int $documento_ID) : bool {
+        global $db;
+
+        $query = 'SELECT CORPO.ID 
+			  FROM documenti_corpo CORPO
+			  WHERE (CORPO.valorizzata = 0 AND CORPO.visibile = 1)
+				  AND CORPO.documento_ID = ' . $documento_ID;
+
+        $result = $db->query($query);
+
+        if ($db->affected_rows) {
+            return false;
+        }  else {
+            return true;
+        }
+    }
+
+    function cambiaStatoDocumento( int $documento_ID, int $stato) : void
+    {
+        global $db;
+        global $user;
+
+        $query = 'UPDATE documenti
+                  SET stato = ' . $stato . '
+                  WHERE ID = ' . $documento_ID . ' 
+                    AND user_ID = ' . $user->ID . '
+                  LIMIT 1';
+
+        $db->query($query);
+    }
 }
 

@@ -26,10 +26,7 @@ if (!$db->affected_rows) {
 }
 
 echo '
-<script>
-documento_ID = ' . $documento_ID . ';
-console.log("Il documento ha ID " + documento_ID);
-</script>
+
 
 <style>
 .configuratoreDivCliente {
@@ -64,6 +61,11 @@ border-bottom: 1px solid #9aa2ad !important;
 
 $rowTestata = mysqli_fetch_assoc($resultTestata);
 
+echo '<script>
+documento_ID = ' . $documento_ID . ';
+stato        = ' . $rowTestata['stato'] . ';
+console.log("Il documento ha ID " + documento_ID);
+</script>';
 
 $configuratore->lunghezza = $rowTestata['lunghezza'];
 $configuratore->larghezza = $rowTestata['larghezza'];
@@ -81,6 +83,11 @@ $this->title = 'WINCONF - Configuratore - Documento ' . $documento_ID;
 $this->menuItems[] = '<a href="' . $conf['URI'] . 'configuratore/">Configuratore</a>';
 $this->menuItems[] = '<a href="' . $conf['URI'] . 'configuratore/editor/?ID=' . $documento_ID . '">Editor ordine ' . $documento_ID . '</a>';
 
+if ( (int) $rowTestata['stato'] === 1) {
+    echo '<div class="alert alert-primary" role="alert">
+            <strong>Ordine già inviato</strong>. Qualsiasi modifica all\'ordine non sarà memorizzata.
+          </div>';
+}
 echo '<div class="row configuratoreDivCliente">
         <div class="col-md-2" style="border-right: 1px solid white; text-align: center">
             <div style="font-size: small">Ordine</div>
@@ -130,6 +137,7 @@ foreach ($documentoSteps as $step_ID => $stepNome) {
             visualizzaStep(' . $step_ID . ');
             visualizzaRiepilogo();
             ottieniTotale();
+            ottieniStato();
           });';
 }
 echo '</script>';
@@ -155,6 +163,9 @@ function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID, sottostep_ID)
     console.log ("--> Linea ID: "   + linea_ID);    
     console.log ("--> opzione ID: " + opzione_ID);
     
+    if (stato === 1)
+        return;
+    
     $("#layoutEditorSottostepStatus-" + linea_ID).addClass("lds-dual-ring");
     
     $.post( jsPath + "configuratore/editor/ajax-cambia-opzione/", { linea_ID: linea_ID
@@ -173,9 +184,11 @@ function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID, sottostep_ID)
             visualizzaStep(obj.step_ID);
             mostraStep(obj.step_ID);
             visualizzaRiepilogo();
-            ottieniTotale();
-        }
             
+        }
+        
+        ottieniTotale();
+        ottieniStato();
       });
 }
 
@@ -205,6 +218,10 @@ function aggiornaNote()
 {
     console.log ("[AGGIORNA NOTE]");
     note = $("#editorNote").val();
+    
+    if (stato === 1)
+        return;
+    
     $.post( jsPath + "configuratore/editor/ajax-aggiorna-note/", { documento_ID: ' . $documento_ID . ', note: note })
       .done(function( data ) {
         
@@ -229,4 +246,27 @@ function visualizzaRiepilogo () {
     });
 }
 
+function ottieniStato() 
+{
+    console.log ("[OTTIENI STATO]");
+   
+    $.post( jsPath + "configuratore/editor/ajax-ottieni-stato/", { documento_ID: ' . $documento_ID . ' })
+      .done(function( data ) {
+        if (parseInt(data) === 1) {
+            $("#btnFinalizza").prop(\'disabled\', false);
+        } else {
+            $("#btnFinalizza").prop(\'disabled\', true);
+        }
+      });
+}
+
+function finalizzaDocumento( ) {
+    if (!confirm("Attenzione, i documenti finalizzati non potranno più essere aperti. Continuare?"))
+        return;
+    
+    if (stato === 1)
+        return;
+    
+    location.href = jsPath + "configuratore/editor/finalizza/?documento_ID=' . $documento_ID . '";
+}
 </script>';

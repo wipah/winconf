@@ -175,11 +175,38 @@ class template {
 
 :root {
 /* CSS HEX */
---lavender-web: #d1ccdcff;
---charcoal: #424c55ff;
---lavender-blush: #f5edf0ff;
---cinereous: #886f68ff;
---van-dyke: #3d2c2eff;
+:root {
+  /* Colore primario */
+  --primary-color: #424c55ff;
+  --primary-text-color: #ffffff;
+
+  /* Colore secondario */
+  --secondary-color: #6c757d;
+  --secondary-text-color: #ffffff;
+
+  /* Colore terziario */
+  --tertiary-color: #f8f9fa;
+  --tertiary-text-color: #212529;
+
+  /* Colori di accento */
+  --accent-color1: #17a2b8; /* per bottoni o elementi cliccabili */
+  --accent-text-color1: #ffffff;
+  
+  --accent-color2: #ffc107; /* per elementi di enfasi */
+  --accent-text-color2: #212529;
+
+  /* Colore di warning */
+  --warning-color: #ffc107;
+  --warning-text-color: #212529;
+
+  /* Colore di informazione */
+  --info-color: #17a2b8;
+  --info-text-color: #ffffff;
+
+  /* Colore di pericolo */
+  --danger-color: #dc3545;
+  --danger-text-color: #ffffff;
+}
 
 }
 

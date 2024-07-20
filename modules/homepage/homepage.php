@@ -31,7 +31,7 @@ if (!$db->affected_rows) {
     $tabellaOrdini .= $this->getBox('info','Nessun documento trovato. Puoi inserire il tuo primo progetto/documento 
     <a href="' . $conf['URI'] . 'configuratore/">cliccando qui</a>');
 } else {
-    $tabellaOrdini .= '<table class="table table bordered table-condensed table-striped">
+    $tabellaOrdini .= '<table class="table table bordered table-condensed table-striped winconf-table">
             <thead>
                 <tr>
                     <th>Numero</th>
@@ -57,13 +57,20 @@ if (!$db->affected_rows) {
                 <td>' . ( (int) $row['stato'] === 0 ? 'Aperto' : 'Chiuso') . '</td>
                 <td>
                     <span class="icon-link">
-                        <a href="' . $conf['URI'] . 'configuratore/elimina-documento/?ID=' . $row['ID'] . '"><i class="gg-erase icon-link"></i></a>
+                        <a href="' . $conf['URI'] . 'configuratore/elimina-documento/?ID=' . $row['ID'] . '">
+                            <i class="fas fa-trash"></i>
+                        </a>
                     </span>
                     <span class="icon-link">
-                        <a href="' . $conf['URI'] . 'configuratore/editor/?ID=' . $row['ID'] . '"><i class="gg-enter"></i></a>
+                        <a href="' . $conf['URI'] . 'configuratore/editor/?ID=' . $row['ID'] . '">
+                            <i class="fas fa-edit"></i>
+                        </a>
                     </span>
                     <span class="icon-link">
-                        <a href="' . $conf['URI'] . 'configuratore/editor/stampa/?documento_ID=' . $row['ID'] . '"><i class="gg-printer"></i></a></td>
+                        <a href="' . $conf['URI'] . 'configuratore/editor/stampa/?documento_ID=' . $row['ID'] . '">
+                            <i class="fas fa-print"></i>
+                        </a>
+                        </td>
                     </span>
                 </td>
               </tr>';

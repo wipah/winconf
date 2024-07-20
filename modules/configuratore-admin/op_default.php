@@ -26,7 +26,7 @@ if (!$db->affected_rows) {
 } else {
     echo '
     <h2>Categorie / Step</h2>
-    <table id="defaultSortable" class="table table-bordered table-condensed">
+    <table id="defaultSortable" class="table table-bordered table-condensed winconf-table">
     <thead>
         <tr>
          
@@ -59,7 +59,7 @@ if (!$db->affected_rows) {
                 $step = $this->getBox("info", "Nessuno step inserito.");
             } else {
 
-                $step = '<table id="tabellaStep-' . $row['ID'] . '" class="table table-bordered table-condensed">
+                $step = '<table id="tabellaStep-' . $row['ID'] . '" class="table table-bordered table-condensed winconf-table-secondary">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -80,13 +80,13 @@ if (!$db->affected_rows) {
                             <td>
                                 <span class="icon-wrapper">
                                     <a href="' . $conf['URI']  .'configuratore-admin/step/editor/?ID=' . $rowSteps['ID'] . '">
-                                        <i class="gg-notes icon-link"></i> Modifica
+                                        <i class="fas fa-tasks"></i> Modifica
                                     </a>
                                 </span>
                                 
                                 <span class="icon-wrapper">
                                     <a href="' . $conf['URI'] . 'configuratore-admin/sottostep/editor/?step_ID=' . $rowSteps['ID']  . '">
-                                        <i class="gg-chevron-double-down-r icon-link"></i> Editor sottostep
+                                        <i class="fas fa-code-branch"></i> Editor sottostep
                                     </a>
                                 </span>
                                 
@@ -138,11 +138,11 @@ if (!$db->affected_rows) {
                 <td>
                     <span data-toggle="tooltip" data-placement="top" title="Modifica step" class="icon-wrapper">
                         <a  href="' . $conf['URI'] . 'configuratore-admin/categorie/editor/?ID=' . $row['ID'] . '">
-                            <i class="gg-notes icon-link"></i>
+                            <i class="fas fa-tasks"></i>
                         </a>
                     </span>
-                    <span class="icon-wrapper" title="Rimuovi il sottostep" onclick="if( confirm(\'Vuoi eliminare la categoria? Questa operazione non è annullabile\')){ location.href = jsPath + \'configuratore-admin/elimina-categoria/?ID=' . $row['ID'] . '\'  } " class="spanClickable">
-                        <i class="gg-trash icon-link"></i>
+                    <span data-toggle="tooltip" data-placement="top" title="Elimina lo step"style=""  class="icon-wrapper" title="Rimuovi il sottostep" onclick="if( confirm(\'Vuoi eliminare la categoria? Questa operazione non è annullabile\')){ location.href = jsPath + \'configuratore-admin/elimina-categoria/?ID=' . $row['ID'] . '\'  } " class="spanClickable">
+                        <i class="fas fa-trash"></i>
                     </span>
                 </td>
                 <td align="center"><i class="fa fa-fw fa-arrows-alt"></i></td>

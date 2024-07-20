@@ -46,7 +46,7 @@ echo '<h2 class="mt-3">' . $rowStep['step_nome'] . ' > '. $rowStep['sottostep_no
 if (!$db->affected_rows) {
     echo $this->getBox('info','<strong>Nessuna opzione inserita</strong>. Per il sottostep selezionato non sono ancora presenti opzioni');
 } else {
-    echo '<table id="sottoStepOpzioni" class="table table-bordered table-condensed">
+    echo '<table id="sottoStepOpzioni" class="table table-bordered table-condensed winconf-table-secondary">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -69,17 +69,28 @@ if (!$db->affected_rows) {
                 <td>' . $rowOpzioni['opzione_nome'] . '</td>
                 <td>' . $rowOpzioni['opzione_sigla'] . '</td>
                 <td>' . ( (int) $rowOpzioni['check_dipendenze'] === 1 ? ' Sì ': ' No ' ). ' <hr />
-                    <span class="spanClickable" onclick="mostraDipendenzeOpzioni(' . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ', 0);">Editor check dipendenze</span>
+                    <span onclick="mostraDipendenzeOpzioni(' . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ', 0);">
+                    <i class="fas fa-project-diagram"></i>
+                    </span>
                 </td>
-                <td>' . ( (int) $rowOpzioni['check_dimensioni'] === 1 ? ' Sì ': ' No ' ). ' <hr /><span class="spanClickable" onclick="mostraDimensioniOpzioni('   . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ', 0);">Editor check dimensioni</span></td>
+                <td>' . ( (int) $rowOpzioni['check_dimensioni'] === 1 ? ' Sì ': ' No ' ). ' <hr />
+                    <span onclick="mostraDimensioniOpzioni('   . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ', 0);">
+                    <i class="fas fa-ruler-combined"></i>
+                    </span>
+                </td>
                <td>' . $rowOpzioni['formula_sigla'] . '</td> 
                <td>' . (round($rowOpzioni['opzione_formula_valore'], 3)) . '</td> 
                <td>' . ( (int) $rowOpzioni['visibile'] === 1 ? 'Visibile' : 'Non visibile' ) . '</td>
-                <td>
-                    <span class="spanClickable" onclick="opzioniEditor(' . $categoria_ID . ',' . $step_ID .', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ');">Modifica opzione</span> | 
-                    <span class="spanClickable" onclick=" if (confirm(\'Sei sicuro di voler eliminare l\\\'opzione selezionata?\')) { opzioniElimina('. $rowOpzioni['ID'] .') } ">Elimina opzione</span>
+                <td style="text-align: center">
+                    <span  onclick="opzioniEditor(' . $categoria_ID . ',' . $step_ID .', ' . $sottostep_ID . ',' . $rowOpzioni['ID'] . ');">
+                        <i class="fas fa-cogs"></i>
+                    </span>
+                     
+                    <span class="ml-3" onclick=" if (confirm(\'Sei sicuro di voler eliminare l\\\'opzione selezionata?\')) { opzioniElimina('. $rowOpzioni['ID'] .') } ">
+                        <i class="fas fa-trash"></i>
+                    </span>
                 </td>
-                <td><i class="fa fa-fw fa-arrows-alt"></i></td>
+                <td><i class="fa fa-fw fa-arrows-alt winconf-handle"></i></td>
               </tr>
               ';
     }

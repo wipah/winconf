@@ -173,13 +173,13 @@ class template {
   <style>
 
 
-:root {
 /* CSS HEX */
 :root {
   /* Colore primario */
   --primary-color: #424c55ff;
   --primary-text-color: #ffffff;
-
+ --primary-color-text-hover: #17a2b8;
+ 
   /* Colore secondario */
   --secondary-color: #6c757d;
   --secondary-text-color: #ffffff;
@@ -187,7 +187,8 @@ class template {
   /* Colore terziario */
   --tertiary-color: #f8f9fa;
   --tertiary-text-color: #212529;
-
+ 
+  
   /* Colori di accento */
   --accent-color1: #17a2b8; /* per bottoni o elementi cliccabili */
   --accent-text-color1: #ffffff;
@@ -208,11 +209,53 @@ class template {
   --danger-text-color: #ffffff;
 }
 
+.winconf-handle {
+    cursor: grab; 
 }
 
-html, body {
-background-color: #fdf7f7;
+.winconf-table th{
+    background-color:  var(--primary-color);
+    color: var(--primary-color-text);
 }
+.winconf-table a, .winconf-table span, .winconf-table span i.fas {
+    /* Icone presenti nella tabella primaria */
+    color: var(--primary-color); 
+}
+
+.winconf-table a:hover, 
+.winconf-table span:hover, 
+.winconf-table span:hover i.fas {
+    color: var(--accent-color2); /* Cambia colore al passaggio del mouse */
+    cursor: pointer; /* Cambia il puntatore del mouse a forma di link */   
+}
+
+.winconf-table-secondary th{
+    background-color:  var(--secondary-color);
+    color: var(--secondary-color-text);
+}
+
+.winconf-table-secondary  a{
+    /* Icone presenti nella tabella secondaria */
+    color: var(--secondary-color-text);
+}
+
+.winconf-table-secondary a, .winconf-table-secondary span, .winconf-table-secondary span i.fas {
+    /* Icone presenti nella tabella primaria */
+    color: var(--secondary-color); 
+}
+
+.winconf-table-secondary a:hover, 
+.winconf-table-secondary span:hover, 
+.winconf-table-secondary span:hover i.fas {
+    color: var(--accent-color2); /* Cambia colore al passaggio del mouse */
+    cursor: pointer; /* Cambia il puntatore del mouse a forma di link */   
+}
+
+
+html, body {
+    background-color: #ffffff;
+}
+
 .lds-dual-ring {
   display: inline-block;
   width: 64px;
@@ -238,18 +281,6 @@ background-color: #fdf7f7;
   }
 }
 
-.alert-primary {
-    background-color: var(--cinereous) !important;
-    color: white;
-    border: 1px solid var(--van-dyke);
-}
-
-.alert-primary > a {
-    background-color: var(--cinereous) !important;
-    color: white;
-    text-decoration: underline;
-    
-}
 
 .btn-info {
     background-color: var(--charcoal) !important;
@@ -263,6 +294,7 @@ background-color: #fdf7f7;
     color: var(--van-dyke) !important;
     font-weight: bold;
 }
+
 .spanClickable {
     text-decoration: underline;
     color: blue !important;

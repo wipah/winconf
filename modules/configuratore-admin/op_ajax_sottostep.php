@@ -48,7 +48,7 @@ if (!$db->affected_rows) {
 } else {
 
     echo '
-<table id="sottostepSortable" class="table table-bordered table-condensed">
+<table id="sottostepSortable" class="table table-bordered table-condensed winconf-table">
     <thead>
         <tr>
             <th>ID</th>
@@ -89,36 +89,46 @@ if (!$db->affected_rows) {
                     <td>' . $row['sottostep_nome'] . '</td>
                     <td>' . $row['sottostep_sigla']  .'</td>
                     <td>' . $tipoScelta  .'</td>
-                    <td style="text-align: center">' . ( (int) $row['check_dipendenze'] === 1 ? '<i style="color:green" class="gg-check icon"></i>' : '<i style="color:red" class="gg-check icon"></i>') . '
+                    <td style="text-align: center">' . ( (int) $row['check_dipendenze'] === 1 ? '<i data-toggle="tooltip" data-placement="top" title="Le dipendenze saranno controllate per visualizzare il sottostep" style="color:green" class="gg-check icon"></i>' : '<i data-toggle="tooltip" data-placement="top" title="Le dipendenze sono escluse per la visualizzazione del sottostep" style="color:red" class="gg-check icon"></i>') . '
                     </td>
                     <td style="text-align: center">    
-                        <span onclick="mostraDipendenzeSottostep(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .')" 
-                        class="gg-extension icon-link"></span>
+                        <span 
+                            data-toggle="tooltip" data-placement="top" title="Visualizza le dipendenze che controllano la visibilità del sottostep."
+
+                            onclick="mostraDipendenzeSottostep(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .')"> 
+                            <i class="fas fa-project-diagram"></i>
+                        </span>
                     </td>
                     <td style="text-align: center">' . ( (int) $row['check_dimensioni'] === 1 ? '<i style="color:green" class="gg-check icon-link"></i>' : '<i style="color:red" class="icon-link gg-check"></i>') . '
                     </td>
                     <td style="text-align: center">    
-                        <span onclick="mostraDimensioniSottostep(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .')" 
-                              class="gg-arrows-shrink-v icon-link">
+                        <span 
+                              data-toggle="tooltip" data-placement="top" title="Visualizza le dimensioni che controllano la visibilità del sottostep"    
+                              onclick="mostraDimensioniSottostep(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .')"> 
+                              <i class="fas fa-ruler-combined"></i>
                         </span>
                     </td>
                     <td style="text-align: center">' . ( (int) $row['visibile'] === 1 ? '<i style="color:green" class="gg-check-r"></i>' : '<i style="color:red" class="gg-check-r"></i>' ) . '</td>
                     <td style="text-align: center">
                         
                         <span class="icon-wrapper" onclick="sottoStepEditor(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .');" data-toggle="tooltip" data-placement="top" title="Modifica step">
-                            <i class="gg-notes icon-link"></i>
+                            <i class="fas fa-code-branch"></i>
                         </span>
 
                         <span class="icon-wrapper" onclick="mostraOpzioni(' . $categoria_ID . ', ' . $step_ID . ', ' . $row['ID'] . ');" data-toggle="tooltip" data-placement="top" title="Mostra opzioni">
-                            <i class="gg-chevron-double-down-r icon-link"></i>
+                            <i class="fas fa-cogs"></i>
                         </span>
                          
-                        <span class="icon-wrapper" onclick="sottostepElimina(' . $row['ID'] . ');" data-toggle="tooltip" data-placement="top" title="Elimina sottostep">
-                            <i class="gg-trash icon-link"></i>
+                        <span class="icon-wrapper" 
+                        
+                        onclick="if (confirm(\'Sei sicuro di voler eliminare il sottostep?\')) { sottostepElimina(' . $row['ID'] . ');}" data-toggle="tooltip" data-placement="top" title="Elimina sottostep">
+                            <i class="fas fa-trash"></i>
                         </span>
                     </td>
                     
-                    <td align="center"><i class="fa fa-fw fa-arrows-alt"></i></td>
+                    <td align="center">
+                        <i class="fa fa-fw fa-arrows-alt winconf-handle"></i>
+                    </td>
                 </tr>';
     }
 

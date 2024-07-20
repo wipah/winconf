@@ -43,7 +43,7 @@ if (!$result = $db->query($query)) {
 if (!$db->affected_rows) {
     echo $this->getBox('info','Nessun check dimensioni trovato per il sottostep <strong>' . $rowTitolo['sottostep_nome'] . '</strong>');
 } else {
-    echo '<table class="table table-bordered table-condensed">
+    echo '<table class="table table-bordered table-condensed winconf-table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -75,8 +75,14 @@ if (!$db->affected_rows) {
             <td>' . $row['valore']  . '</td>
             <td>' . ( (int) $row['esito'] === 0 ? 'Escludi' : 'Includi' )  . '</td>
             <td>
-                <span class="spanClickable" onclick="dimensioniEditor(' . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ', 0,  ' . $row['ID'] .')">Modifica</span> | 
-                <span class="spanClickable" onclick="if(confirm(\'Vuoi eliminare il ckeck sulla dimensione?\')) { dimensioniElimina(' . $row['ID'] .') }">Elimina</span>
+                <span  
+                      onclick="dimensioniEditor(' . $categoria_ID . ',' . $step_ID . ', ' . $sottostep_ID . ', 0,  ' . $row['ID'] .')">
+                      <i class="fas fa-pencil-alt"></i>
+                </span> 
+                <span 
+                    onclick="if(confirm(\'Vuoi eliminare il ckeck sulla dimensione?\')) { dimensioniElimina(' . $row['ID'] .') }">
+                    <i class="fas fa-trash fa-warning"></i>    
+                </span>
             </td>
           </tr>';
     }

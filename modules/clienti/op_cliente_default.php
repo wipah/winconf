@@ -56,7 +56,7 @@ if (!$db->affected_rows) {
 echo '
 <a style="margin-bottom: 12px !important" class="btn btn-primary float-right" href="' . $conf['URI'] . 'clienti/editor/">Nuovo cliente</a>
 
-<table id="customerClients" class="table table-bordered table-striped table-condensed">
+<table id="customerClients" class="table table-bordered table-striped table-condensed winconf-table">
     <thead>
         <tr>
             <th>ID</th>

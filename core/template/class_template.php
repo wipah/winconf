@@ -214,6 +214,17 @@ class template {
     color: var(--accent-text-color1) !important;
 }
 
+.alert-primary a::before {
+  content: \'🔗\'; /* Simbolo Unicode per un link */
+  margin-right: 4px; /* Spazio tra il simbolo e il testo del link */
+    color: var(--accent-text-color1) !important;  
+}
+
+.alert-primary a {
+color: var(--accent-text-color1) !important;
+font-weight: bolder;
+}
+
 .winconf-handle {
     cursor: grab; 
 }

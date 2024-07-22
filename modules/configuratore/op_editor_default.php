@@ -30,26 +30,26 @@ echo '
 
 <style>
 .configuratoreDivCliente {
-    background-color: #2a64a6 ;
+    background-color: var(--primary-color) ;
     padding: 6px;
-    color: white;
+    color: var(--primary-text-color);
 }
 .configuratoreTopBar{
     padding: 6px;
-    border-bottom: 1px solid blue !important;
+    
 }
 
 .configuratoreTopBarButton{
     padding: 12px;
-    background-color: #2a64a6;
-    color:white;
+    background-color: var(--secondary-color) ;
+    color: var(--secondary-text-color) ;
     margin-right: 12px;
-    border-bottom: 1px solid blue !important;
 }
 
 .topBarButtonSelected{
-    background-color: #e8b08a;
-border-bottom: 1px solid #9aa2ad !important;
+    background-color: var(--accent-color2);
+    color:  var(--accent-text-color2);
+    border-bottom: 1px solid #9aa2ad !important;
 }
 
 .layoutEditorSottostep {

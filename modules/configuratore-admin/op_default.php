@@ -56,7 +56,7 @@ if (!$db->affected_rows) {
         } else {
 
             if (!$db->affected_rows) {
-                $step = $this->getBox("info", "Nessuno step inserito.");
+                $step = $this->getBox("warning", "Nessuno step inserito.");
             } else {
 
                 $step = '<table id="tabellaStep-' . $row['ID'] . '" class="table table-bordered table-condensed winconf-table-secondary">

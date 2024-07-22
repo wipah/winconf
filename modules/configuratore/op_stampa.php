@@ -46,7 +46,7 @@ if (!$db->affected_rows) {
 
 
 echo '<!doctype html>
-<html lang="en">
+<html lang="it">
     <head>
         <title>Documento ' . $documento_ID . '</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -56,11 +56,11 @@ echo '<!doctype html>
 <body>
 <style>
 .documentoHeader {
-    background-color: #2a64a6;
+    background-color: #424c55ff;
     color: white;
     font-size: large;
     padding: 8px;
-    border-bottom: 2px solid #174a85;
+    border-bottom: 2px solid #6c757d;
 }
 
 body {
@@ -68,12 +68,12 @@ body {
 }
 
 .documentoHeaderCampi {
-    background-color: #5a9dea;
-    color: #1f1818;
+    background-color: #6c757d;
+    color: #ffffff;
     font-size: large;
     padding: 8px;
-    border-bottom: 1px solid darkblue;
-    border-right: 1px solid darkblue;
+    border-bottom: 1px solid #424c55ff;
+    border-right: 1px solid #424c55ff;
 }
 </style>
 <div class="row">

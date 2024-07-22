@@ -10,6 +10,7 @@ if (!isset($_GET['ID'])) {
 
 $documento_ID = (int) $_GET['ID'];
 
+echo '<h2>Eliminazione documento</h2>';
 if (isset($_GET['conferma'])) {
 
     $query = 'DELETE FROM documenti WHERE ID = ' . $documento_ID .  ';';
@@ -41,7 +42,5 @@ if (isset($_GET['conferma'])) {
     return;
 }
 
-echo '<div>
-Attenzione: confermare l\'eliminazione? Questa operazione non potrà essere annullata!
-<a href="' . $conf['URI'] . 'configuratore/elimina-documento/?ID=' . $documento_ID . '&conferma">Confermo</a>
-</div>';
+echo $this->getBox('danger','Attenzione: confermare l\'eliminazione? Questa operazione non potrà essere annullata!
+<a class="btn btn-danger" href="' . $conf['URI'] . 'configuratore/elimina-documento/?ID=' . $documento_ID . '&conferma">Confermo</a>');

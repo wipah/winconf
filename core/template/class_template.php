@@ -178,7 +178,7 @@ class template {
   /* Colore primario */
   --primary-color: #424c55ff;
   --primary-text-color: #ffffff;
- --primary-color-text-hover: #17a2b8;
+  --primary-color-text-hover: #17a2b8;
  
   /* Colore secondario */
   --secondary-color: #6c757d;
@@ -188,7 +188,6 @@ class template {
   --tertiary-color: #f8f9fa;
   --tertiary-text-color: #212529;
  
-  
   /* Colori di accento */
   --accent-color1: #17a2b8; /* per bottoni o elementi cliccabili */
   --accent-text-color1: #ffffff;
@@ -201,12 +200,18 @@ class template {
   --warning-text-color: #212529;
 
   /* Colore di informazione */
-  --info-color: #17a2b8;
+  --info-color: #117a8b;
   --info-text-color: #ffffff;
 
   /* Colore di pericolo */
   --danger-color: #dc3545;
   --danger-text-color: #ffffff;
+}
+
+
+.alert-primary {
+    background-color: var(--accent-color1) !important;
+    color: var(--accent-text-color1) !important;
 }
 
 .winconf-handle {
@@ -283,22 +288,16 @@ html, body {
 
 
 .btn-info {
-    background-color: var(--charcoal) !important;
-    color: white !important;
-    border: 1px solid var(--van-dyke);
+    background-color: var( --secondary-color) !important;
+    color: var( --secondary-color-text) !important;e !important;
+    border: 1px solid var(--primary-color);
      font-weight: bold;
 }
 
 .btn-info:hover {
-    background-color: var(--lavender-web) !important;
-    color: var(--van-dyke) !important;
+    background-color: var(--accent-color2) !important;
+    color: var(--accent-text-color2) !important;
     font-weight: bold;
-}
-
-.spanClickable {
-    text-decoration: underline;
-    color: blue !important;
-    cursor: pointer;
 }
     
 .winConfMenu {
@@ -410,7 +409,7 @@ input:focus{
 <body>
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top" style="background-color: #4053BF !important;">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top" style="background-color: #var(--primary-color) !important;">
       <a class="navbar-brand" href="' . $conf['URI'] . '">WinConfig</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

@@ -136,6 +136,37 @@ if (!$db->affected_rows) {
     </table>';
 }
 
+$query = 'SELECT * 
+          FROM configuratore_step 
+          WHERE ID < ' . $step_ID . ' 
+          LIMIT 1;' ;
+
+if (!$result = $db->query($query)) {
+    echo 'Query error. ' . $query;
+    return;
+}
+
+if ($db->affected_rows) {
+    $row = mysqli_fetch_assoc($result);
+    $prev = '<a class="btn btn-info" href="' . $conf['URI'] . 'configuratore-admin/sottostep/editor/?step_ID=' . $row['ID'] . '">' . $row['step_nome']  . '</a>';
+}
+
+$query = 'SELECT * 
+          FROM configuratore_step 
+          WHERE ID > ' . $step_ID . ' 
+          LIMIT 1;' ;
+
+if (!$result = $db->query($query)) {
+    echo 'Query error. ' . $query;
+    return;
+}
+
+if ($db->affected_rows) {
+    $row = mysqli_fetch_assoc($result);
+    $next = '<a class="btn btn-info" href="' . $conf['URI'] . 'configuratore-admin/sottostep/editor/?step_ID=' . $row['ID'] . '">' . $row['step_nome']  . '</a>';
+}
+
+
 echo '
  <script>
  $(\'#sottostepSortable tbody\').sortable({
@@ -163,3 +194,8 @@ $( "#sortable" ).disableSelection();
 <div class="clearfix">
     <span class="btn btn-info float-right" onclick="sottoStepEditor(' . $categoria_ID .', ' . $step_ID . ',0);">Aggiungi sottostep</span>
 </div>';
+echo '<div class="row mt-3">
+    <div class="col" style="text-align: left"> &lt;' . $prev . '</div>
+    <div class="col" style="text-align: right">  &gt;' . $next . '</div>
+</div>
+';

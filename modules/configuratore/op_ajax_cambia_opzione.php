@@ -1,6 +1,4 @@
 <?php
-
-
 $this->noTemplateParse = true;
 if (!$user->validateLogin())
     return;
@@ -21,7 +19,6 @@ $opzionePrecedente_ID = $configuratore->ottieneOpzioneSelezionata($sottostep_ID)
  * sottostep stesso.
  */
 $configuratore->resettaSottoStepDaOpzione($documento_ID, $opzionePrecedente_ID);
-
 $configuratore->resettaOpzioni($documento_ID, $opzionePrecedente_ID);
 
 $debug .= 'Opzione precedentemente selezionata: ' . $opzionePrecedente_ID . PHP_EOL;
@@ -50,7 +47,7 @@ if (!$db->query($query)){
     return;
 }
 
-// Cerca e abilita la successiva linea
+
 /*
 $query = 'SELECT ID, step_ID
           FROM documenti_corpo
@@ -61,6 +58,10 @@ $query = 'SELECT ID, step_ID
           LIMIT 1';
 */
 
+/*
+ * Questa query cerca e abilita la linea successiva. Valuta, a tal proposito, la presenza di opzioni valide nel sottostep.
+ * Ad esempio, se lo step successivo non possiede opzioni valide restituisce lo stato -1.
+ */
 $query = 'SELECT documenti_corpo.ID, 
        documenti_corpo.step_ID,
        (
@@ -75,7 +76,6 @@ $query = 'SELECT documenti_corpo.ID,
         AND ( (origine_visibile = 0 && inclusa = 1) || origine_visibile = 1 )
        HAVING totale_opzioni > 0
        LIMIT 1';
-
 
 $result = $db->query($query);
 

@@ -48,7 +48,7 @@ if (!$result = $db->query($query)) {
 if (!$db->affected_rows) {
     echo $this->getBox('info', 'Nessuna dipendenza trovata.');
 } else {
-    echo '<table class="table table-bordered table-condensed">
+    echo '<table class="table table-bordered table-condensed winconf-table-secondary">
         <thead>
             <tr>
                 <th>ID</th>

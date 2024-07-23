@@ -247,12 +247,12 @@ font-weight: bolder;
 
 .winconf-table-secondary th{
     background-color:  var(--secondary-color);
-    color: var(--secondary-color-text);
+    color: var(--secondary-text-color);
 }
 
 .winconf-table-secondary  a{
     /* Icone presenti nella tabella secondaria */
-    color: var(--secondary-color-text);
+    color: var(--secondary-text-color);
 }
 
 .winconf-table-secondary a, .winconf-table-secondary span, .winconf-table-secondary span i.fas {
@@ -266,7 +266,6 @@ font-weight: bolder;
     color: var(--accent-color2); /* Cambia colore al passaggio del mouse */
     cursor: pointer; /* Cambia il puntatore del mouse a forma di link */   
 }
-
 
 html, body {
     background-color: #ffffff;
@@ -297,12 +296,11 @@ html, body {
   }
 }
 
-
 .btn-info {
     background-color: var( --secondary-color) !important;
-    color: var( --secondary-color-text) !important;e !important;
+    color: var(--secondary-text-color)  !important;
     border: 1px solid var(--primary-color);
-     font-weight: bold;
+    font-weight: bold;
 }
 
 .btn-info:hover {
@@ -342,14 +340,6 @@ html, body {
     font-size: smaller;
 }    
 
-.icon-link {
-    text-decoration: none !important;
-    display: inline-flex;
-   
-    color: dodgerblue;
-    cursor: pointer;
-}
-
 .icon-wrapper {
     margin: 12px;
 }
@@ -360,10 +350,6 @@ html, body {
     cursor: pointer;
 }
 
-.icon-link > i {
-    color: dodgerblue;
-    cursor: pointer;
-}
 .footer {
     margin-top: 12px;
     background-color: #3f3d3d;
@@ -399,7 +385,7 @@ input:focus{
 }
 
 .layoutLaterale {
-    background-color: #2a64a6;
+    background-color: var(--info-color);
     color: white;
 }
 
@@ -409,6 +395,7 @@ input:focus{
     color: white;
     background-color: transparent;
 }
+
 .layoutLaterale > a {
     border: 0px;
     color: white;

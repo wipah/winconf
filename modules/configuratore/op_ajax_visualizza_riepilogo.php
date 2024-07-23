@@ -15,7 +15,7 @@ $query = 'SELECT  CORPO.*
 
 $result = $db->query($query);
 
-echo '<table class="table">
+echo '<table class="table winconf-table-secondary">
 <thead>
     <tr>
         <th>Sigla</th>
@@ -27,7 +27,7 @@ echo '<table class="table">
 while ($row = mysqli_fetch_assoc($result)) {
     echo '<tr>
             <td>' . $row['sigla'] . '</td>
-            <td>' .  $row['opzione_nome'] . '</td>
+            <td>' . $row['opzione_nome'] . '</td>
           </tr>';
 }
 

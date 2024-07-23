@@ -166,7 +166,7 @@ echo '
     <div class="col-8">
       <div class="input-group">
 
-        <input value="' . $row['categoria_formula_valore'] . '" id="formula_valore" name="formula_valore" placeholder="Valore" type="text" class="form-control" aria-describedby="nomeHelpBlock" required="required">
+        <input value="' . round($row['categoria_formula_valore'],3) . '" id="formula_valore" name="formula_valore" placeholder="Valore" type="text" class="form-control" aria-describedby="nomeHelpBlock" required="required">
       </div> 
       <span id="nomeHelpBlock" class="form-text text-muted">Valore della selezione. Per i decimali utilizzare il punto.</span>
     </div>

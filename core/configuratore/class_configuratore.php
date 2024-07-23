@@ -609,7 +609,7 @@ class configuratore
                 $totale = $valore;
                 break;
             case 'somma-kdim':
-                $totale = $valore * ($this->larghezza * $this->lunghezza);
+                $totale = $valore * ( ($this->larghezza * $this->lunghezza) / 1000);
                 break;
             case 'coeff-p':
                 $totale += ($totale / 100) * $valore;

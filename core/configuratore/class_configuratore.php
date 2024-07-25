@@ -464,6 +464,9 @@ class configuratore
     {
         global $db;
         global $configuratore;
+        global $progressivoOpzioni;
+
+        $progressivoOpzioni++;
 
         $query = 'SELECT * 
                   FROM configuratore_sottostep 
@@ -497,7 +500,7 @@ class configuratore
 
             $risultatoOpzioni = $db->query($query);
 
-            $partSelect = '<select class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID .');" id="">
+            $partSelect = '<select aria-progressivo="' . $progressivoOpzioni . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID .');" id="">
                             <option ' . (is_null($rowOpzioneScelta['opzione_ID']) || (int) $rowOpzioneScelta['opzione_ID'] === 0 ? ' selected ' : ' ') . ' disabled >Seleziona una opzione</option>';
 
             $countOpzioni = 0;
@@ -603,15 +606,17 @@ class configuratore
         $sigla = strtolower($row['formula_sigla']);
         switch ($sigla) {
             case 'coeff-k':
+                /* Aumento in termini di coeff. ad esempio 1.2 = 20% */
                 $totale = $totale * $valore;
                 break;
             case 'somma-v':
-                $totale = $valore;
+                $totale +=  $valore;
                 break;
             case 'somma-kdim':
-                $totale = $valore * ( ($this->larghezza * $this->lunghezza) / 1000);
+                $totale += $valore * ( ($this->larghezza * $this->lunghezza) / 1000);
                 break;
             case 'coeff-p':
+                /* Aumento in percentuale. Ad esempio 20% */
                 $totale += ($totale / 100) * $valore;
                 break;
             default:
@@ -654,7 +659,7 @@ class configuratore
                     $totale += $valore;
                     break;
                 case 'somma-kdim':
-                    $totale += $valore * ($this->larghezza * $this->lunghezza);
+                    $totale += $valore * (($this->larghezza * $this->lunghezza)) / 1000;
                     break;
                 case 'coeff-p':
                     $totale += ($totale / 100) * $valore;

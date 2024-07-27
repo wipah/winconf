@@ -150,6 +150,9 @@ echo '</script>';
 
 
 echo '<script>
+
+let selectOpzione;
+
 function mostraStep (step_ID) 
 {
     console.log("[MOSTRA STEP]");
@@ -212,7 +215,9 @@ function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID, sottostep_ID)
         console.log(\'Ci sono select con aria-progressivo maggiore di \' + linea_ID);
         
         if (!confirm ("Il cambio di questa opzione cancellerà le opzioni successive. Confermare?")) {
+            $("#sottostep-select-139").val(selectOpzione);
             return;   
+            
         } else {
             rimuoviDivMaggioreDi(linea_ID);
         }

@@ -497,7 +497,7 @@ class configuratore
 
             $risultatoOpzioni = $db->query($query);
 
-            $partSelect = '<select aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID .');" id="sottostep-select-' . $linea_ID . '">
+            $partSelect = '<select onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID .');" id="sottostep-select-' . $linea_ID . '">
                             <option ' . (is_null($rowOpzioneScelta['opzione_ID']) || (int) $rowOpzioneScelta['opzione_ID'] === 0 ? ' selected ' : ' ') . ' disabled >Seleziona una opzione</option>';
 
             $countOpzioni = 0;

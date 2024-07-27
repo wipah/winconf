@@ -31,7 +31,6 @@ if (!$db->affected_rows) {
     return;
 }
 
-echo '<!-- <h2>Step: ' . $row['step_nome'] .'</h2>-->';
 while ($row = mysqli_fetch_assoc($risultato)) {
     echo $configuratore->layoutCreaSottoStep($documento_ID, $step_ID, $row['sottostep_ID'], $row['linea_ID']);
 }

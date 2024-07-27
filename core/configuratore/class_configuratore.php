@@ -464,9 +464,6 @@ class configuratore
     {
         global $db;
         global $configuratore;
-        global $progressivoOpzioni;
-
-        $progressivoOpzioni++;
 
         $query = 'SELECT * 
                   FROM configuratore_sottostep 
@@ -500,7 +497,7 @@ class configuratore
 
             $risultatoOpzioni = $db->query($query);
 
-            $partSelect = '<select aria-progressivo="' . $progressivoOpzioni . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID .');" id="">
+            $partSelect = '<select aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID .');" id="sottostep-select-' . $linea_ID . '">
                             <option ' . (is_null($rowOpzioneScelta['opzione_ID']) || (int) $rowOpzioneScelta['opzione_ID'] === 0 ? ' selected ' : ' ') . ' disabled >Seleziona una opzione</option>';
 
             $countOpzioni = 0;
@@ -542,7 +539,7 @@ class configuratore
         if ($countOpzioni === 0)
             $partSelect = 'Attenzione. Nessuna opzione sembra essere valida.';
 
-        $part = '<div class="layoutEditorSottostep">
+        $part = '<div class="layoutEditorSottostep" id="editorSottostep-' . $linea_ID.'">
                     <div class="row">
                         <div class="col-md-4"> 
                             <div class="layoutEditorSottostepNome">' . $row['sottostep_nome'] . '</div>

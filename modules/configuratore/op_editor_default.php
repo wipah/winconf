@@ -163,6 +163,24 @@ function mostraStep (step_ID)
     
 }
 
+
+function rimuoviDivMaggioreDi(currentValue) {
+    // Seleziona tutti i div con ID che corrispondono al pattern editorSottostep-XX
+    $(\'div[id^="editorSottostep-"]\').each(function() {
+        // Ottieni il valore dell\'attributo ID
+        var idValue = $(this).attr(\'id\');
+
+        // Estrai il numero dall\'ID usando una regex
+        var idNumber = parseInt(idValue.replace(\'editorSottostep-\', \'\'), 10);
+
+        // Verifica se il numero è maggiore di currentValue
+        if (idNumber > currentValue) {
+            // Rimuovi il div corrente
+            $(this).remove();
+        }
+    });
+}
+
 function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID, sottostep_ID) 
 {
     console.log ("[CAMBIO OPZIONE]");    
@@ -171,6 +189,35 @@ function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID, sottostep_ID)
     
     if (stato === 1)
         return;
+
+    var hasGreaterSelect = false;
+
+    // Itera attraverso tutte le select con l\'attributo aria-progressivo
+    $(\'select[aria-progressivo]\').each(function() {
+        // Ottieni il valore dell\'attributo aria-progressivo della select corrente
+        var progressivoValue = $(this).attr(\'aria-progressivo\');
+        
+        // Converte il valore dell\'attributo in un numero intero per il confronto
+        progressivoValue = parseInt(progressivoValue, 10);
+
+        // Verifica se il valore è maggiore del valore corrente
+        if (progressivoValue > linea_ID) {
+            hasGreaterSelect = true;
+            return false; // Interrompe il ciclo each se trova un valore maggiore
+        }
+    });
+
+    // Esegui la tua logica in base al risultato
+    if (hasGreaterSelect) {
+        console.log(\'Ci sono select con aria-progressivo maggiore di \' + linea_ID);
+        
+        if (!confirm ("Il cambio di questa opzione cancellerà le opzioni successive. Confermare?")) {
+            return;   
+        } else {
+            rimuoviDivMaggioreDi(linea_ID);
+        }
+    }
+    
     
     $("#layoutEditorSottostepStatus-" + linea_ID).addClass("lds-dual-ring");
     

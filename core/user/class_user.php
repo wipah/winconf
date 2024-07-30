@@ -13,6 +13,8 @@ class user
     public int $group_ID = -1;
     public $isAdmin;
 
+    public $header;
+    public $footer;
 
     public $api_uri  = '';
 
@@ -167,7 +169,8 @@ class user
         }
 
         $row = mysqli_fetch_assoc($result);
-
+        $this->header   = $row['header'];
+        $this->footer   = $row['footer'];
         $this->api_uri                          = $row['api_uri'];
     }
 

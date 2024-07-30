@@ -77,6 +77,9 @@ body {
 }
 </style>
 <div class="row">
+    <div class="col">' . $user->header .'</div>
+</div>
+<div class="row">
     <div class="col-md-3 documentoHeader">
     DOCUMENTO
     </div>
@@ -151,5 +154,10 @@ echo '</tbody>
 <div class="row">
     <div class="col-md">' . $rowTestata['note'] . '</div>
 </div>
+
+<div class="row">
+    <div class="col">' . $user->footer .'</div>
+</div>
+
 </body>
 </html>';

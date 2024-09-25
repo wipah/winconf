@@ -67,9 +67,9 @@ stato        = ' . $rowTestata['stato'] . ';
 console.log("Il documento ha ID " + documento_ID);
 </script>';
 
-$configuratore->lunghezza = $rowTestata['lunghezza'];
+/* $configuratore->lunghezza = $rowTestata['lunghezza'];
 $configuratore->larghezza = $rowTestata['larghezza'];
-
+*/
 $queryCliente = 'SELECT * 
                  FROM clienti 
                  WHERE ID = ' . $rowTestata['customer_ID'];
@@ -184,8 +184,24 @@ function rimuoviDivMaggioreDi(currentValue) {
     });
 }
 
-function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID, sottostep_ID) 
+function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID, sottostep_ID, special = 0) 
 {
+    
+    if (special !== 0) {
+        switch (special) {
+            case 99:
+                 console.log ("[CAMBIO LARGHEZZA]");    
+                break;
+            case 98:
+                 console.log ("[CAMBIO LUNGHEZZA]");    
+                 break;
+                   
+             case 97: 
+                 console.log ("[CAMBIO SPESSORE]");  
+                 break;
+        }        
+    }
+    
     console.log ("[CAMBIO OPZIONE]");    
     console.log ("--> Linea ID: "   + linea_ID);    
     console.log ("--> opzione ID: " + opzione_ID);
@@ -230,7 +246,8 @@ function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID, sottostep_ID)
                                                                   , opzione_ID: opzione_ID
                                                                   , documento_ID: documento_ID
                                                                   , step_ID : step_ID
-                                                                  , sottostep_ID: sottostep_ID})
+                                                                  , sottostep_ID: sottostep_ID
+                                                                  , special: special})
       .done(function( data ) {
     
         $("#layoutEditorSottostepStatus-" + linea_ID).removeClass("lds-dual-ring");

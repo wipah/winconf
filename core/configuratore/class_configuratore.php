@@ -4,9 +4,9 @@ class configuratore
 {
 
     public int $documento_ID;
-    public float $larghezza;
-    public float $lunghezza;
-
+    public float $larghezza = 0;
+    public float $lunghezza = 0;
+    public float $spessore;
 
     function ottieneOpzioneSelezionata( int $sottostep_ID ) : int {
         global $db;
@@ -34,8 +34,9 @@ class configuratore
         $result = $db->query($query);
         $row = mysqli_fetch_assoc($result);
 
-        $this->lunghezza = $row['lunghezza'];
-        $this->larghezza = $row['larghezza'];
+        $this->lunghezza = $row['lunghezza'] ?? 0;
+        $this->larghezza = $row['larghezza'] ?? 0;
+        $this->spessore  = $row['spessore'] ?? 0;
 
     }
 
@@ -477,15 +478,23 @@ class configuratore
 
         $row = mysqli_fetch_assoc($result);
 
-        // Controlla se lo step dipende da una opzione e può essere visualizzato
-        $visibile = $this->sottoStepVisibile($documento_ID, $step_ID, $sottostep_ID, $linea_ID);
+        if ($row['tipo_scelta'] == 0) {
+            // Controlla se lo step dipende da una opzione e può essere visualizzato
+            $visibile = $this->sottoStepVisibile($documento_ID, $step_ID, $sottostep_ID, $linea_ID);
 
-        // Ottiene l'ID dell'opzione scelta nel corpo
-        $query = 'SELECT opzione_ID 
+            // Ottiene l'ID dell'opzione scelta nel corpo
+            $query = 'SELECT opzione_ID 
                   FROM documenti_corpo WHERE ID = ' . $linea_ID;
 
-        $risultatoOpzioneScelta = $db->query($query);
-        $rowOpzioneScelta       = mysqli_fetch_assoc($risultatoOpzioneScelta);
+            $risultatoOpzioneScelta = $db->query($query);
+            $rowOpzioneScelta       = mysqli_fetch_assoc($risultatoOpzioneScelta);
+
+        } elseif ( ((int) $row['tipo_scelta'] == 99) || ((int) $row['tipo_scelta'] == 98) || ((int) $row['tipo_scelta'] == 97)) {
+            $query = 'SELECT valore FROM documenti_corpo WHERE ID = ' . $linea_ID . ' LIMIT 1;';
+            $resultValore = $db->query($query);
+            $rowValore = mysqli_fetch_assoc($resultValore);
+        }
+
 
         $partSelect = '';
         if ( (int) $row['tipo_scelta'] === 0) {
@@ -534,10 +543,17 @@ class configuratore
                 }
             }
             $partSelect .= '</select>';
+
+            if ($countOpzioni === 0)
+                $partSelect = 'Attenzione. Nessuna opzione sembra essere valida.';
+
+        } elseif (  (int) $row['tipo_scelta'] === 99 ) {
+            $partSelect = '<input value="'. $rowValore['valore'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 99);" id="sottostep-select-' . $linea_ID . '">';
+        }  elseif (  (int) $row['tipo_scelta'] === 98  ) {
+            $partSelect = '<input value="'. $rowValore['valore'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID .', 98);" id="sottostep-select-' . $linea_ID . '">';
         }
 
-        if ($countOpzioni === 0)
-            $partSelect = 'Attenzione. Nessuna opzione sembra essere valida.';
+
 
         $part = '<div class="layoutEditorSottostep" id="editorSottostep-' . $linea_ID.'">
                     <div class="row">

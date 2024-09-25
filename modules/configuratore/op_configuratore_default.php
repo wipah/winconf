@@ -59,31 +59,7 @@ echo '</select>
     </div>
 </div>
 
-<div class="row mt-2">
 
-    <div class="col-md-2">
-        <strong>Larghezza</strong>
-    </div>
-   
-    <div class="col-md-10 input-group">
-        <input style="max-width: 200px;" class="form-control decimal" type="text" id="larghezza"></input>
-        <div class="input-group-append">
-            <span class="input-group-text" id="basic-addon2">mm</span>
-      </div>
-    </div>
-</div>    
-
-<div class="row mt-2">
-    <div class="col-md-2">
-        <strong>Altezza</strong>
-    </div>
-    <div class="col-md-10 input-group">
-        <input style="max-width: 200px;" class="form-control decimal" type="text" id="lunghezza"></input>
-        <div class="input-group-append">
-            <span class="input-group-text" id="basic-addon2">mm</span>
-        </div>
-    </div>
-</div>
 
 <div class="clearfix">
     <button id="configuratoreCreaProgetto" class="btn btn-info float-right" onclick="creaProgetto();">Crea progetto</button>
@@ -91,42 +67,16 @@ echo '</select>
 <div id="log"></div>
 <script>
 
-$(\'.decimal\').keyup(function(){
-    var val = $(this).val();
-    if(isNaN(val)){
-         val = val.replace(/[^0-9\.]/g,\'\');
-         if(val.split(\'.\').length>2) 
-             val = val.replace(/\.+$/,"");
-    }
-    $(this).val(val); 
-});
-
 function creaProgetto() {
     console.log("*** Creazione progetto ***");
-    
-    if (!confirm("Attenzione. Non sarà possibile modificare le dimensioni una volta creato il progetto. Procedere?"))
-        return;
-    
+
     cliente   = $("#cliente").val();
     categoria = $("#categoria").val();
-    larghezza = $("#larghezza").val();
-    lunghezza = $("#lunghezza").val();
-    
-    if ((larghezza) <= 0) {
-        alert ("Il valore di larghezza non è valido");
-        return;
-    }
-    
-    if ((lunghezza) <= 0) {
-        alert ("Il valore di altezza non è valido");
-        return;
-    }
     
     $("configuratoreCreaProgetto").attr("disabled", true)
     $.post("' . $conf['URI'] . 'configuratore/editor/nuovo/", {  categoria  : categoria,
                                                                  cliente    : cliente,
-                                                                 lunghezza  : lunghezza,
-                                                                 larghezza  : larghezza})
+                                                                 })
       .done(function( data ) {
           location.href = jsPath + "configuratore/editor/?ID=" + data;
         $("#log").html(data);

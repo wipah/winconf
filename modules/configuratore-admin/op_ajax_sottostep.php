@@ -79,6 +79,15 @@ if (!$db->affected_rows) {
             case 2:
                 $tipoScelta = 'Testo libero';
                 break;
+            case 99:
+                $tipoScelta = 'Larghezza';
+                break;
+            case 98:
+                $tipoScelta = 'Altezza';
+                break;
+            case 97:
+                $tipoScelta = 'Spessore';
+                break;
             default:
                 $tipoScelta = 'ERRORE';
         }

@@ -11,17 +11,11 @@ $debug = '*** DEBUG *** ' . PHP_EOL;
 
 $customer_ID    = (int) $_POST['cliente'];
 $categoria_ID   = (int) $_POST['categoria'];
-$lunghezza      = (float) $_POST['lunghezza'];
-$larghezza      = (float) $_POST['larghezza'];
-$metri_quadri   = ($larghezza * $lunghezza) / 1000;
+
 
 $debug .= 'Customer_ID: ' . $customer_ID . PHP_EOL;
 $debug .= 'Categoria_ID: ' . $categoria_ID . PHP_EOL;
-$debug .= 'Lunghezza: ' . $lunghezza . PHP_EOL;
-$debug .= 'Larghezza: ' . $larghezza . PHP_EOL;
 
-$configuratore->lunghezza = $lunghezza . PHP_EOL;
-$configuratore->larghezza = $larghezza . PHP_EOL;
 
 $query = 'INSERT INTO documenti 
           ( user_ID
@@ -29,10 +23,9 @@ $query = 'INSERT INTO documenti
           , tipo_ordine_ID
           , categoria_ID
           , configuratore_versione
-          , lunghezza
-          , larghezza
+
           , spessore
-          , metri_quadri
+
           , data_ordine
           )
           VALUES 
@@ -42,10 +35,9 @@ $query = 'INSERT INTO documenti
           , ' . 0 . '        
           , ' . $categoria_ID . '        
           , \'FAB001\'        
-          , ' . $lunghezza . '        
-          , ' . $larghezza . '        
+   
           , ' . 0 . '        
-          , ' . $metri_quadri . '        
+ 
           , NOW()       
           );';
 

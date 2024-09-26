@@ -295,8 +295,6 @@ class configuratore
         if (!$db->affected_rows)
             return 0;
 
-
-
         $risultato = 0;
         while ($row = mysqli_fetch_assoc($result)) {
             switch ((int)$row['dimensione']) {
@@ -478,7 +476,8 @@ class configuratore
 
         $row = mysqli_fetch_assoc($result);
 
-        if ($row['tipo_scelta'] == 0) {
+        // Seleziona tutte le scelte che hanno una opzione (ID = 0), oppure una textbox (ID = 1)
+        if ($row['tipo_scelta'] == 0 || $row['tipo_scelta'] == 1) {
             // Controlla se lo step dipende da una opzione e può essere visualizzato
             $visibile = $this->sottoStepVisibile($documento_ID, $step_ID, $sottostep_ID, $linea_ID);
 
@@ -497,6 +496,7 @@ class configuratore
 
 
         $partSelect = '';
+
         if ( (int) $row['tipo_scelta'] === 0) {
 
             $query = 'SELECT * 

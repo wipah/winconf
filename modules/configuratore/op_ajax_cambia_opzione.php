@@ -56,8 +56,6 @@ if ($special > 0) {
 
 // Controlla le dipendenze
     $configuratore->checkDipendenzaOpzione($documento_ID, $opzione_ID);
-
-
 }
 
 // Elimina la valorizzazione e l'eventuale scelta delle opzioni successive

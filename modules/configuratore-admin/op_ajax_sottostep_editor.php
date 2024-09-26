@@ -62,9 +62,9 @@ echo '
         <!-- <option ' . ( (int) $row['tipo_scelta'] === 1 ? ' selected ' : '' )  . ' value="1">Scelta multipla</option> -->
         <option ' . ( (int) $row['tipo_scelta'] === 2 ? ' selected ' : '' )  . ' value="2">Campo libero</option>
         <option disabled>---</option>
-        <option ' . ( (int) $row['tipo_scelta'] === 2 ? ' selected ' : '' )  . ' value="99">Larghezza</option>
-        <option ' . ( (int) $row['tipo_scelta'] === 2 ? ' selected ' : '' )  . ' value="98">Altezza</option>
-        <option ' . ( (int) $row['tipo_scelta'] === 2 ? ' selected ' : '' )  . ' value="97">Spessore</option>
+        <option ' . ( (int) $row['tipo_scelta'] === 99 ? ' selected ' : '' )  . ' value="99">Larghezza</option>
+        <option ' . ( (int) $row['tipo_scelta'] === 98 ? ' selected ' : '' )  . ' value="98">Altezza</option>
+        <option ' . ( (int) $row['tipo_scelta'] === 97 ? ' selected ' : '' )  . ' value="97">Spessore</option>
       </select> 
       <span id="sottostepTipoSceltaHelpBlock" class="form-text text-muted">Tipo di scelta</span>
     </div>

@@ -67,9 +67,9 @@ stato        = ' . $rowTestata['stato'] . ';
 console.log("Il documento ha ID " + documento_ID);
 </script>';
 
-/* $configuratore->lunghezza = $rowTestata['lunghezza'];
-$configuratore->larghezza = $rowTestata['larghezza'];
-*/
+$configuratore->lunghezza = $rowTestata['lunghezza'] ?? 0;
+$configuratore->larghezza = $rowTestata['larghezza'] ?? 0;
+
 $queryCliente = 'SELECT * 
                  FROM clienti 
                  WHERE ID = ' . $rowTestata['customer_ID'];

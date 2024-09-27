@@ -180,11 +180,26 @@ echo '
         <option ' . (  (int) $row['visibile'] === 1 ? 'selected' : '' ).' value="1">Visibile</option>
       </select>
     </div>
-  </div> 
-   
+  </div>';
+
+
+
+
+echo '   
   <div class="form-group row">
     <div class="offset-4 col-8">
       <button name="submit" type="submit" class="btn btn-primary float-right">' . $button  . '</button>
     </div>
   </div>
 </form>';
+
+if ($ID) {
+    echo '<div class="upload-system" data-contesto-id="1" data-idx="' . $ID . '" data-tipo-editor="2">
+            <h3>Upload Immagine Singola</h3>
+            <div class="upload-area">
+                <input type="file" class="upload-input" accept="image/*">
+                <button class="btn btn-primary upload-button">Carica</button>
+            </div>
+            <ul class="media-list mt-3"></ul>
+        </div>';
+}

@@ -72,21 +72,27 @@ if (!$db->affected_rows) {
         switch ((int) $row['tipo_scelta']) {
             case 0:
                 $tipoScelta = 'Scelta singola';
+                $bloccaOpzioni = false;
                 break;
             case 1:
                 $tipoScelta = 'Scelta multipla';
+                $bloccaOpzioni = false;
                  break;
             case 2:
                 $tipoScelta = 'Testo libero';
+                $bloccaOpzioni = true;
                 break;
             case 99:
                 $tipoScelta = 'Larghezza';
+                $bloccaOpzioni = true;
                 break;
             case 98:
                 $tipoScelta = 'Altezza';
+                $bloccaOpzioni = true;
                 break;
             case 97:
                 $tipoScelta = 'Spessore';
+                $bloccaOpzioni = true;
                 break;
             default:
                 $tipoScelta = 'ERRORE';
@@ -122,12 +128,15 @@ if (!$db->affected_rows) {
                         
                         <span class="icon-wrapper" onclick="sottoStepEditor(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .');" data-toggle="tooltip" data-placement="top" title="Modifica step">
                             <i class="fas fa-code-branch"></i>
-                        </span>
+                        </span>';
 
-                        <span class="icon-wrapper" onclick="mostraOpzioni(' . $categoria_ID . ', ' . $step_ID . ', ' . $row['ID'] . ');" data-toggle="tooltip" data-placement="top" title="Mostra opzioni">
+        if (!$bloccaOpzioni) {
+            echo '       <span class="icon-wrapper" onclick="mostraOpzioni(' . $categoria_ID . ', ' . $step_ID . ', ' . $row['ID'] . ');" data-toggle="tooltip" data-placement="top" title="Mostra opzioni">
                             <i class="fas fa-cogs"></i>
                         </span>
-                         
+                         ';
+        }
+echo '
                         <span class="icon-wrapper" 
                         
                         onclick="if (confirm(\'Sei sicuro di voler eliminare il sottostep?\')) { sottostepElimina(' . $row['ID'] . ');}" data-toggle="tooltip" data-placement="top" title="Elimina sottostep">
@@ -142,7 +151,8 @@ if (!$db->affected_rows) {
     }
 
     echo '</tbody>
-    </table>';
+    </table>
+    ';
 }
 
 $query = 'SELECT * 

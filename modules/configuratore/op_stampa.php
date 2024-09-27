@@ -128,6 +128,7 @@ body {
                 <td>ID</td>
                 <td>Sigla</td>
                 <td>Descrizione</td>
+                <td>Valore</td>
                 <td>Costo</td>
             </tr>
         </thead>
@@ -137,6 +138,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             <td>' . $row['ID'] . '</td>
             <td>' . $row['sigla'] . '</td>
             <td>' . $row['opzione_nome'] . '</td>
+            <td>' . $row['valore'] . $row['valore_testo'] . '</td>
             <td>' . $core->valuta($row['importo']) . '</td>
 
           </tr>';

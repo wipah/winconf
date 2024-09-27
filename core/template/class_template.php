@@ -149,7 +149,7 @@ class template {
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="' . $conf['URI'] . 'core/js/input-spinner.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  
+  <script src="' . $conf['URI'] . 'core/js/mediaUploader.js"></script>
   <script>
   
         jsPath = "' . $conf['URI'] . '";
@@ -175,6 +175,12 @@ class template {
 
 /* CSS HEX */
 :root {
+
+    .media-list { list-style: none; padding: 0; }
+    .media-item { padding: 10px; border: 1px solid #ddd; margin-bottom: 5px; background: #f9f9f9; cursor: move; position: relative; }
+    .media-item img { max-width: 100px; max-height: 100px; }
+    .delete-media { position: absolute; top: 10px; right: 10px; }
+
   /* Colore primario */
   --primary-color: #424c55ff;
   --primary-text-color: #ffffff;
@@ -459,10 +465,13 @@ WinConf v0.1 alpha
 ' . ($user->isAdmin ? '<div style="border:1px solid gray; padding: 6px;"><!--WINCONFdebug--></div>' : '') . '
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
 <script>
 $(function () {
   $(\'[data-toggle="tooltip"]\').tooltip()
 })
+
+
 </script>
 </body>
 

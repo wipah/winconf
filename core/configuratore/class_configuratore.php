@@ -476,22 +476,41 @@ class configuratore
 
         $row = mysqli_fetch_assoc($result);
 
-        // Seleziona tutte le scelte che hanno una opzione (ID = 0), oppure una textbox (ID = 1)
-        if ($row['tipo_scelta'] == 0 || $row['tipo_scelta'] == 1) {
+        // Seleziona tutte le scelte che hanno:
+        // - una opzione (ID = 0)
+        // - una opzione multipla (ID = 1)
+        // - una campo libero (ID = 2)
+
+        if ($row['tipo_scelta'] == 0
+            || $row['tipo_scelta'] == 1
+            || $row['tipo_scelta'] == 2) {
             // Controlla se lo step dipende da una opzione e può essere visualizzato
             $visibile = $this->sottoStepVisibile($documento_ID, $step_ID, $sottostep_ID, $linea_ID);
 
-            // Ottiene l'ID dell'opzione scelta nel corpo
-            $query = 'SELECT opzione_ID 
-                  FROM documenti_corpo WHERE ID = ' . $linea_ID;
+            // A questo punto, se il tipo_scelta = 0, allora dobbiamo cercare un'opzione
+            if ( (int) $row['tipo_scelta'] === 0) {
+                $query = 'SELECT opzione_ID 
+                      FROM documenti_corpo WHERE ID = ' . $linea_ID;
 
-            $risultatoOpzioneScelta = $db->query($query);
-            $rowOpzioneScelta       = mysqli_fetch_assoc($risultatoOpzioneScelta);
+                $risultatoOpzioneScelta = $db->query($query);
+                $rowOpzioneScelta       = mysqli_fetch_assoc($risultatoOpzioneScelta);
+            } elseif ( (int) $row['tipo_scelta'] === 2) {
 
-        } elseif ( ((int) $row['tipo_scelta'] == 99) || ((int) $row['tipo_scelta'] == 98) || ((int) $row['tipo_scelta'] == 97)) {
-            $query = 'SELECT valore FROM documenti_corpo WHERE ID = ' . $linea_ID . ' LIMIT 1;';
+                $query = 'SELECT valore_testo FROM documenti_corpo WHERE ID = ' . $linea_ID;
+                $resultValore = $db->query($query);
+                $rowValore = mysqli_fetch_assoc($resultValore);
+            }
+
+
+        } elseif ( ((int) $row['tipo_scelta'] == 99)
+                || ((int) $row['tipo_scelta'] == 98)
+                || ((int) $row['tipo_scelta'] == 97)
+
+                 ) {
+            $query = 'SELECT valore, valore_testo FROM documenti_corpo WHERE ID = ' . $linea_ID . ' LIMIT 1;';
             $resultValore = $db->query($query);
             $rowValore = mysqli_fetch_assoc($resultValore);
+
         }
 
 
@@ -506,29 +525,29 @@ class configuratore
 
             $risultatoOpzioni = $db->query($query);
 
-            $partSelect = '<select onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID .');" id="sottostep-select-' . $linea_ID . '">
-                            <option ' . (is_null($rowOpzioneScelta['opzione_ID']) || (int) $rowOpzioneScelta['opzione_ID'] === 0 ? ' selected ' : ' ') . ' disabled >Seleziona una opzione</option>';
+            $partSelect = '<select onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ');" id="sottostep-select-' . $linea_ID . '">
+                            <option ' . (is_null($rowOpzioneScelta['opzione_ID']) || (int)$rowOpzioneScelta['opzione_ID'] === 0 ? ' selected ' : ' ') . ' disabled >Seleziona una opzione</option>';
 
             $countOpzioni = 0;
             while ($rowOpzioni = mysqli_fetch_assoc($risultatoOpzioni)) {
                 //Controlla se l'opzione ha un check sulle dimensioni
-                if ( (int) $rowOpzioni['check_dimensioni'] === 1) {
-                    $checkDimensioni = $configuratore->checkDipendenzaDimensione($documento_ID,1, $sottostep_ID,$rowOpzioni['ID']);
+                if ((int)$rowOpzioni['check_dimensioni'] === 1) {
+                    $checkDimensioni = $configuratore->checkDipendenzaDimensione($documento_ID, 1, $sottostep_ID, $rowOpzioni['ID']);
 
                     if ($checkDimensioni == -1)
                         continue;
                 }
 
                 // Controlla se l'opzione ha un check sulle dipendenze
-                if ( (int) $rowOpzioni['check_dipendenze'] === 1) {
+                if ((int)$rowOpzioni['check_dipendenze'] === 1) {
                     $checkDipendenza = $configuratore->checkOpzioneDipendenzaDaOpzione($documento_ID, $rowOpzioni['ID']);
 
-                    $opzioneVisibile = (int) $rowOpzioni['visibile'];
+                    $opzioneVisibile = (int)$rowOpzioni['visibile'];
 
                     if ($opzioneVisibile === 0 && ($checkDipendenza === -1 || $checkDipendenza === 0)) {
-                         echo 'STEP 1. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile ;
-                    } elseif ($opzioneVisibile === 1 && $checkDipendenza === 0) {
-                         echo 'STEP 2. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile ;
+                        echo 'STEP 1. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile;
+                    } else if ($opzioneVisibile === 1 && $checkDipendenza === 0) {
+                        echo 'STEP 2. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile;
                     } else {
                         $countOpzioni++;
                         $partSelect .= '<option ' . ((int)$rowOpzioni['ID'] === (int)$rowOpzioneScelta['opzione_ID'] ? ' selected ' : '') . ' 
@@ -546,7 +565,8 @@ class configuratore
 
             if ($countOpzioni === 0)
                 $partSelect = 'Attenzione. Nessuna opzione sembra essere valida.';
-
+        }elseif ( (int) $row['tipo_scelta'] === 2){
+            $partSelect = '<input value="'. $rowValore['valore_testo'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 2);" id="sottostep-select-' . $linea_ID . '">';
         } elseif (  (int) $row['tipo_scelta'] === 99 ) {
             $partSelect = '<input value="'. $rowValore['valore'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 99);" id="sottostep-select-' . $linea_ID . '">';
         }  elseif (  (int) $row['tipo_scelta'] === 98  ) {

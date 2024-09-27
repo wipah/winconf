@@ -189,6 +189,9 @@ function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID, sottostep_ID, speci
     
     if (special !== 0) {
         switch (special) {
+            case 2:
+                console.log("[CAMBIO TESTO]");
+                break;
             case 99:
                  console.log ("[CAMBIO LARGHEZZA]");    
                 break;

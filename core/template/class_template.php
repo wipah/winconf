@@ -172,7 +172,22 @@ class template {
   <link href="https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css" rel="stylesheet" />
   <style>
 
+/* Stile per gli elementi visibili */
+.media-item.visible {
+    background-color: #e0ffe0; /* Verde chiaro */
+}
 
+/* Stile per gli elementi nascosti */
+.media-item.hidden {
+    background-color: #ffe0e0; /* Rosso chiaro */
+}
+
+/* Stile per l\'anteprima delle immagini */
+.media-item img {
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 4px;
+}
 /* CSS HEX */
 :root {
 

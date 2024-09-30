@@ -1,5 +1,5 @@
 $(document).ready(function() {
-   // Funzione per gestire l'upload
+    // Funzione per gestire l'upload
     $(".upload-system").each(function() {
         var $uploadSystem = $(this);
         var contesto_ID = $uploadSystem.data("contesto-id");
@@ -31,8 +31,8 @@ $(document).ready(function() {
                 });
             }
 
-            // Determina l'URL corretto per l'upload
-            var uploadUrl = tipo_editor == 1 ? jsPath + "media\\upload\\" : jsPath + "media\\uploadmedia\\";
+            // Determina l'URL corretto per l'upload usando forward slashes
+            var uploadUrl = tipo_editor == 1 ? jsPath + "media/upload/" : jsPath + "media/uploadmedia/";
 
             $.ajax({
                 url: uploadUrl,
@@ -67,7 +67,7 @@ $(document).ready(function() {
         var tipo_editor = $uploadSystem.data("tipo-editor");
 
         $.ajax({
-            url: jsPath + "/media/load_media/", // Aggiorna questo URL se necessario
+            url: jsPath + "media/load_media/", // Usa forward slashes
             type: "GET",
             data: { contesto_ID: contesto_ID, IDX: IDX },
             success: function(response) {
@@ -75,9 +75,17 @@ $(document).ready(function() {
                     var mediaList = $uploadSystem.find(".media-list");
                     mediaList.empty();
                     $.each(response.data, function(index, media) {
-                        var listItem = '<li class="media-item" data-id="' + media.ID + '">' +
+                        var visibilityChecked = media.visibile == 1 ? 'checked' : '';
+                        var visibilityClass = media.visibile == 1 ? 'visible' : 'hidden';
+                        var listItem = '<li class="media-item ' + visibilityClass + '" data-id="' + media.ID + '">' +
                             getMediaPreview(media) +
+                            '<div class="mt-2">' +
+                            '<label>' +
+                            '<input type="checkbox" class="visibility-toggle" data-id="' + media.ID + '" ' + visibilityChecked + '> Visibile' +
+                            '</label>' +
+                            ' ' +
                             '<button class="btn btn-danger btn-sm delete-media">Elimina</button>' +
+                            '</div>' +
                             '</li>';
                         mediaList.append(listItem);
                     });
@@ -104,10 +112,9 @@ $(document).ready(function() {
     }
 
     // Funzione per generare l'anteprima del media
-// Funzione per generare l'anteprima del media
     function getMediaPreview(media) {
         var preview = "";
-        var fileUrl = jsPath + "/modules/media/uploads/" + media.filename; // Aggiorna il percorso se necessario
+        var fileUrl = jsPath + "modules/media/uploads/" + media.filename; // Usa forward slashes
         var ext = media.estensione.toLowerCase(); // Assicurati che l'estensione sia in minuscolo
 
         if (/^(jpg|jpeg|png|gif|webp)$/.test(ext)) {
@@ -136,7 +143,7 @@ $(document).ready(function() {
         var IDX = $uploadSystem.data("idx");
 
         $.ajax({
-            url: jsPath + "/media/reordermedia/", // Aggiorna questo URL se necessario
+            url: jsPath + "media/reordermedia/", // Usa forward slashes
             type: "POST",
             data: { contesto_ID: contesto_ID, IDX: IDX, orderedIDs: orderedIDs },
             success: function(response) {
@@ -157,7 +164,7 @@ $(document).ready(function() {
         var $uploadSystem = $mediaItem.closest(".upload-system");
 
         $.ajax({
-            url: jsPath + "/media/deletemedia/", // Aggiorna questo URL se necessario
+            url: jsPath + "media/deletemedia/", // Usa forward slashes
             type: "POST",
             data: { ID: mediaID },
             success: function(response) {
@@ -169,6 +176,38 @@ $(document).ready(function() {
             },
             error: function() {
                 alert("Errore durante l'eliminazione.");
+            }
+        });
+    });
+
+    // Funzione per aggiornare la visibilità di un media
+    $(document).on("change", ".visibility-toggle", function() {
+        var mediaID = $(this).data("id");
+        var visibile = $(this).is(":checked") ? 1 : 0;
+        var $mediaItem = $(this).closest(".media-item");
+        var $checkbox = $(this); // Salva il riferimento al checkbox
+
+        $.ajax({
+            url: jsPath + "media/update_visibility/", // Assicurati che questo URL sia corretto
+            type: "POST",
+            data: { ID: mediaID, visibile: visibile },
+            success: function(response) {
+                if(response.success) {
+                    if(visibile == 1) {
+                        $mediaItem.removeClass("hidden").addClass("visible");
+                    } else {
+                        $mediaItem.removeClass("visible").addClass("hidden");
+                    }
+                } else {
+                    alert(response.error);
+                    // Reverti lo stato del checkbox in caso di errore
+                    $checkbox.prop('checked', !visibile);
+                }
+            },
+            error: function() {
+                alert("Errore nell'aggiornamento della visibilità.");
+                // Reverti lo stato del checkbox in caso di errore
+                $checkbox.prop('checked', !visibile);
             }
         });
     });

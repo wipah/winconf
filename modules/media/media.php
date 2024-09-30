@@ -16,6 +16,9 @@ switch ($path[2]) {
     case 'deletemedia':
         require_once 'op_deletemedia.php';
         break;
+    case 'update_visibility':
+        require_once  'op_updatevisibility.php';
+        break;
     default:
         break;
 }

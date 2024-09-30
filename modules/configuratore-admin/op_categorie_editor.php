@@ -191,15 +191,30 @@ echo '
       <button name="submit" type="submit" class="btn btn-primary float-right">' . $button  . '</button>
     </div>
   </div>
-</form>';
+</form>
+
+      <div class="form-group row">
+    <label for="select" class="col-4 col-form-label">Media</label> 
+    <div class="col-8">
+';
 
 if ($ID) {
-    echo '<div class="upload-system" data-contesto-id="1" data-idx="' . $ID . '" data-tipo-editor="2">
-            <h3>Upload Immagine Singola</h3>
+    echo '
+
+    <div class="upload-system" data-contesto-id="1" data-idx="' . $ID . '" data-tipo-editor="1">
+         
             <div class="upload-area">
                 <input type="file" class="upload-input" accept="image/*">
                 <button class="btn btn-primary upload-button">Carica</button>
             </div>
             <ul class="media-list mt-3"></ul>
-        </div>';
+     </div>
+    
+';
+} else {
+  echo 'Salva e ricarica la categoria per inserire l\'immagine.';
 }
+
+echo '    </div>
+  </div>
+';

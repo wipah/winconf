@@ -4,7 +4,6 @@ $this->noTemplateParse = true;
 if (!$user->validateLogin())
     return;
 
-// load_media.php
 header('Content-Type: application/json');
 
 $response = ['success' => false];
@@ -21,8 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
 
-    // Query per ottenere i media
-    $stmt = $db->prepare('SELECT ID, filename, estensione FROM configuratore_media WHERE contesto_ID = ? AND IDX = ? ORDER BY ordine ASC');
+    // Query per ottenere i media, inclusivo del campo 'visibile'
+    $stmt = $db->prepare('SELECT ID, filename, estensione, visibile FROM configuratore_media WHERE contesto_ID = ? AND IDX = ? ORDER BY ordine ASC');
     if ($stmt) {
         $stmt->bind_param('ii', $contesto_ID, $IDX);
         $stmt->execute();
@@ -46,3 +45,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     echo json_encode($response);
 }
 ?>
+

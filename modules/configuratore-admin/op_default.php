@@ -136,12 +136,12 @@ if (!$db->affected_rows) {
                 </td>
                 <td>' . ( (int) $row['visibile'] === 1 ? '<i style="color:green" class="gg-check-r"></i>' :  '<i style="color:red" class="gg-close-r"></i>') .'</td>
                 <td>
-                    <span data-toggle="tooltip" data-placement="top" title="Modifica step" class="icon-wrapper">
+                    <span data-toggle="tooltip" data-placement="top" title="Modifica categoria" class="icon-wrapper">
                         <a  href="' . $conf['URI'] . 'configuratore-admin/categorie/editor/?ID=' . $row['ID'] . '">
                             <i class="fas fa-tasks"></i>
                         </a>
                     </span>
-                    <span data-toggle="tooltip" data-placement="top" title="Elimina lo step"style=""  class="icon-wrapper" title="Rimuovi il sottostep" onclick="if( confirm(\'Vuoi eliminare la categoria? Questa operazione non è annullabile\')){ location.href = jsPath + \'configuratore-admin/elimina-categoria/?ID=' . $row['ID'] . '\'  } " class="spanClickable">
+                    <span data-toggle="tooltip" data-placement="top" title="Elimina categoria" style="" class="icon-wrapper" title="Rimuovi il sottostep" onclick="if( confirm(\'Vuoi eliminare la categoria? Questa operazione non è annullabile\')){ location.href = jsPath + \'configuratore-admin/elimina-categoria/?ID=' . $row['ID'] . '\'  } " class="spanClickable">
                         <i class="fas fa-trash"></i>
                     </span>
                 </td>

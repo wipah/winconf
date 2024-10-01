@@ -6,6 +6,16 @@ $(document).ready(function() {
         var IDX = $uploadSystem.data("idx");
         var tipo_editor = $uploadSystem.data("tipo-editor");
 
+        // Imposta l'attributo 'accept' in base a tipo_editor
+        var $fileInput = $uploadSystem.find(".upload-input");
+        if (tipo_editor == 1) {
+            // Solo immagini
+            $fileInput.attr("accept", "image/*");
+        } else if (tipo_editor == 2) {
+            // Immagini, PDF, Excel, Word, e altri
+            $fileInput.attr("accept", "image/*,.pdf,.xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.csv");
+        }
+
         // Gestione del click sul pulsante "Carica"
         $uploadSystem.find(".upload-button").on("click", function() {
             var $input = $uploadSystem.find(".upload-input");
@@ -114,7 +124,7 @@ $(document).ready(function() {
     // Funzione per generare l'anteprima del media
     function getMediaPreview(media) {
         var preview = "";
-        var fileUrl = jsPath + "modules/media/uploads/" + media.filename; // Usa forward slashes
+        var fileUrl = jsPath + "media/uploads/" + media.filename; // Usa forward slashes
         var ext = media.estensione.toLowerCase(); // Assicurati che l'estensione sia in minuscolo
 
         if (/^(jpg|jpeg|png|gif|webp)$/.test(ext)) {

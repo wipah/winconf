@@ -149,4 +149,59 @@ echo '
       <button name="submit" type="submit=" class="btn btn-info float-right">' . $button . '</button>
     </div>
   </div>
-</form>';
+  
+  
+</form>
+<hr/>
+  <div class="form-group row">
+    <label for="select" class="col-4 col-form-label">Immagine</label> 
+    <div class="col-8">
+  ';
+
+if (isset($ID)) {
+    echo '
+
+    <div class="upload-system" data-contesto-id="1" data-idx="' . $ID . '" data-tipo-editor="1">
+         
+            <div class="upload-area">
+                <input type="file" class="upload-input" accept="image/*">
+                <button class="btn btn-primary upload-button">Carica</button>
+            </div>
+            <ul class="media-list mt-3"></ul>
+     </div>
+    
+';
+} else {
+    echo 'Salva e ricarica lo step per inserire l\'immagine';
+}
+
+echo '
+    </div>
+  </div> 
+';
+
+echo '<hr/>
+  <div class="form-group row">
+    <label for="select" class="col-4 col-form-label">Documenti</label> 
+    <div class="col-8">';
+
+if (isset($ID)) {
+    echo '
+
+    <div class="upload-system" data-contesto-id="2" data-idx="' . $ID . '" data-tipo-editor="2">
+         
+            <div class="upload-area">
+                <input type="file" class="upload-input" accept="image/*">
+                <button class="btn btn-primary upload-button">Carica</button>
+            </div>
+            <ul class="media-list mt-3"></ul>
+     </div>
+    
+';
+} else {
+    echo 'Salva e ricarica lo step per i documenti.';
+}
+
+echo '
+    </div>
+  </div>';

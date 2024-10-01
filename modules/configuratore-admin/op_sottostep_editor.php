@@ -93,6 +93,7 @@ function mostraOpzioni(categoria_ID, step_ID, sottostep_ID)
     });
 }
 
+
 function sottoStepEditor(categoria_ID, step_ID, ID)
 {
     console.log("[Editor sottostep]");
@@ -104,9 +105,13 @@ function sottoStepEditor(categoria_ID, step_ID, ID)
     $("#modalDialog").modal();
     $.post( jsPath + "configuratore-admin/ajax-sottostep-editor/", {categoria_ID: categoria_ID, step_ID: step_ID , ID: ID })
     .done(function( data ) {
-        $("#modalBody").html(data);
+        
+                $("#modalBody").html(data);
+                     initializeUploadSystem();
+        
     });
 }
+
 
 function opzioniEditor(categoria_ID, step_ID, sottostep_ID, ID)
 {

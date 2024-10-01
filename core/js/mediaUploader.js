@@ -1,4 +1,8 @@
 $(document).ready(function() {
+    initializeUploadSystem()
+});
+
+function initializeUploadSystem() {
     // Funzione per gestire l'upload
     $(".upload-system").each(function() {
         var $uploadSystem = $(this);
@@ -221,4 +225,4 @@ $(document).ready(function() {
             }
         });
     });
-});
+}

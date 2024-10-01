@@ -107,8 +107,31 @@ echo '
       <span onclick="sottostepPostData(' . $categoria_ID . ',' . $step_ID .', ' . $ID . ');" name="submit" type="submit" class="btn btn-primary float-right">' . $button . '</span>
     </div>
   </div>
-  
+
+  <hr/>
+    <div class="form-group row">
+    <label for="sottostepVisibile" class="col-4 col-form-label">Visibile</label> 
+    <div class="col-8">';
+
+if ($ID) {
+    echo '<div class="upload-system" data-contesto-id="4" data-idx="' . $ID . '" data-tipo-editor="1">
+         
+            <div class="upload-area">
+                <input type="file" class="upload-input" accept="image/*">
+                <button class="btn btn-primary upload-button">Carica</button>
+            </div>
+            <ul class="media-list mt-3"></ul>
+     </div>';
+} else {
+    echo 'Salva il sottostep per caricare l\'immagine.';
+}
+
+echo '
+    </div>
+    </div>
 <script>
+
+
 function sottostepPostData(categoria_ID, step_ID, sottostep_ID) 
 {
     console.log("[Sottostep post data]");

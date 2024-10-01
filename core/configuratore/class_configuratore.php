@@ -480,7 +480,6 @@ class configuratore
         // - una opzione (ID = 0)
         // - una opzione multipla (ID = 1)
         // - una campo libero (ID = 2)
-
         if ($row['tipo_scelta'] == 0
             || $row['tipo_scelta'] == 1
             || $row['tipo_scelta'] == 2) {
@@ -574,21 +573,99 @@ class configuratore
         }
 
 
-
+        $sottostepImmagine = $configuratore->ottieniImmagine(6, $sottostep_ID);
         $part = '<div class="layoutEditorSottostep" id="editorSottostep-' . $linea_ID.'">
                     <div class="row">
+                        <div class="col-md-2">
+                            ' . $sottostepImmagine . '
+                        </div>
                         <div class="col-md-4"> 
                             <div class="layoutEditorSottostepNome">' . $row['sottostep_nome'] . '</div>
                             <hr />
                             <div class="layoutEditorSottostepDescrizione">' . $row['sottostep_descrizione'] . '</div>
                         </div>
-                        <div class="col-md-7">' . $partSelect . '</div>
+                        <div class="col-md-4">' . $partSelect . '</div>
                         <div class="col-md-1"><div id="layoutEditorSottostepStatus-' . $linea_ID . '"></div></div>
                     </div>
                 </div>';
 
         return $part;
 
+    }
+
+    public function ottieniImmagine(int $contesto_ID, int $IDX, int $tipo = 0): string
+    {
+        global $db;
+        global $conf;
+
+        // Query per recuperare l'immagine dalla tabella configuratore_media
+        $query = 'SELECT * 
+              FROM configuratore_media 
+              WHERE IDX = ' . intval($IDX) . ' 
+                AND visibile = 1 
+                AND contesto_ID = ' . intval($contesto_ID) . ' 
+              LIMIT 1';
+
+        $resultImg = $db->query($query);
+        // Determina l'URL dell'immagine
+        if (!$resultImg || $resultImg->num_rows === 0) {
+            // Immagine di default se non ci sono risultati
+
+            $imageURL = $conf['URI'] . 'modules/media/uploads/default/image.jpg';
+        } else {
+            $rowImages = mysqli_fetch_assoc($resultImg);
+            $filename = $rowImages['filename'];
+
+            // Definisci il percorso relativo dell'immagine
+            $relativePath = 'modules/media/uploads/' . $filename;
+
+            // Verifica se il file esiste sul server
+            $serverPath = $conf['path'] . $relativePath;
+
+            if (!file_exists($serverPath)) {
+                // Usa l'immagine di default se il file non esiste
+                $relativePath = 'modules/media/uploads/default/image.jpg';
+            }
+
+            // Costruisci l'URL completo dell'immagine
+            $imageURL = $conf['URI'] . $relativePath;
+        }
+
+        // Determina le classi CSS basate su $tipo
+        switch ($tipo) {
+            case 0:
+                $containerClass = 'img-square-container';
+                $imgClass = 'img-responsive-custom';
+                break;
+            case 1:
+                $containerClass = 'img-horizontal-container';
+                $imgClass = 'img-responsive-custom';
+                break;
+            case 2:
+                $containerClass = 'img-vertical-container';
+                $imgClass = 'img-responsive-custom';
+                break;
+            case 3:
+                $containerClass = '';
+                $imgClass = 'img-responsive-custom img-natural';
+                break;
+            default:
+                $containerClass = '';
+                $imgClass = 'img-responsive-custom img-natural';
+        }
+
+        // Costruisci l'HTML dell'immagine
+        if ($containerClass) {
+            // Se richiede un contenitore per aspect ratio
+            $imgHTML = '<div class="' . htmlspecialchars($containerClass, ENT_QUOTES, 'UTF-8') . '">
+                        <img src="' . htmlspecialchars($imageURL, ENT_QUOTES, 'UTF-8') . '" class="' . htmlspecialchars($imgClass, ENT_QUOTES, 'UTF-8') . '" alt="Immagine">
+                    </div>';
+        } else {
+            // Immagine senza contenitore
+            $imgHTML = '<img src="' . htmlspecialchars($imageURL, ENT_QUOTES, 'UTF-8') . '" class="' . htmlspecialchars($imgClass, ENT_QUOTES, 'UTF-8') . '" alt="Immagine">';
+        }
+
+        return $imgHTML;
     }
 
     function checkOpzioneDipendenzaDaOpzione (int $documento_ID, int $opzione_valore_ID) : int{
@@ -741,6 +818,31 @@ class configuratore
         }  else {
             return true;
         }
+    }
+
+    function ottieniDocumenti( int $contesto_ID, int $IDX) {
+        global $db;
+        global $conf;
+
+        $query = 'SELECT * 
+                  FROM configuratore_media 
+                  WHERE contesto_ID = ' . $contesto_ID . ' 
+                  AND IDX = ' . $IDX . '
+                  AND visibile = 1 
+                  ORDER BY ordine ASC';
+
+        if (!$result = $db->query($query)) {
+            echo 'Query error. ' . $query;
+            return;
+        }
+
+        if (!$db->affected_rows)
+            return;
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '<div><a href="' . $conf['URI'] . 'modules/media/uploads/' . $row['filename'] . '">' . $row['filename'] . '</a></div>';
+        }
+
     }
 
     function cambiaStatoDocumento( int $documento_ID, int $stato) : void

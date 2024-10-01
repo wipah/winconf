@@ -422,6 +422,72 @@ input:focus{
     color: white;
 }
 
+
+/* Classe base per tutte le immagini responsive */
+.img-responsive-custom {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Immagini Quadrate (Tipo 0) */
+.img-square-container {
+    position: relative;
+    width: 100%;
+    padding-top: 100%; /* 1:1 Aspect Ratio */
+    overflow: hidden;
+}
+
+.img-square-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Riempie l\'area mantenendo le proporzioni */
+}
+
+/* Immagini Rettangolari Orizzontali (Tipo 1) */
+.img-horizontal-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    overflow: hidden;
+}
+
+.img-horizontal-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Immagini Rettangolari Verticali (Tipo 2) */
+.img-vertical-container {
+    position: relative;
+    width: 100%;
+    padding-top: 150%; /* 2:3 Aspect Ratio */
+    overflow: hidden;
+}
+
+.img-vertical-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Immagini Naturali (Tipo 3) */
+.img-natural {
+    width: 100%;
+    height: auto;
+    object-fit: contain; /* Mantiene le proporzioni originali senza ritagliare */
+}
+
   </style>
 </head>
 
@@ -485,7 +551,6 @@ WinConf v0.1 alpha
 $(function () {
   $(\'[data-toggle="tooltip"]\').tooltip()
 })
-
 
 </script>
 </body>

@@ -110,11 +110,11 @@ echo '
 
   <hr/>
     <div class="form-group row">
-    <label for="sottostepVisibile" class="col-4 col-form-label">Visibile</label> 
+    <label for="sottostepVisibile" class="col-4 col-form-label">Immagine</label> 
     <div class="col-8">';
 
 if ($ID) {
-    echo '<div class="upload-system" data-contesto-id="4" data-idx="' . $ID . '" data-tipo-editor="1">
+    echo '<div class="upload-system" data-contesto-id="5" data-idx="' . $ID . '" data-tipo-editor="1">
          
             <div class="upload-area">
                 <input type="file" class="upload-input" accept="image/*">

@@ -26,8 +26,6 @@ if (!$db->affected_rows) {
 }
 
 echo '
-
-
 <style>
 .configuratoreDivCliente {
     background-color: var(--primary-color) ;
@@ -36,7 +34,7 @@ echo '
 }
 .configuratoreTopBar{
     padding: 6px;
-    
+    border-bottom: 1px solid gray;
 }
 
 .configuratoreTopBarButton{
@@ -73,6 +71,7 @@ $configuratore->larghezza = $rowTestata['larghezza'] ?? 0;
 $queryCliente = 'SELECT * 
                  FROM clienti 
                  WHERE ID = ' . $rowTestata['customer_ID'];
+
 if (!$resultCliente = $db->query($queryCliente)) {
     echo 'Errore nella query. ' . $queryCliente;
     return;

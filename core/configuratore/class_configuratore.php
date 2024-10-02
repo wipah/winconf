@@ -573,7 +573,7 @@ class configuratore
         }
 
 
-        $sottostepImmagine = $configuratore->ottieniImmagine(6, $sottostep_ID);
+        $sottostepImmagine = $configuratore->ottieniImmagine(5, $sottostep_ID);
         $part = '<div class="layoutEditorSottostep" id="editorSottostep-' . $linea_ID.'">
                     <div class="row">
                         <div class="col-md-2">
@@ -838,10 +838,13 @@ class configuratore
 
         if (!$db->affected_rows)
             return;
-
+        $return = '<div class="mt-3 mb-3" style="border:1px solid gray; padding: 4px; text-align: right">';
         while ($row = mysqli_fetch_assoc($result)) {
-            echo '<div><a href="' . $conf['URI'] . 'modules/media/uploads/' . $row['filename'] . '">' . $row['filename'] . '</a></div>';
+            $return .= '<div><a href="' . $conf['URI'] . 'modules/media/uploads/' . $row['filename'] . '">' . $row['filename'] . '</a></div>';
         }
+        $return .= '</div>';
+
+        return $return;
 
     }
 

@@ -422,7 +422,9 @@ input:focus{
     color: white;
 }
 
-
+.upload-button{
+    float:right;
+}
 /* Classe base per tutte le immagini responsive */
 .img-responsive-custom {
     width: 100%;
@@ -449,19 +451,20 @@ input:focus{
 
 /* Immagini Rettangolari Orizzontali (Tipo 1) */
 .img-horizontal-container {
-    position: relative;
+    
     width: 100%;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    max-height: 200px;
     overflow: hidden;
+    margin-bottom: 24px;
 }
 
 .img-horizontal-container img {
-    position: absolute;
+
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* Mantiene le proporzioni, l\'immagine riempie l\'area senza distorsione */
 }
 
 /* Immagini Rettangolari Verticali (Tipo 2) */

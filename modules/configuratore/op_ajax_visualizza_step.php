@@ -13,7 +13,7 @@ if (!isset($_POST['step_ID'])) {
 $documento_ID   = (int) $_POST['documento_ID'];
 $step_ID        = (int) $_POST['step_ID'];
 
-echo $configuratore->ottieniDocumenti(3, $step_ID);
+
 $query = 'SELECT  *
                 , CORPO.ID linea_ID
                 , STEP.step_nome
@@ -32,10 +32,10 @@ if (!$db->affected_rows) {
     return;
 }
 
-$immagine = $configuratore->ottieniImmagine(2, $step_ID, 3);
+$immagine = $configuratore->ottieniImmagine(3, $step_ID, 1);
 
 echo $immagine;
-
+echo $configuratore->ottieniDocumenti(3, $step_ID);
 while ($row = mysqli_fetch_assoc($risultato)) {
     echo $configuratore->layoutCreaSottoStep($documento_ID, $step_ID, $row['sottostep_ID'], $row['linea_ID']);
 }

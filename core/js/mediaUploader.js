@@ -128,7 +128,7 @@ function initializeUploadSystem() {
     // Funzione per generare l'anteprima del media
     function getMediaPreview(media) {
         var preview = "";
-        var fileUrl = jsPath + "media/uploads/" + media.filename; // Usa forward slashes
+        var fileUrl = jsPath + "modules/media/uploads/" + media.filename; // Usa forward slashes
         var ext = media.estensione.toLowerCase(); // Assicurati che l'estensione sia in minuscolo
 
         if (/^(jpg|jpeg|png|gif|webp)$/.test(ext)) {

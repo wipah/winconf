@@ -154,14 +154,14 @@ echo '
 </form>
 <hr/>
   <div class="form-group row">
-    <label for="select" class="col-4 col-form-label">Immagine</label> 
+    <label for="select" class="col-4 col-form-label">Immagine (max 250px di altezza)</label> 
     <div class="col-8">
   ';
 
 if (isset($ID)) {
     echo '
 
-    <div class="upload-system" data-contesto-id="2" data-idx="' . $ID . '" data-tipo-editor="1">
+    <div class="upload-system" data-contesto-id="3" data-idx="' . $ID . '" data-tipo-editor="1">
          
             <div class="upload-area">
                 <input type="file" class="upload-input" accept="image/*">
@@ -188,7 +188,7 @@ echo '<hr/>
 if (isset($ID)) {
     echo '
 
-    <div class="upload-system" data-contesto-id="3" data-idx="' . $ID . '" data-tipo-editor="2">
+    <div class="upload-system" data-contesto-id="4" data-idx="' . $ID . '" data-tipo-editor="2">
          
             <div class="upload-area">
                 <input type="file" class="upload-input" accept="image/*">

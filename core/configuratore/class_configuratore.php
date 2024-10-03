@@ -593,7 +593,7 @@ class configuratore
 
     }
 
-    public function ottieniImmagine(int $contesto_ID, int $IDX, int $tipo = 0): string
+    public function ottieniImmagine(int $contesto_ID, int $IDX, int $tipo = 0)
     {
         global $db;
         global $conf;
@@ -610,8 +610,7 @@ class configuratore
         // Determina l'URL dell'immagine
         if (!$resultImg || $resultImg->num_rows === 0) {
             // Immagine di default se non ci sono risultati
-
-            $imageURL = $conf['URI'] . 'modules/media/uploads/default/image.jpg';
+            return;
         } else {
             $rowImages = mysqli_fetch_assoc($resultImg);
             $filename = $rowImages['filename'];
@@ -624,7 +623,7 @@ class configuratore
 
             if (!file_exists($serverPath)) {
                 // Usa l'immagine di default se il file non esiste
-                $relativePath = 'modules/media/uploads/default/image.jpg';
+                return;
             }
 
             // Costruisci l'URL completo dell'immagine
@@ -653,6 +652,7 @@ class configuratore
                 $containerClass = '';
                 $imgClass = 'img-responsive-custom img-natural';
         }
+
 
         // Costruisci l'HTML dell'immagine
         if ($containerClass) {
@@ -838,7 +838,7 @@ class configuratore
 
         if (!$db->affected_rows)
             return;
-        $return = '<div class="mt-3 mb-3" style="border:1px solid gray; padding: 4px; text-align: right">';
+        $return = '<div class="mt-3 mb-3" style="border:1px solid gray; background-color: #DFDEDE; padding: 4px; text-align: right">';
         while ($row = mysqli_fetch_assoc($result)) {
             $return .= '<div><a href="' . $conf['URI'] . 'modules/media/uploads/' . $row['filename'] . '">' . $row['filename'] . '</a></div>';
         }

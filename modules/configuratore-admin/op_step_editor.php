@@ -149,8 +149,6 @@ echo '
       <button name="submit" type="submit=" class="btn btn-info float-right">' . $button . '</button>
     </div>
   </div>
-  
-  
 </form>
 <hr/>
   <div class="form-group row">

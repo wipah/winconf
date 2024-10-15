@@ -723,7 +723,7 @@ class configuratore
                 $totale +=  $valore;
                 break;
             case 'somma-kdim':
-                $totale += $valore * ( ($this->larghezza * $this->lunghezza) / 1000);
+                $totale += $valore * ( ($this->larghezza * $this->lunghezza) / 1000000);
                 break;
             case 'coeff-p':
                 /* Aumento in percentuale. Ad esempio 20% */
@@ -769,7 +769,7 @@ class configuratore
                     $totale += $valore;
                     break;
                 case 'somma-kdim':
-                    $totale += $valore * (($this->larghezza * $this->lunghezza)) / 1000;
+                    $totale += $valore * (($this->larghezza * $this->lunghezza)) / 1000000;
                     break;
                 case 'coeff-p':
                     $totale += ($totale / 100) * $valore;

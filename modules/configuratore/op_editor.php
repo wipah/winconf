@@ -22,6 +22,9 @@ switch ($path[3]) {
     case 'ajax-visualizza-riepilogo':
         require_once 'op_ajax_visualizza_riepilogo.php';
         break;
+    case 'ajax-ottieni-dimensioni':
+        require_once 'op_ajax_ottieni_dimensioni.php';
+        break;
     case 'ajax-ottieni-stato':
         require_once 'op_ajax_ottieni_stato.php';
         break;

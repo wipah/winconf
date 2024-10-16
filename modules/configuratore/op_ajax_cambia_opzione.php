@@ -65,11 +65,43 @@ if ($special > 0) {
     $configuratore->checkDipendenzaOpzione($documento_ID, $opzione_ID);
 }
 
+// Cerca se, tra le opzioni successive, esistono dei campi opzione che sono scritti in testata (Larghezza, lunghezza, spessore)
+$query = 'SELECT SOTTOSTEP.tipo_scelta 
+          FROM documenti_corpo CORPO
+          LEFT JOIN configuratore_sottostep SOTTOSTEP 
+            ON SOTTOSTEP.ID = CORPO.sottostep_ID 
+          WHERE SOTTOSTEP.tipo_scelta IN (99,98,97)
+            AND documento_ID = ' . $documento_ID . ' AND CORPO.ID > ' . $linea_ID;
+
+$result = $db->query($query);
+
+if ($db->affected_rows) {
+    while ($rowDelete = mysqli_fetch_assoc($result)) {
+        $queryUpdate = 'UPDATE documenti SET ';
+        switch ( (int) $rowDelete['tipo_scelta']) {
+            case 99:
+                $queryUpdate .= ' larghezza ';
+                break;
+            case 98:
+                $queryUpdate .= ' lunghezza ';
+                break;
+            case 97:
+                $queryUpdate .= ' spessore ';
+                break;
+
+        }
+
+        $queryUpdate .= ' = 0 WHERE ID = ' . $documento_ID . ' LIMIT 1';
+
+        $db->query($queryUpdate);
+    }
+}
 // Elimina la valorizzazione e l'eventuale scelta delle opzioni successive
 $query = 'UPDATE documenti_corpo 
           SET  valorizzata = 0 
              , visibile = 0 
              , valore = 0
+             , valore_testo = 0
              , opzione_ID = NULL
           WHERE documento_ID = ' . $documento_ID . ' 
           AND ID > ' . $linea_ID;

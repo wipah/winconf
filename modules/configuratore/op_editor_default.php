@@ -122,10 +122,8 @@ echo '
     </div>
     <div class="col-md-3">
         <h2>Dimensioni</h2>
-        <div class="row" style="text-align: center">
-            <div class="col-md-5"><span style="font-size: xx-large">' . $configuratore->larghezza . '</span> <br/><small>mm</small></div>
-            <div class="col-md-2" style="vertical-align: center;"> X </div>
-            <div class="col-md-5"><span style="font-size: xx-large">' . $configuratore->lunghezza . '</span> <br/><small>mm</small></div>
+        <div class="row" style="text-align: center" id="layoutDimensioni">
+
         </div>
         <h2 class="mt-3">Riepilogo</h2>
         <div id="layoutRiepilogo">Caricamento in corso</div>
@@ -134,6 +132,7 @@ echo '
 echo '<script>
 $(function() {
     ottieniUltimoStep();
+    ottieniDimensioni();
     ottieniTotale();
 });';
 
@@ -260,10 +259,10 @@ function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID, sottostep_ID, speci
         if ( parseInt(obj.step_ID) !== 0) {
             visualizzaStep(obj.step_ID);
             mostraStep(obj.step_ID);
-            visualizzaRiepilogo();
             
         }
-        
+        visualizzaRiepilogo();
+        ottieniDimensioni();
         ottieniTotale();
         ottieniStato();
       });
@@ -288,6 +287,16 @@ function ottieniTotale ()
     $.post( jsPath + "configuratore/editor/ajax-ottieni-totale/", { documento_ID: ' . $documento_ID . ' })
       .done(function( data ) {
         $("#documentoTotale").html(data);
+      });
+}
+
+function ottieniDimensioni () 
+{
+    console.log ("[OTTIENI DIMENSIONI]");
+   
+    $.post( jsPath + "configuratore/editor/ajax-ottieni-dimensioni/", { documento_ID: ' . $documento_ID . ' })
+      .done(function( data ) {
+        $("#layoutDimensioni").html(data);
       });
 }
 

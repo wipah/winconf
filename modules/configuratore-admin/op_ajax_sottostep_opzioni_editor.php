@@ -117,7 +117,36 @@ echo '
       <span onclick="salvaOpzione(' . $categoria_ID . ', ' . $step_ID . ',' . $sottostep_ID . ',' . $ID .');"  class="btn btn-primary">' . $button . '</span>
     </div>
   </div>
-  
+  <hr>
+  <h3>Immagine</h3>';
+if ($ID) {
+    echo '<div class="upload-system" data-contesto-id="7" data-idx="' . $ID . '" data-tipo-editor="1">
+         
+            <div class="upload-area">
+                <input type="file" class="upload-input" accept="image/*">
+                <button class="btn btn-primary upload-button">Carica</button>
+            </div>
+            <ul class="media-list mt-3"></ul>
+     </div>';
+} else {
+    echo 'Salva l\'opzione per caricare l\'immagine.';
+}
+
+echo '<h3>Documenti</h3>';
+if ($ID) {
+    echo '<div class="upload-system" data-contesto-id="8" data-idx="' . $ID . '" data-tipo-editor="2">
+         
+            <div class="upload-area">
+                <input type="file" class="upload-input" accept="image/*">
+                <button class="btn btn-primary upload-button">Carica</button>
+            </div>
+            <ul class="media-list mt-3"></ul>
+     </div>';
+} else {
+    echo 'Salva l\'opzione per caricare i documenti.';
+}
+
+echo ' 
 <script>
 function salvaOpzione(categoria_ID, step_ID, sottostep_ID, ID) {
     console.log ("[SALVATAGGIO OPZIONE]");

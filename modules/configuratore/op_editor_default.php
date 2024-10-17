@@ -268,6 +268,14 @@ function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID, sottostep_ID, speci
       });
 }
 
+function selectOption(element, linea_ID, option_ID, step_ID, sottostep_ID) {
+    // Rimuove la classe \'active\' da tutte le opzioni
+    $(element).closest(\'.options-container\').find(\'.option\').removeClass(\'active\');
+    // Aggiunge la classe \'active\' all\'opzione cliccata
+    $(element).addClass(\'active\');
+    // Chiama la funzione originale per gestire il cambiamento
+    cambiaSingolaOpzione(linea_ID, option_ID, step_ID, sottostep_ID);
+}
 function ottieniUltimoStep () 
 {
     console.log ("[OTTIENI ULTIMO STEP]");

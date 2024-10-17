@@ -120,6 +120,7 @@ function opzioniEditor(categoria_ID, step_ID, sottostep_ID, ID)
     $.post( jsPath + "configuratore-admin/ajax-sottostep-opzioni-editor/", {categoria_ID : categoria_ID, step_ID :step_ID, sottostep_ID: sottostep_ID, ID: ID })
     .done(function( data ) {
         $("#modalBody").html(data);
+        initializeUploadSystem();
     });
 }
 

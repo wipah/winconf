@@ -96,12 +96,14 @@ if ($db->affected_rows) {
         $db->query($queryUpdate);
     }
 }
+
 // Elimina la valorizzazione e l'eventuale scelta delle opzioni successive
 $query = 'UPDATE documenti_corpo 
           SET  valorizzata = 0 
              , visibile = 0 
              , valore = 0
              , valore_testo = 0
+             , valore_numerico = 0
              , opzione_ID = NULL
           WHERE documento_ID = ' . $documento_ID . ' 
           AND ID > ' . $linea_ID;
@@ -130,7 +132,7 @@ $query = 'SELECT documenti_corpo.ID,
         AND documenti_corpo.visibile = 0
         AND esclusa = 0
         AND ( (origine_visibile = 0 && inclusa = 1) || origine_visibile = 1 )
-       HAVING (totale_opzioni > 0) OR (tipo_scelta IN (99, 98, 97, 2)) /* agganciare la tipo_scelta permette di selezionare una tra le dimensioni (altezza, larghezza, spessore) oppure una casella di testo*/
+       HAVING (totale_opzioni > 0) OR (tipo_scelta IN (99, 98, 97, 2, 3, 4)) /* agganciare la tipo_scelta permette di selezionare una tra le dimensioni (altezza, larghezza, spessore) oppure una casella di testo*/
        LIMIT 1';
 
 $result = $db->query($query);

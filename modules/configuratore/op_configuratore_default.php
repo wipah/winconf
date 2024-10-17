@@ -130,8 +130,9 @@ while ($row = mysqli_fetch_assoc($result)) {
         <div class="col-md-4 mb-3">
             <div class="card category-card" data-category-id="' . $categoryID . '">
                 <img src="' . htmlspecialchars($imageURL) . '" class="card-img-top" alt="' . $categoryName . '">
-                <div class="card-body">
-                    <h5 class="card-title text-center">' . $categoryName . '</h5>
+                <div  class="card-body d-flex flex-column">
+                    <h5 class="text-center">' . $categoryName . '</h5>
+                    <div style="text-align: left !important;" class="text-left mt-2">' . $row['categoria_descrizione']  .'</div>
                 </div>
             </div>
         </div>

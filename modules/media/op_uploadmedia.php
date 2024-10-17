@@ -57,7 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 // Ottieni l'estensione
-                $ext = pathinfo($name, PATHINFO_EXTENSION);
+                $ext        = pathinfo($name, PATHINFO_EXTENSION);
+                $fileName   = htmlentities($name);
                 $safeName = uniqid() . '.' . strtolower($ext);
                 $destination = $uploadDir . $safeName;
 
@@ -69,13 +70,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $ordine = ($row['max_order'] !== null) ? $row['max_order'] + 1 : 1;
 
                     // Inserisci nel DB
-                    $stmt = $db->prepare('INSERT INTO configuratore_media (IDX, contesto_ID, filename, estensione, ordine, visibile) VALUES (?, ?, ?, ?, ?, 1)');
+                    $stmt = $db->prepare('INSERT INTO configuratore_media (IDX, contesto_ID, filename_original, filename, estensione, ordine, visibile) VALUES (?, ?, ?, ?, ?, ?, 1)');
                     if (!$stmt) {
                         $response['error'] = 'Errore nella preparazione della query.';
                         echo json_encode($response);
                         exit;
                     }
-                    $stmt->bind_param('iissi', $IDX, $contesto_ID, $safeName, $ext, $ordine);
+                    $stmt->bind_param('iisssi', $IDX, $contesto_ID, $fileName, $safeName, $ext, $ordine);
                     if ($stmt->execute()) {
                         $stmt->close();
                         $response['success'] = true;

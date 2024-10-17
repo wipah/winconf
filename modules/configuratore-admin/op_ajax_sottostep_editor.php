@@ -60,7 +60,9 @@ echo '
       <select id="sottostepTipoScelta" name="sottostepTipoScelta" class="custom-select" aria-describedby="sottostepTipoSceltaHelpBlock">
         <option ' . ( (int) $row['tipo_scelta'] === 0 ? ' selected ' : '' )  . ' value="0">Scelta singola</option>
         <!-- <option ' . ( (int) $row['tipo_scelta'] === 1 ? ' selected ' : '' )  . ' value="1">Scelta multipla</option> -->
-        <option ' . ( (int) $row['tipo_scelta'] === 2 ? ' selected ' : '' )  . ' value="2">Campo libero</option>
+        <option ' . ( (int) $row['tipo_scelta'] === 2 ? ' selected ' : '' )  . ' value="2">Campo testo</option>
+        <option ' . ( (int) $row['tipo_scelta'] === 3 ? ' selected ' : '' )  . ' value="3">Campo numerico fisso</option>
+        <option ' . ( (int) $row['tipo_scelta'] === 4 ? ' selected ' : '' )  . ' value="4">Campo numerico decimale</option>
         <option disabled>---</option>
         <option ' . ( (int) $row['tipo_scelta'] === 99 ? ' selected ' : '' )  . ' value="99">Larghezza</option>
         <option ' . ( (int) $row['tipo_scelta'] === 98 ? ' selected ' : '' )  . ' value="98">Altezza</option>
@@ -91,6 +93,16 @@ echo '
     </div>
   </div>
   
+  <div class="form-group row">
+    <label for="sottostepCheckDipendenze" class="col-4 col-form-label">Tipo visualizzazione</label> 
+    <div class="col-8">
+      <select id="sottostepTipoVisualizzazione" name="sottostepTipoVisualizzazione" class="custom-select" aria-describedby="sottostepCheckDipendenzeHelpBlock">
+        <option ' . ( (int) $row['tipo_visualizzazione'] === 0 ? ' selected ' : '' )  . ' value="0">Select</option>
+        <option ' . ( (int) $row['tipo_visualizzazione'] === 1 ? ' selected ' : '' )  . ' value="1">Dettaglio</option>
+      </select> 
+      <span id="sottostepCheckDipendenzeHelpBlock" class="form-text text-muted">Determina il tipo di visualizzazione delle opzioni del sottostep</span>
+    </div>
+  </div>
   
   <div class="form-group row">
     <label for="sottostepVisibile" class="col-4 col-form-label">Visibile</label> 
@@ -101,7 +113,19 @@ echo '
       </select> 
       <span id="sottostepVisibileHelpBlock" class="form-text text-muted">Determina la visibilità del sottostep</span>
     </div>
+  </div>
+   
+  <div class="form-group row">
+    <label for="sottostepImmagineRiepilogo" class="col-4 col-form-label">Immagine in riepilogo</label> 
+    <div class="col-8">
+      <select id="sottostepImmagineRiepilogo" name="sottostepImmagineRiepilogo" class="custom-select" aria-describedby="sottostepVisibileHelpBlock" required="required">
+        <option ' . ( (int) $row['immagine_riepilogo'] === 0 ? ' selected ' : '' )  . '  value="0">No, nessuna immagine in riepilogo.</option>
+        <option ' . ( (int) $row['immagine_riepilogo'] === 1 ? ' selected ' : '' )  . ' value="1">Sì, mostra immagine nel riepilogo</option>
+      </select> 
+      <span id="sottostepVisibileHelpBlock" class="form-text text-muted">Se selezionata, il riepilogo mostrerà l\'immagine dell\'opzione scelta.</span>
+    </div>
   </div> 
+   
   <div class="form-group row">
     <div class="offset-4 col-8 clearfix">
       <span onclick="sottostepPostData(' . $categoria_ID . ',' . $step_ID .', ' . $ID . ');" name="submit" type="submit" class="btn btn-primary float-right">' . $button . '</span>
@@ -145,6 +169,8 @@ function sottostepPostData(categoria_ID, step_ID, sottostep_ID)
     sottostepDipendenza     = $("#sottostepCheckDipendenze").find(":selected").val();
     sottostepDimensioni     = $("#sottostepCheckDimensioni").find(":selected").val();
     sottostepVisibile       = $("#sottostepVisibile").find(":selected").val();
+    sottostepImmagineRiepilogo       = $("#sottostepImmagineRiepilogo").find(":selected").val();
+    sottostepTipoVisualizzazione       = $("#sottostepTipoVisualizzazione").find(":selected").val();
      
     $.post( jsPath + "configuratore-admin/ajax-sottostep-editor-post/", { categoria_ID          : categoria_ID ,
                                                                           step_ID               : step_ID ,
@@ -156,6 +182,8 @@ function sottostepPostData(categoria_ID, step_ID, sottostep_ID)
                                                                           sottostepDipendenza   : sottostepDipendenza,
                                                                           sottostepDimensioni   : sottostepDimensioni,
                                                                           sottostepVisibile     : sottostepVisibile,
+                                                                          sottostepImmagineRiepilogo     : sottostepImmagineRiepilogo,
+                                                                          sottostepTipoVisualizzazione     : sottostepTipoVisualizzazione,
                                                                         })
     .done(function( data ) {
         console.log(data)

@@ -493,9 +493,16 @@ class configuratore
 
                 $risultatoOpzioneScelta = $db->query($query);
                 $rowOpzioneScelta       = mysqli_fetch_assoc($risultatoOpzioneScelta);
-            } elseif ( (int) $row['tipo_scelta'] === 2) {
+            } elseif ( (int) $row['tipo_scelta'] === 2
+                       || (int) $row['tipo_scelta'] === 3
+                       || (int) $row['tipo_scelta'] === 4
+                     ) {
 
-                $query = 'SELECT valore_testo FROM documenti_corpo WHERE ID = ' . $linea_ID;
+                $query = 'SELECT valore_testo
+                               , valore_numerico 
+                          FROM documenti_corpo 
+                          WHERE ID = ' . $linea_ID;
+
                 $resultValore = $db->query($query);
                 $rowValore = mysqli_fetch_assoc($resultValore);
             }
@@ -506,7 +513,7 @@ class configuratore
                 || ((int) $row['tipo_scelta'] == 97)
 
                  ) {
-            $query = 'SELECT valore, valore_testo FROM documenti_corpo WHERE ID = ' . $linea_ID . ' LIMIT 1;';
+            $query = 'SELECT valore, valore_testo, valore_numerico FROM documenti_corpo WHERE ID = ' . $linea_ID . ' LIMIT 1;';
             $resultValore = $db->query($query);
             $rowValore = mysqli_fetch_assoc($resultValore);
 
@@ -520,77 +527,167 @@ class configuratore
             $query = 'SELECT * 
                       FROM configuratore_opzioni 
                       WHERE sottostep_ID = ' . $sottostep_ID;
-
-
             $risultatoOpzioni = $db->query($query);
 
-            $partSelect = '<select onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ');" id="sottostep-select-' . $linea_ID . '">
+            // Che tipo di layout deve essere mostrato? 0 = classica dropdown, 1 = visualizzazione dettagliata
+            if ( (int) $row['tipo_visualizzazione'] === 0 ){
+                $partSelect = '<select onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ');" id="sottostep-select-' . $linea_ID . '">
                             <option ' . (is_null($rowOpzioneScelta['opzione_ID']) || (int)$rowOpzioneScelta['opzione_ID'] === 0 ? ' selected ' : ' ') . ' disabled >Seleziona una opzione</option>';
 
-            $countOpzioni = 0;
-            while ($rowOpzioni = mysqli_fetch_assoc($risultatoOpzioni)) {
-                //Controlla se l'opzione ha un check sulle dimensioni
-                if ((int)$rowOpzioni['check_dimensioni'] === 1) {
-                    $checkDimensioni = $configuratore->checkDipendenzaDimensione($documento_ID, 1, $sottostep_ID, $rowOpzioni['ID']);
+                $countOpzioni = 0;
+                while ($rowOpzioni = mysqli_fetch_assoc($risultatoOpzioni)) {
+                    //Controlla se l'opzione ha un check sulle dimensioni
+                    if ((int)$rowOpzioni['check_dimensioni'] === 1) {
+                        $checkDimensioni = $configuratore->checkDipendenzaDimensione($documento_ID, 1, $sottostep_ID, $rowOpzioni['ID']);
 
-                    if ($checkDimensioni == -1)
-                        continue;
-                }
+                        if ($checkDimensioni == -1)
+                            continue;
+                    }
 
-                // Controlla se l'opzione ha un check sulle dipendenze
-                if ((int)$rowOpzioni['check_dipendenze'] === 1) {
-                    $checkDipendenza = $configuratore->checkOpzioneDipendenzaDaOpzione($documento_ID, $rowOpzioni['ID']);
+                    // Controlla se l'opzione ha un check sulle dipendenze
+                    if ((int)$rowOpzioni['check_dipendenze'] === 1) {
+                        $checkDipendenza = $configuratore->checkOpzioneDipendenzaDaOpzione($documento_ID, $rowOpzioni['ID']);
 
-                    $opzioneVisibile = (int)$rowOpzioni['visibile'];
+                        $opzioneVisibile = (int)$rowOpzioni['visibile'];
 
-                    if ($opzioneVisibile === 0 && ($checkDipendenza === -1 || $checkDipendenza === 0)) {
-                        echo 'STEP 1. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile;
-                    } else if ($opzioneVisibile === 1 && $checkDipendenza === 0) {
-                        echo 'STEP 2. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile;
+                        if ($opzioneVisibile === 0 && ($checkDipendenza === -1 || $checkDipendenza === 0)) {
+                            echo 'STEP 1. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile;
+                        } else if ($opzioneVisibile === 1 && $checkDipendenza === 0) {
+                            echo 'STEP 2. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile;
+                        } else {
+                            $countOpzioni++;
+                            $partSelect .= '<option ' . ((int)$rowOpzioni['ID'] === (int)$rowOpzioneScelta['opzione_ID'] ? ' selected ' : '') . ' 
+                                        value="' . $rowOpzioni['ID'] . '">' . $rowOpzioni['opzione_nome'] . ' <!-- [CDM:' . $checkDimensioni . '] -->
+                                </option>';
+                        }
                     } else {
                         $countOpzioni++;
                         $partSelect .= '<option ' . ((int)$rowOpzioni['ID'] === (int)$rowOpzioneScelta['opzione_ID'] ? ' selected ' : '') . ' 
                                         value="' . $rowOpzioni['ID'] . '">' . $rowOpzioni['opzione_nome'] . ' <!-- [CDM:' . $checkDimensioni . '] -->
                                 </option>';
                     }
-                } else {
-                    $countOpzioni++;
-                    $partSelect .= '<option ' . ((int)$rowOpzioni['ID'] === (int)$rowOpzioneScelta['opzione_ID'] ? ' selected ' : '') . ' 
-                                        value="' . $rowOpzioni['ID'] . '">' . $rowOpzioni['opzione_nome'] . ' <!-- [CDM:' . $checkDimensioni . '] -->
-                                </option>';
                 }
-            }
-            $partSelect .= '</select>';
+                $partSelect .= '</select>';
+            } else {
 
-            if ($countOpzioni === 0)
+                $partSelect = '<div class="list-group options-container" aria-progressivo="' . $linea_ID . '" id="sottostep-select-' . $linea_ID . '">';
+
+                $selectedClass = (is_null($rowOpzioneScelta['opzione_ID']) || (int)$rowOpzioneScelta['opzione_ID'] === 0) ? ' active' : '';
+                $partSelect .= '<div class="list-group-item option disabled' . $selectedClass . '">Seleziona una opzione</div>';
+
+                $countOpzioni = 0;
+                while ($rowOpzioni = mysqli_fetch_assoc($risultatoOpzioni)) {
+
+                    if ((int)$rowOpzioni['check_dimensioni'] === 1) {
+                        $checkDimensioni = $configuratore->checkDipendenzaDimensione($documento_ID, 1, $sottostep_ID, $rowOpzioni['ID']);
+
+                        if ($checkDimensioni == -1)
+                            continue;
+                    }
+
+                    // Controlla se l'opzione ha un check sulle dipendenze
+                    if ((int)$rowOpzioni['check_dipendenze'] === 1) {
+                        $checkDipendenza = $configuratore->checkOpzioneDipendenzaDaOpzione($documento_ID, $rowOpzioni['ID']);
+
+                        $opzioneVisibile = (int)$rowOpzioni['visibile'];
+
+                        if ($opzioneVisibile === 0 && ($checkDipendenza === -1 || $checkDipendenza === 0)) {
+                            echo 'STEP 1. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile;
+                        } else if ($opzioneVisibile === 1 && $checkDipendenza === 0) {
+                            echo 'STEP 2. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile;
+                        } else {   $countOpzioni++;
+                            $isSelected = ((int)$rowOpzioni['ID'] === (int)$rowOpzioneScelta['opzione_ID']);
+                            $selectedClass = $isSelected ? ' active' : '';
+                            $onclick = 'onclick="selectOption(this, \'' . $linea_ID . '\', \'' . $rowOpzioni['ID'] . '\', ' . $step_ID . ', ' . $sottostep_ID . ');"';
+
+                            $partSelect .= $this->buildDetailView($rowOpzioni['ID'], $onclick, $rowOpzioni['opzione_nome'], $selectedClass);
+                        }
+                    } else {
+                        $countOpzioni++;
+                        $isSelected = ((int)$rowOpzioni['ID'] === (int)$rowOpzioneScelta['opzione_ID']);
+                        $selectedClass = $isSelected ? ' active' : '';
+                        $onclick = 'onclick="selectOption(this, \'' . $linea_ID . '\', \'' . $rowOpzioni['ID'] . '\', ' . $step_ID . ', ' . $sottostep_ID . ');"';
+
+                        $partSelect .= $this->buildDetailView($rowOpzioni['ID'], $onclick, $rowOpzioni['opzione_nome'], $selectedClass);
+                    }
+                }
+                $partSelect .= '</div>';
+
+            }
+
+
+        if ($countOpzioni === 0)
                 $partSelect = 'Attenzione. Nessuna opzione sembra essere valida.';
         }elseif ( (int) $row['tipo_scelta'] === 2){
             $partSelect = '<input value="'. $rowValore['valore_testo'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 2);" id="sottostep-select-' . $linea_ID . '">';
+        }elseif ( (int) $row['tipo_scelta'] === 3){
+            $partSelect = '<input type="number" value="'. $rowValore['valore_numerico'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 2);" id="sottostep-select-' . $linea_ID . '">';
+        }elseif ( (int) $row['tipo_scelta'] === 4){
+            $partSelect = '<input type="number"  step="0.01" value="'. $rowValore['valore_numerico'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 2);" id="sottostep-select-' . $linea_ID . '">';
         } elseif (  (int) $row['tipo_scelta'] === 99 ) {
             $partSelect = '<input value="'. $rowValore['valore'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 99);" id="sottostep-select-' . $linea_ID . '">';
         }  elseif (  (int) $row['tipo_scelta'] === 98  ) {
             $partSelect = '<input value="'. $rowValore['valore'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID .', 98);" id="sottostep-select-' . $linea_ID . '">';
         }
 
-
         $sottostepImmagine = $configuratore->ottieniImmagine(5, $sottostep_ID);
         $part = '<div class="layoutEditorSottostep" id="editorSottostep-' . $linea_ID.'">
                     <div class="row">
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             ' . $sottostepImmagine . '
                         </div>
-                        <div class="col-md-4"> 
+                        <div class="col-md-3"> 
                             <div class="layoutEditorSottostepNome">' . $row['sottostep_nome'] . '</div>
                             <hr />
                             <div class="layoutEditorSottostepDescrizione">' . $row['sottostep_descrizione'] . '</div>
                         </div>
-                        <div class="col-md-4">' . $partSelect . '</div>
+                        <div class="col-md-7">' . $partSelect . '</div>
                         <div class="col-md-1"><div id="layoutEditorSottostepStatus-' . $linea_ID . '"></div></div>
                     </div>
                 </div>';
-
         return $part;
+    }
 
+    private function buildDetailView($opzione_ID, $onclick, $nome, $selectedClass)
+    {
+        global $db;
+        global $conf;
+
+        $query = 'SELECT * 
+                  FROM configuratore_media 
+                  WHERE contesto_ID = 7 
+                    AND IDX = '. $opzione_ID . ';';
+        $result = $db->query($query);
+        if ($db->affected_rows) {
+            $row = mysqli_fetch_assoc($result);
+            $src = $conf['URI']  . 'modules/media/uploads/' . $row['filename'];
+        } else {
+            // No img
+        }
+        $query = 'SELECT * 
+                  FROM configuratore_media 
+                  WHERE contesto_ID = 8 
+                    AND IDX = '. $opzione_ID . ';';
+
+        $result = $db->query($query);
+        $files = '';
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $files .=  '<a target="_blank" style="margin-right: 12px" onclick="event.stopPropagation();" href="' . $conf['URI']  . 'modules/media/uploads/' . $row['filename'] . '" class="btn btn-success btn-small">' . $row['filename_original'] . '</a>';
+        }
+        return '<div class="list-group-item option' . $selectedClass . '" data-value="' . $opzione_ID . '" ' . $onclick . '>
+                    <div class="row">
+                        <div class="col-md-3"><img class="img-fluid" src="' . $src .'" alt="Opzione immagine"></div>
+                        <div class="col-md-9">
+                            <h4>'. $nome .'</h4>
+                            <hr/>
+                            <div class="row">
+                                <div class="col-md-13">' . $files . '</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>';
     }
 
     public function ottieniImmagine(int $contesto_ID, int $IDX, int $tipo = 0)

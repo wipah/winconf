@@ -20,6 +20,8 @@ $sottostepTipoScelta    =   (int) $_POST['sottostepTipoScelta'];
 $sottostepDipendenza    =   (int) $_POST['sottostepDipendenza'];
 $sottostepDimensioni   =   (int) $_POST['sottostepDimensioni'];
 $sottostepVisibile      =   (int) $_POST['sottostepVisibile'];
+$sottostepImmagineRiepilogo      =   (int) $_POST['sottostepImmagineRiepilogo'];
+$sottostepTipoVisualizzazione      =   (int) $_POST['sottostepTipoVisualizzazione'];
 
 $query = 'SELECT MAX(ordine) ordine 
           FROM configuratore_sottostep 
@@ -41,6 +43,8 @@ if ($sottostep_ID === 0 ) {
                     tipo_scelta, 
                     check_dipendenze,
                     check_dimensioni,
+                    tipo_visualizzazione,
+                    immagine_riepilogo,
                     ordine,
                     visibile
                 )
@@ -54,6 +58,8 @@ if ($sottostep_ID === 0 ) {
                     ,   \'' . $sottostepTipoScelta  . '\' 
                     ,   \'' . $sottostepDipendenza  . '\' 
                     ,   \'' . $sottostepDimensioni  . '\' 
+                    ,   \'' . $sottostepTipoVisualizzazione  . '\' 
+                    ,   \'' . $sottostepImmagineRiepilogo  . '\' 
                     ,   \'' . $ordine  . '\' 
                     ,   \'' . $sottostepVisibile  . '\' 
                 )';
@@ -66,6 +72,8 @@ if ($sottostep_ID === 0 ) {
             , tipo_scelta             = \'' . $sottostepTipoScelta . '\'
             , check_dipendenze        = \'' . $sottostepDipendenza . '\'
             , check_dimensioni        = \'' . $sottostepDimensioni . '\'
+            , tipo_visualizzazione    = \'' . $sottostepTipoVisualizzazione . '\'
+            , immagine_riepilogo    = \'' . $sottostepImmagineRiepilogo . '\'
             , visibile                = \'' . $sottostepVisibile . '\'
     WHERE ID = ' . $sottostep_ID . ' 
     LIMIT 1';

@@ -7,9 +7,17 @@ $documento_ID = (int) $_POST['documento_ID'];
 
 $query = 'SELECT  CORPO.*
                 , OPZIONI.opzione_nome
+                , SOTTOSTEP.immagine_riepilogo
+                , MEDIA.filename
           FROM documenti_corpo CORPO
           LEFT JOIN configuratore_opzioni OPZIONI 
             ON OPZIONI.ID = CORPO.opzione_ID
+          LEFT JOIN configuratore_sottostep SOTTOSTEP 
+            ON SOTTOSTEP.ID = OPZIONI.sottostep_ID
+          LEFT JOIN configuratore_media MEDIA
+                ON MEDIA.IDX = CORPO.opzione_ID
+                AND MEDIA.contesto_ID = 7
+                AND MEDIA.visibile = 1
           WHERE CORPO.documento_ID = ' . $documento_ID . '
             AND CORPO.valorizzata = 1';
 
@@ -25,9 +33,16 @@ echo '<table class="table winconf-table-secondary">
 <tbody>';
 
 while ($row = mysqli_fetch_assoc($result)) {
+    if ( (int) $row['immagine_riepilogo'] == 1) {
+        $img = '<img style="max-width:250px;" class="img-fluid"  src="' . $conf['URI'] . 'modules/media/uploads/' . htmlentities($row['filename']) .'" alt="Riepilogo visivo opzione">';
+    } else {
+        $img =  '';
+    }
     echo '<tr>
             <td>' . $row['sigla'] . '</td>
-            <td>' . $row['opzione_nome'] . '</td>
+            <td>' . $row['opzione_nome'] . ' <br/>
+                    ' . $img . '
+            </td>
           </tr>';
 }
 

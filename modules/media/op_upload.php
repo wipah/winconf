@@ -57,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Ottieni l'estensione
             $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+            $fileName = htmlentities($file['name']);
             $safeName = uniqid() . '.' . strtolower($ext);
             $destination = __DIR__ . '/uploads/' . $safeName; // Aggiorna il percorso se necessario
 
@@ -68,16 +69,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $ordine = ($row['max_order'] !== null) ? $row['max_order'] + 1 : 1;
 
                 // Inserisci nel DB
-                $stmt = $db->prepare('INSERT INTO configuratore_media (IDX, contesto_ID, filename, estensione, ordine, visibile) VALUES (?, ?, ?, ?, ?, 1)');
+                $stmt = $db->prepare('INSERT INTO configuratore_media 
+                                                (IDX, contesto_ID, filename_original, filename, estensione, ordine, visibile) 
+                                            VALUES 
+                                                 (?, ?, ?, ?, ?, ?, 1)');
                 if (!$stmt) {
                     $response['error'] = 'Errore nella preparazione della query.';
                     echo json_encode($response);
                     exit;
                 }
-                $stmt->bind_param('iissi', $IDX, $contesto_ID, $safeName, $ext, $ordine);
+                $stmt->bind_param('iisssi', $IDX, $contesto_ID, $fileName, $safeName, $ext, $ordine);
                 if ($stmt->execute()) {
                     $stmt->close();
                     $response['success'] = true;
+                    $response['debug'] = $fileName;
                 } else {
                     $response['error'] = 'Errore nell\'inserimento nel database.';
                 }
@@ -96,4 +101,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $response['error'] = 'Metodo non supportato.';
     echo json_encode($response);
 }
-?>

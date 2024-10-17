@@ -55,6 +55,7 @@ if (!$db->affected_rows) {
             <th>Nome</th>
             <th>Sigla</th>
             <th>Tipo scelta</th>
+            <th>Tipo visualizzazione</th>
             <th>Controllo<br/>dipendenze</th>
             <th>Editor<br/>dipendenze</th>
             
@@ -79,9 +80,18 @@ if (!$db->affected_rows) {
                 $bloccaOpzioni = false;
                  break;
             case 2:
-                $tipoScelta = 'Testo libero';
+                $tipoScelta = 'Testo';
                 $bloccaOpzioni = true;
                 break;
+            case 3:
+                $tipoScelta = 'Numerico intero';
+                $bloccaOpzioni = true;
+                break;
+            case 4:
+                $tipoScelta = 'Numerico decimale';
+                $bloccaOpzioni = true;
+                break;
+
             case 99:
                 $tipoScelta = 'Larghezza';
                 $bloccaOpzioni = true;
@@ -98,12 +108,24 @@ if (!$db->affected_rows) {
                 $tipoScelta = 'ERRORE';
         }
 
+        switch ( (int) $row['tipo_visualizzazione']) {
+            case 0:
+                $tipoVisualizzazione = 'Select';
+                break;
+            case 1:
+                $tipoVisualizzazione = 'Dettaglio';
+                break;
+            default:
+                $tipoVisualizzazione = 'ErrTypVis';
+                break;
+        }
         echo '
                 <tr id="sottostep-' . $row['ID'] . '" data-sort-id="' . $row['ID'] . '">
                     <td>' . $row['ID'] . '</td>
                     <td>' . $row['sottostep_nome'] . '</td>
                     <td>' . $row['sottostep_sigla']  .'</td>
                     <td>' . $tipoScelta  .'</td>
+                    <td>' . $tipoVisualizzazione  .'</td>
                     <td style="text-align: center">' . ( (int) $row['check_dipendenze'] === 1 ? '<i data-toggle="tooltip" data-placement="top" title="Le dipendenze saranno controllate per visualizzare il sottostep" style="color:green" class="gg-check icon"></i>' : '<i data-toggle="tooltip" data-placement="top" title="Le dipendenze sono escluse per la visualizzazione del sottostep" style="color:red" class="gg-check icon"></i>') . '
                     </td>
                     <td style="text-align: center">    
@@ -126,7 +148,7 @@ if (!$db->affected_rows) {
                     <td style="text-align: center">' . ( (int) $row['visibile'] === 1 ? '<i style="color:green" class="gg-check-r"></i>' : '<i style="color:red" class="gg-check-r"></i>' ) . '</td>
                     <td style="text-align: center">
                         
-                        <span class="icon-wrapper" onclick="sottoStepEditor(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .');" data-toggle="tooltip" data-placement="top" title="Modifica step">
+                        <span class="icon-wrapper" onclick="sottoStepEditor(' . $categoria_ID .', ' . $step_ID . ',' . $row['ID'] .');" data-toggle="tooltip" data-placement="top" title="Modifica sottostep">
                             <i class="fas fa-code-branch"></i>
                         </span>';
 

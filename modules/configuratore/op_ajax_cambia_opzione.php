@@ -3,15 +3,16 @@ $this->noTemplateParse = true;
 if (!$user->validateLogin())
     return;
 
-$documento_ID = (int)$_POST['documento_ID'];
-$linea_ID = (int)$_POST['linea_ID'];
-$opzione_ID = $core->in($_POST['opzione_ID']);
-$step_ID = (int)$_POST['step_ID'];
-$sottostep_ID = (int)$_POST['sottostep_ID'];
-$special = (int)$_POST['special'];
-$debug = '';
+$documento_ID = (int) $_POST['documento_ID'];
+$linea_ID     = (int) $_POST['linea_ID'];
+$opzione_ID   = $core->in($_POST['opzione_ID']);
+$step_ID      = (int) $_POST['step_ID'];
+$sottostep_ID = (int) $_POST['sottostep_ID'];
+$special      = (int) $_POST['special'];
+$debug        = '';
 
 if ($special > 0) {
+
     if ($special === 2) {
         $query = 'UPDATE documenti_corpo 
                   SET valore_testo = \'' . $opzione_ID . '\' 
@@ -19,7 +20,15 @@ if ($special > 0) {
                   LIMIT 1';
 
         $db->query($query);
+    } else if ($special === 3 || $special == 4) {
+        $query = 'UPDATE documenti_corpo 
+                  SET valore_numerico = \'' . $opzione_ID . '\' 
+                  WHERE ID = ' . $linea_ID . ' 
+                  LIMIT 1';
+
+        $db->query($query);
     } else {
+
         switch ($special) {
             case 99:
                 $dimensione = 'larghezza';
@@ -32,10 +41,17 @@ if ($special > 0) {
                 break;
         }
 
-        $query = 'UPDATE documenti SET ' . $dimensione . ' =  ' .  ((int) $opzione_ID) . ' WHERE ID = ' . $documento_ID . ' LIMIT 1';
+        $query = 'UPDATE documenti 
+                  SET ' . $dimensione . ' =  ' .  ((int) $opzione_ID) . ' 
+                  WHERE ID = ' . $documento_ID . ' 
+                  LIMIT 1';
         $db->query($query);
 
-        $query = 'UPDATE documenti_corpo SET valore = ' . ((int) $opzione_ID) . '  WHERE ID = ' . $linea_ID . ' LIMIT 1';
+        $query = 'UPDATE documenti_corpo 
+                  SET valorizzata = 1
+                    , valore_numerico = ' . ((int) $opzione_ID) . '  
+                  WHERE ID = ' . $linea_ID . ' 
+                  LIMIT 1';
         $db->query($query);
     }
 

@@ -511,12 +511,10 @@ class configuratore
         } elseif ( ((int) $row['tipo_scelta'] == 99)
                 || ((int) $row['tipo_scelta'] == 98)
                 || ((int) $row['tipo_scelta'] == 97)
-
                  ) {
             $query = 'SELECT valore, valore_testo, valore_numerico FROM documenti_corpo WHERE ID = ' . $linea_ID . ' LIMIT 1;';
             $resultValore = $db->query($query);
             $rowValore = mysqli_fetch_assoc($resultValore);
-
         }
 
 
@@ -621,13 +619,15 @@ class configuratore
         }elseif ( (int) $row['tipo_scelta'] === 2){
             $partSelect = '<input value="'. $rowValore['valore_testo'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 2);" id="sottostep-select-' . $linea_ID . '">';
         }elseif ( (int) $row['tipo_scelta'] === 3){
-            $partSelect = '<input type="number" value="'. $rowValore['valore_numerico'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 2);" id="sottostep-select-' . $linea_ID . '">';
+            $partSelect = '<input type="number" value="'. $rowValore['valore_numerico'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 3);" id="sottostep-select-' . $linea_ID . '">';
         }elseif ( (int) $row['tipo_scelta'] === 4){
-            $partSelect = '<input type="number"  step="0.01" value="'. $rowValore['valore_numerico'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 2);" id="sottostep-select-' . $linea_ID . '">';
+            $partSelect = '<input type="number"  step="0.01" value="'. $rowValore['valore_numerico'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 4);" id="sottostep-select-' . $linea_ID . '">';
         } elseif (  (int) $row['tipo_scelta'] === 99 ) {
-            $partSelect = '<input value="'. $rowValore['valore'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 99);" id="sottostep-select-' . $linea_ID . '">';
+            $partSelect = '<input value="'. (int) $rowValore['valore_numerico'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 99);" id="sottostep-select-' . $linea_ID . '">';
         }  elseif (  (int) $row['tipo_scelta'] === 98  ) {
-            $partSelect = '<input value="'. $rowValore['valore'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID .', 98);" id="sottostep-select-' . $linea_ID . '">';
+            $partSelect = '<input value="'. (int) $rowValore['valore_numerico'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID .', 98);" id="sottostep-select-' . $linea_ID . '">';
+        } elseif ( (int) $row['tipo_scelta'] === 97  ) {
+            $partSelect = '<input value="'. (int) $rowValore['valore_numerico'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID .', 97);" id="sottostep-select-' . $linea_ID . '">';
         }
 
         $sottostepImmagine = $configuratore->ottieniImmagine(5, $sottostep_ID);

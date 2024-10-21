@@ -9,6 +9,9 @@ if (!$user->logged) {
 }
 
 switch ($path[2]) {
+    case 'listini':
+        require_once 'op_listini.php';
+        break;
     case 'ajax-riordina-categorie':
         require_once 'op_ajax_categorie_riordina.php';
         break;

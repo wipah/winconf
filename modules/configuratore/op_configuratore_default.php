@@ -73,7 +73,7 @@ echo '
     }
     .category-card img {
         width: 100%;
-        height: 200px; /* Altezza fissa per tutte le immagini */
+        max-height: 200px; /* Altezza fissa per tutte le immagini */
         object-fit: cover; /* Ritaglia l\'immagine per riempire l\'area */
     }
     .card-body {
@@ -81,6 +81,15 @@ echo '
         align-items: center;
         justify-content: center;
         height: 60px; /* Altezza fissa per il corpo della card */
+    }
+    
+    .card-body h5 {
+        text-align: center;
+    }
+    
+    .card-body div {
+        text-align: left;
+        margin-top: 10px;
     }
     /* Opzionale: Aggiungi un overlay per indicare la selezione */
     .category-card.selected::after {
@@ -127,16 +136,19 @@ while ($row = mysqli_fetch_assoc($result)) {
     }
 
     echo '
-        <div class="col-md-4 mb-3">
-            <div class="card category-card" data-category-id="' . $categoryID . '">
-                <img src="' . htmlspecialchars($imageURL) . '" class="card-img-top" alt="' . $categoryName . '">
-                <div  class="card-body d-flex flex-column">
-                    <h5 class="text-center">' . $categoryName . '</h5>
-                    <div style="text-align: left !important;" class="text-left mt-2">' . $row['categoria_descrizione']  .'</div>
-                </div>
-            </div>
+
+<div class="col-md-4 mb-3">
+    <div class="card category-card h-100" data-category-id="' . $categoryID . '">
+        <img src="' . htmlspecialchars($imageURL) . '" class="card-img-top" alt="' . $categoryName . '" style="max-height: 200px; object-fit: cover; width: 100%;">
+        <div class="card-body d-flex flex-column">
+            <h5 class="text-center mt-2">' . $categoryName . '</h5>
+            <div class="mt-2">' . $row['categoria_descrizione'] .'</div>
         </div>
-    ';
+    </div>
+</div>
+
+';
+
 }
 
 echo '

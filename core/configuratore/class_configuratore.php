@@ -783,6 +783,23 @@ class configuratore
 
     }
 
+    function getListinoParametro (int $tipo, $IDX, $listino_ID) {
+        global $db;
+
+        $query = 'SELECT * 
+                  FROM listini_parametri 
+                  WHERE tipo = ' . $tipo . ' 
+                    AND IDX = ' . $IDX . ' 
+                    AND listino_ID = ' . $listino_ID . '
+                  LIMIT 1';
+
+        $result = $db->query($query);
+
+        $row = mysqli_fetch_assoc($result);
+
+        return $row['valore'];
+    }
+
     function totaleDocumento (int $documento_ID) : float {
         global $db;
 
@@ -790,7 +807,9 @@ class configuratore
 
         // Ottiene la valorizzazione iniziale che deriva dalla categoria del progetto
         $query = 'SELECT  configuratore_categorie.categoria_formula_valore
+                        , configuratore_categorie.ID categoria_ID
                         , configuratore_formule.formula_sigla
+                        , documenti.listino_ID
                   FROM documenti 
                   LEFT JOIN configuratore_categorie
                     ON configuratore_categorie.ID = documenti.categoria_ID
@@ -807,8 +826,12 @@ class configuratore
 
         $row = mysqli_fetch_assoc($result);
 
+        /*
+         * $totale = 0
+         * $valore = $row['categoria_formula_valore'];
+        */
         $totale = 0;
-        $valore = $row['categoria_formula_valore'];
+        $valore = $this->getListinoParametro(0, $row['categoria_ID'], $row['listino_ID']);
 
         $sigla = strtolower($row['formula_sigla']);
         switch ($sigla) {
@@ -872,7 +895,7 @@ class configuratore
                     $totale += ($totale / 100) * $valore;
                     break;
                 default:
-                    echo 'Opzione ' . $sigla . ' non trovata. <br/>';
+                    // echo 'Opzione ' . $sigla . ' non trovata. <br/>';
                     break;
             }
 

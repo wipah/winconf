@@ -140,7 +140,7 @@ foreach ($documentoSteps as $step_ID => $stepNome) {
     echo '$(function() {
             visualizzaStep(' . $step_ID . ');
             visualizzaRiepilogo();
-            ottieniTotale();
+            
             ottieniStato();
           });';
 }
@@ -263,7 +263,6 @@ function cambiaSingolaOpzione(linea_ID, opzione_ID, step_ID, sottostep_ID, speci
         }
         visualizzaRiepilogo();
         ottieniDimensioni();
-        ottieniTotale();
         ottieniStato();
       });
 }
@@ -337,7 +336,10 @@ function visualizzaRiepilogo () {
     $.post( jsPath + "configuratore/editor/ajax-visualizza-riepilogo/", { documento_ID: ' . $documento_ID . ' })
       .done(function( data ) {
         $("#layoutRiepilogo").html(data);
+        
+        ottieniTotale();
     });
+    
 }
 
 function ottieniStato() 

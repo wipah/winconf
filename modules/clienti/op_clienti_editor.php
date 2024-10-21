@@ -38,7 +38,7 @@ $iban                   =   $core->in($_POST['iban']);
 $electronicInvoiceCode  =   $core->in($_POST['electronicInvoiceCode']);
 $privacy                =   (int) $_POST['privacy'];
 $privacySignature       =   $core->in($_POST['privacySignature']);
-
+$listino_ID             =    (int) $_POST['listino'];
 
 if (isset($_GET['save'])) {
     $this->noTemplateParse = true;
@@ -79,6 +79,7 @@ if (isset($_GET['save'])) {
                          pec,
                          privacy_data,
                          privacy,
+                         listino_ID,
                          privacy_firma 
                     ) VALUES (
                         \'' . $codeERP .'\',          
@@ -102,6 +103,7 @@ if (isset($_GET['save'])) {
                         \'' . $PEC .'\',          
                         NOW(),                   
                         \'' . $privacy .'\',          
+                        \'' . $listino_ID .'\',          
                         \'' . $privacySignature .'\'          
                     )  ';
 
@@ -140,6 +142,7 @@ if (isset($_GET['save'])) {
                          privacy            =   '{$privacy}',
                          privacy_firma  =   '{$privacySignature}',
                          is_updated         =    1,
+                         listino_ID         =    {$listino_ID},
                          ultimo_aggiornamento_data   =    NOW()
                   WHERE ID = $ID
                   AND company_ID = {$user->company_ID}
@@ -178,10 +181,19 @@ if (isset($_GET['save'])) {
     }
 
     $row = mysqli_fetch_assoc($result);
+
+
 } else {
     $customerAddresses = 'Per creare delle destinazioni aggiuntive devi prima memorizzare il cliente.';
 }
+$query = 'SELECT * FROM listini';
+$resultListini = $db->query($query);
+$selectListino = '<select id="listino" name="listino">';
 
+while ($rowListino = mysqli_fetch_assoc($resultListini)) {
+    $selectListino .= '<option ' . ( (int) $row['listino_ID'] === $rowListino['ID'] ? 'selected' : ''  ) . ' value="' . $rowListino['ID'] . '">' . $rowListino['nome'] . '</option>';
+}
+$selectListino .= '</select>';
 echo '
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
 
@@ -313,6 +325,17 @@ $customerEditor = '
   </div>
  
   <hr />
+  
+  <h3>Listino associato</h3>
+  <a name="listino"></a>
+  <div class="form-group row">
+    <label for="listino" class="col-2 col-form-label">Listino associato</label> 
+    <div class="col-8">
+    ' . $selectListino . '
+
+    </div>
+  </div> 
+  
   <h3>Trattamento dati</h3>
   <a name="privacy"></a>
   <div class="form-group row">
@@ -418,6 +441,7 @@ function sendData()
     electronicInvoiceCode   = $("#electronicInvoiceCode").val();
     bankName                = $("#bankName").val();
     iban                    = $("#iban").val();
+    listino                    = $("#listino").val();
     privacy                 = $(\'input[name=privacy]:checked\').val();
     privacySignature        = signaturePad.toDataURL();
     
@@ -439,6 +463,7 @@ function sendData()
                        PEC                  : PEC, 
                        bankName             : bankName, 
                        iban                 : iban, 
+                       listino              : listino, 
                        electronicInvoiceCode: electronicInvoiceCode, 
                        privacy              : privacy, 
                        privacySignature     : privacySignature })

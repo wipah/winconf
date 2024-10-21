@@ -12,18 +12,24 @@ $debug = '*** DEBUG *** ' . PHP_EOL;
 $customer_ID    = (int) $_POST['cliente'];
 $categoria_ID   = (int) $_POST['categoria'];
 
+// Crea la query per selezionare il listino associato all'utente
+$query = 'SELECT * FROM clienti WHERE ID = ' . $customer_ID . ' LIMIT 1';
+$result = $db->query($query);
+$row = mysqli_fetch_assoc($result);
 
 $debug .= 'Customer_ID: ' . $customer_ID . PHP_EOL;
 $debug .= 'Categoria_ID: ' . $categoria_ID . PHP_EOL;
+$debug .= 'Listino_ID: ' . $row['listino_ID'] . PHP_EOL;
 
 
 $query = 'INSERT INTO documenti 
           ( user_ID
           , customer_ID
+          , listino_ID
           , tipo_ordine_ID
           , categoria_ID
           , configuratore_versione
-
+          
           , spessore
 
           , data_ordine
@@ -32,6 +38,7 @@ $query = 'INSERT INTO documenti
          (
             ' . $user->ID . '        
           , ' . $customer_ID . '        
+          , ' . $row['listino_ID'] . '        
           , ' . 0 . '        
           , ' . $categoria_ID . '        
           , \'FAB001\'        

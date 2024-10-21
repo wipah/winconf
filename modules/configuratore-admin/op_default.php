@@ -9,7 +9,11 @@ if (!$user->logged) {
 
 $this->menuItems[] = '<a href="' . $conf['URI'] . 'configuratore-admin/">Backend</a>';
 $this->title = 'WinConf - Homepage categorie';
-echo '<h1>Configurazione</h1>';
+echo '<h1>Configurazione</h1>
+
+<div class="mt-3 text-right mb-3">
+   <a href="' . $conf['URI'] . 'configuratore-admin/listini/" class="btn btn-sm btn-info">Listini</a>
+</div>';
 
 $query = 'SELECT * FROM 
           configuratore_categorie

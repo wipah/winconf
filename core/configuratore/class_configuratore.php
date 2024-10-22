@@ -482,7 +482,11 @@ class configuratore
         // - una campo libero (ID = 2)
         if ($row['tipo_scelta'] == 0
             || $row['tipo_scelta'] == 1
-            || $row['tipo_scelta'] == 2) {
+            || $row['tipo_scelta'] == 2
+            || $row['tipo_scelta'] == 3
+            || $row['tipo_scelta'] == 4)
+
+        {
             // Controlla se lo step dipende da una opzione e può essere visualizzato
             $visibile = $this->sottoStepVisibile($documento_ID, $step_ID, $sottostep_ID, $linea_ID);
 
@@ -528,7 +532,7 @@ class configuratore
             $risultatoOpzioni = $db->query($query);
 
             // Che tipo di layout deve essere mostrato? 0 = classica dropdown, 1 = visualizzazione dettagliata
-            if ( (int) $row['tipo_visualizzazione'] === 0 ){
+            if ((int)$row['tipo_visualizzazione'] === 0) {
                 $partSelect = '<select onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ');" id="sottostep-select-' . $linea_ID . '">
                             <option ' . (is_null($rowOpzioneScelta['opzione_ID']) || (int)$rowOpzioneScelta['opzione_ID'] === 0 ? ' selected ' : ' ') . ' disabled >Seleziona una opzione</option>';
 
@@ -593,7 +597,8 @@ class configuratore
                             echo 'STEP 1. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile;
                         } else if ($opzioneVisibile === 1 && $checkDipendenza === 0) {
                             echo 'STEP 2. Check dipendenza: ' . $checkDipendenza . ', opzioneVisibile: ' . $opzioneVisibile;
-                        } else {   $countOpzioni++;
+                        } else {
+                            $countOpzioni++;
                             $isSelected = ((int)$rowOpzioni['ID'] === (int)$rowOpzioneScelta['opzione_ID']);
                             $selectedClass = $isSelected ? ' active' : '';
                             $onclick = 'onclick="selectOption(this, \'' . $linea_ID . '\', \'' . $rowOpzioni['ID'] . '\', ' . $step_ID . ', ' . $sottostep_ID . ');"';
@@ -612,11 +617,12 @@ class configuratore
                 $partSelect .= '</div>';
 
             }
-
+        }
 
         if ($countOpzioni === 0)
                 $partSelect = 'Attenzione. Nessuna opzione sembra essere valida.';
-        }elseif ( (int) $row['tipo_scelta'] === 2){
+
+        if ( (int) $row['tipo_scelta'] === 2){
             $partSelect = '<input value="'. $rowValore['valore_testo'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 2);" id="sottostep-select-' . $linea_ID . '">';
         }elseif ( (int) $row['tipo_scelta'] === 3){
             $partSelect = '<input type="number" value="'. $rowValore['valore_numerico'] .'" onfocus="selectOpzione=$(this).val();" aria-progressivo="' . $linea_ID . '" class="form-control"  onchange="cambiaSingolaOpzione(\'' . $linea_ID . '\', $(this).val(), ' . $step_ID . ',' . $sottostep_ID . ', 3);" id="sottostep-select-' . $linea_ID . '">';

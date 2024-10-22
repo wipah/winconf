@@ -11,7 +11,7 @@ $this->noTemplateParse = true;
 
 $ID = (int) $_POST['ID']; //Listino_ID
 
-$query = 'SELECT * FROM LISTINI WHERE ID = ' . $ID . ' LIMIT 1';
+$query = 'SELECT * FROM listini WHERE ID = ' . $ID . ' LIMIT 1';
 $result = $db->query($query);
 $row = mysqli_fetch_assoc($result);
 

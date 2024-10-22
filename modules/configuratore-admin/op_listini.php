@@ -38,11 +38,15 @@ if (!$db->query($query)) {
 }
 
 if (!$result = $db->query($query)) {
-    echo 'Nessun listino creato. Creane uno!';
+    echo 'Nessun listino creato. <a href="' . $conf['URI'] .'configuratore-admin/listini/editor/">Creane uno!</a>';
     return;
 }
 
-echo '<table class="table table-bordered table-condensed winconf-table">
+echo '
+<div class="text-right">
+    <a href="' . $conf['URI'] .'configuratore-admin/listini/editor/" class="btn btn-small btn-info">Crea listino</a>
+</div>
+<table class="table table-bordered table-condensed winconf-table">
         <thead>
             <tr>
                 <th>ID</th>
